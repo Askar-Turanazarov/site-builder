@@ -1,0 +1,108 @@
+@import "tailwindcss";
+@import "../styles/prose.css";
+
+/*
+ * Design tokens.
+ * "Ink/paper/accent" naming keeps every surface (admin UI today, public
+ * templates later) reskinnable by swapping a handful of variables instead
+ * of rewriting layout. Admin uses a restrained teal-ink identity; each
+ * public template gets its own palette on top of the same structure.
+ * Font families are injected as CSS variables by next/font in layout.tsx.
+ */
+:root {
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --ink: #14181c;
+  --ink-soft: #3c444b;
+  --paper: #f7f7f5;
+  --surface: #ffffff;
+  --border: #e4e3df;
+  --muted: #6b7280;
+
+  --accent: #2f6f5e;
+  --accent-strong: #1f4f42;
+  --accent-tint: #e8f2ef;
+
+  --danger: #b3432b;
+  --danger-tint: #fbeae5;
+  --warning: #a5720f;
+  --warning-tint: #fbf1de;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #f2f1ee;
+    --ink-soft: #c7cbcf;
+    --paper: #14181c;
+    --surface: #1b2126;
+    --border: #2b323a;
+    --muted: #8a9198;
+
+    --accent: #5fa590;
+    --accent-strong: #7fc0ac;
+    --accent-tint: #1e2e2a;
+
+    --danger: #e18066;
+    --danger-tint: #3a231e;
+    --warning: #d7ab5c;
+    --warning-tint: #3a2f1a;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ink: #f2f1ee;
+  --ink-soft: #c7cbcf;
+  --paper: #14181c;
+  --surface: #1b2126;
+  --border: #2b323a;
+  --muted: #8a9198;
+
+  --accent: #5fa590;
+  --accent-strong: #7fc0ac;
+  --accent-tint: #1e2e2a;
+
+  --danger: #e18066;
+  --danger-tint: #3a231e;
+  --warning: #d7ab5c;
+  --warning-tint: #3a2f1a;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-tint: var(--accent-tint);
+  --color-danger: var(--danger);
+  --color-danger-tint: var(--danger-tint);
+  --color-warning: var(--warning);
+  --color-warning-tint: var(--warning-tint);
+
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-display);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  text-wrap: balance;
+}

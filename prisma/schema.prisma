@@ -1,0 +1,173 @@
+// Prisma schema for the site-builder CMS.
+// Fixed 3-locale model: every translatable field has Ru/Uz/En columns
+// instead of a generic join-table translation system.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ---------- Auth ----------
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ---------- Site-wide settings (singleton row, id = "singleton") ----------
+
+model SiteSettings {
+  id               String   @id @default("singleton")
+  siteNameRu       String
+  siteNameUz       String
+  siteNameEn       String
+  taglineRu        String?
+  taglineUz        String?
+  taglineEn        String?
+  defaultLocale    String   @default("ru")
+  themeKey         String   @default("business")
+  logoMediaId      String?
+  faviconMediaId   String?
+  contactEmail     String?
+  contactPhone     String?
+  contactAddressRu String?
+  contactAddressUz String?
+  contactAddressEn String?
+  socialLinks      String? // JSON: [{ platform, url }]
+  contactFormAction String? // external form endpoint used by exported static site
+  footerNoteRu     String?
+  footerNoteUz     String?
+  footerNoteEn     String?
+  updatedAt        DateTime @updatedAt
+}
+
+// ---------- Navigation ----------
+
+model MenuItem {
+  id         String     @id @default(cuid())
+  labelRu    String
+  labelUz    String
+  labelEn    String
+  linkType   String // "page" | "category" | "custom"
+  pageId     String?
+  page       Page?      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  categoryId String?
+  category   Category?  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  customUrl  String?
+  order      Int        @default(0)
+  location   String     @default("header") // "header" | "footer"
+  parentId   String?
+  parent     MenuItem?  @relation("MenuChildren", fields: [parentId], references: [id], onDelete: Cascade)
+  children   MenuItem[] @relation("MenuChildren")
+}
+
+// ---------- Pages ----------
+
+model Page {
+  id          String     @id @default(cuid())
+  slug        String     @unique
+  isHomepage  Boolean    @default(false)
+  templateKey String?
+  titleRu     String
+  titleUz     String
+  titleEn     String
+  metaDescRu  String?
+  metaDescUz  String?
+  metaDescEn  String?
+  blocksRu    String     @default("[]")
+  blocksUz    String     @default("[]")
+  blocksEn    String     @default("[]")
+  status      String     @default("draft") // "draft" | "published"
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  menuItems   MenuItem[]
+}
+
+// ---------- Categories / rubrics ----------
+
+model Category {
+  id        String     @id @default(cuid())
+  slug      String     @unique
+  nameRu    String
+  nameUz    String
+  nameEn    String
+  descRu    String?
+  descUz    String?
+  descEn    String?
+  order     Int        @default(0)
+  posts     Post[]
+  menuItems MenuItem[]
+}
+
+// ---------- Articles / news ----------
+
+model Post {
+  id           String    @id @default(cuid())
+  slug         String    @unique
+  categoryId   String
+  category     Category  @relation(fields: [categoryId], references: [id])
+  layoutKey    String?
+  titleRu      String
+  titleUz      String
+  titleEn      String
+  excerptRu    String?
+  excerptUz    String?
+  excerptEn    String?
+  coverMediaId String?
+  blocksRu     String    @default("[]")
+  blocksUz     String    @default("[]")
+  blocksEn     String    @default("[]")
+  metaDescRu   String?
+  metaDescUz   String?
+  metaDescEn   String?
+  status       String    @default("draft")
+  publishedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+// ---------- Media library ----------
+
+model Media {
+  id        String   @id @default(cuid())
+  filename  String
+  path      String // relative path under public/uploads
+  mimeType  String
+  width     Int?
+  height    Int?
+  size      Int
+  altRu     String?
+  altUz     String?
+  altEn     String?
+  createdAt DateTime @default(now())
+}
+
+// ---------- Contact form submissions (live site only; static exports use an external form action) ----------
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  locale    String
+  pageSlug  String?
+  fieldsRaw String // JSON: [{ label, value }] — form shape is defined per-block, not fixed columns
+  createdAt DateTime @default(now())
+}
+
+// ---------- UI dictionary (static string translations) ----------
+
+model DictionaryEntry {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  valueRu   String
+  valueUz   String
+  valueEn   String
+  group     String   @default("general") // nav | buttons | forms | footer | messages
+  updatedAt DateTime @updatedAt
+}
