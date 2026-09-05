@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { blockListSchema, serializeBlocks } from "@/blocks/types";
+import { sanitizeBlocks } from "@/blocks/sanitize";
 import type { Block } from "@/blocks/types";
 
 export interface PageInput {
@@ -25,7 +26,9 @@ export interface PageInput {
 function validateBlocks(blocks: Block[]) {
   const result = blockListSchema.safeParse(blocks);
   if (!result.success) throw new Error("blocksInvalid");
-  return result.data as Block[];
+  // HTML из редактора чистим здесь, на единственном пути записи: дальше в базе
+  // и в выгруженной статике лежит уже безопасная разметка.
+  return sanitizeBlocks(result.data as Block[]);
 }
 
 async function ensureUniqueSlug(slug: string, excludeId?: string) {

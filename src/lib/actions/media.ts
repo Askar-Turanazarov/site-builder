@@ -9,6 +9,14 @@ import { revalidatePath } from "next/cache";
 
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
 
+/**
+ * Разрешены только растровые форматы. SVG отклоняем сознательно: это документ,
+ * внутри которого может лежать скрипт, а отдаётся он с того же домена, что и
+ * админка. Графику шаблонов это не касается — её кладёт сервер, а не форма.
+ */
+const ALLOWED_TYPES = new Set(["image/png", "image/jpeg", "image/webp", "image/gif", "image/avif"]);
+const ALLOWED_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif"]);
+
 function sanitizeFilename(name: string): string {
   return name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(-80);
 }
@@ -36,7 +44,7 @@ export async function uploadMediaAction(
   if (!(file instanceof File) || file.size === 0) {
     return { error: "media.errNoFile" };
   }
-  if (!file.type.startsWith("image/")) {
+  if (!ALLOWED_TYPES.has(file.type) || !ALLOWED_EXTENSIONS.has(path.extname(file.name).toLowerCase())) {
     return { error: "media.errNotImage" };
   }
   if (file.size > 8 * 1024 * 1024) {

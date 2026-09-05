@@ -326,17 +326,22 @@ export const educationTemplate: SiteTemplate = {
           imageSide: "left",
         }),
 
+        // Здесь был блок видео со ссылкой на посторонний ролик — в готовом
+        // шаблоне это мусор. Ставим кадр с текстом: свою запись занятия
+        // администратор добавит блоком «Видео» сам.
         S(
-          B.videoEmbed(
-            "open-lesson",
-            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-            L(
-              "Запись открытого занятия: первый урок по вёрстке целиком, без монтажа.",
-              "Ochiq darsning yozuvi: verstka bo'yicha birinchi dars to'liq, montajsiz.",
-              "A recorded open lesson: the whole first markup class, unedited.",
+          B.imageText("open-lesson", {
+            heading: L("Открытое занятие по субботам", "Shanba kunlari ochiq dars", "Open lesson on Saturdays"),
+            body: L(
+              "Раз в две недели мы проводим открытый урок: полтора часа настоящего занятия, без презентаций о том, как хорошо учиться. Приходите посмотреть на преподавателя и на группу до того, как платить за курс.",
+              "Ikki haftada bir marta ochiq dars o'tkazamiz: bir yarim soat haqiqiy mashg'ulot, «qanday yaxshi o'qish kerak» degan taqdimotlarsiz. Kursga to'lashdan oldin o'qituvchi va guruhni ko'rib keting.",
+              "Every other week we run an open lesson: ninety minutes of a real class, with none of the talks about how to study well. Come and look at the teacher and the group before you pay for anything.",
             ),
-          ),
-          { bg: "surface", width: "normal" },
+            imageSide: "right",
+            ctaLabel: L("Записаться на открытое занятие", "Ochiq darsga yozilish", "Sign up for the open lesson"),
+            ctaLink: "/contacts",
+          }),
+          { bg: "surface" },
         ),
       ],
     },

@@ -17,6 +17,7 @@ export interface LoginLabels {
   submitting: string;
   errorEmpty: string;
   errorInvalid: string;
+  errorTooMany: string;
 }
 
 export function LoginForm({ labels, next }: { labels: LoginLabels; next?: string }) {

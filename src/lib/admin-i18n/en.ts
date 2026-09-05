@@ -42,6 +42,7 @@ export const en: AdminDict = {
   "login.submitting": "Signing in…",
   "login.errorEmpty": "Enter your email and password",
   "login.errorInvalid": "Wrong email or password",
+  "login.errorTooMany": "Too many sign-in attempts. Wait ten minutes.",
 
   "dashboard.title": "Dashboard",
   "dashboard.subtitle": "An overview of your site's content.",
@@ -238,6 +239,15 @@ export const en: AdminDict = {
   "export.formNotConfigured":
     "the exported static site has no backend to process the form. No external endpoint is configured, so the form will open the visitor's email client. Add a service like Formspree in the site settings.",
   "export.settingsLink": "site settings",
+
+  // Contact form submissions
+  "nav.messages": "Submissions",
+  "messages.title": "Form submissions",
+  "messages.subtitle":
+    "Everything sent through the Form block on your pages. The latest 200 are shown.",
+  "messages.empty": "No submissions yet.",
+  "messages.clear": "Clear the list",
+  "messages.page": "Page",
 
   "templates.title": "Site templates",
   "templates.subtitle":

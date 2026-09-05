@@ -10,6 +10,7 @@
     "postinstall": "prisma generate && npm run build:export-css",
     "db:seed": "tsx prisma/seed.ts",
     "art:generate": "tsx scripts/generate-template-art.ts",
+    "db:media": "tsx scripts/seed-demo-media.ts",
     "build:export-css": "tailwindcss -i src/app/globals.css -o src/lib/export/assets/tailwind.generated.css --minify"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
     "@tiptap/pm": "^3.31.3",
     "@tiptap/react": "^3.31.3",
     "@tiptap/starter-kit": "^3.31.3",
+    "@types/sanitize-html": "^2.16.1",
     "archiver": "^8.0.0",
     "bcryptjs": "^3.0.3",
     "jose": "^6.2.11",
@@ -30,6 +32,7 @@
     "prisma": "7.10.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "sanitize-html": "^2.17.7",
     "zod": "^4.5.4"
   },
   "devDependencies": {

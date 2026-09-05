@@ -42,6 +42,7 @@ export const uz: AdminDict = {
   "login.submitting": "Kirilmoqda…",
   "login.errorEmpty": "Email va parolni kiriting",
   "login.errorInvalid": "Email yoki parol noto'g'ri",
+  "login.errorTooMany": "Kirishga urinishlar juda ko'p. O'n daqiqa kuting.",
 
   "dashboard.title": "Boshqaruv paneli",
   "dashboard.subtitle": "Saytingiz mazmunining umumiy ko'rinishi.",
@@ -238,6 +239,15 @@ export const uz: AdminDict = {
   "export.formNotConfigured":
     "eksport qilingan statikada shaklni qayta ishlaydigan server yo'q. Hozir tashqi manzil sozlanmagan — shakl mehmonning pochta mijozini ochadi. Formspree kabi xizmat manzilini sayt sozlamalarida ko'rsating.",
   "export.settingsLink": "sayt sozlamalarida",
+
+  // Aloqa shaklidan kelgan arizalar
+  "nav.messages": "Arizalar",
+  "messages.title": "Saytdan kelgan arizalar",
+  "messages.subtitle":
+    "Sayt sahifalaridagi «Shakl» blokidan yuborilganlar. Oxirgi 200 tasi ko'rsatiladi.",
+  "messages.empty": "Hozircha ariza yo'q.",
+  "messages.clear": "Ro'yxatni tozalash",
+  "messages.page": "Sahifa",
 
   "templates.title": "Sayt shablonlari",
   "templates.subtitle":

@@ -19,6 +19,7 @@ export default async function LoginPage({
         submitting: t("login.submitting"),
         errorEmpty: t("login.errorEmpty"),
         errorInvalid: t("login.errorInvalid"),
+        errorTooMany: t("login.errorTooMany"),
       }}
     />
   );

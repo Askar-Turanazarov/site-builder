@@ -48,6 +48,7 @@ export const ru = {
   "login.submitting": "Входим…",
   "login.errorEmpty": "Введите email и пароль",
   "login.errorInvalid": "Неверный email или пароль",
+  "login.errorTooMany": "Слишком много попыток входа. Подождите десять минут.",
 
   // Дашборд
   "dashboard.title": "Дашборд",
@@ -255,6 +256,15 @@ export const ru = {
   "export.formNotConfigured":
     "в выгруженной статике форма не имеет сервера для обработки. Сейчас внешний адрес не настроен — форма откроет почтовый клиент посетителя. Укажите адрес сервиса вроде Formspree в настройках сайта.",
   "export.settingsLink": "настройках сайта",
+
+  // Заявки с формы обратной связи
+  "nav.messages": "Заявки",
+  "messages.title": "Заявки с сайта",
+  "messages.subtitle":
+    "Отправления из блока «Форма» на страницах сайта. Показываются последние 200.",
+  "messages.empty": "Заявок пока нет.",
+  "messages.clear": "Очистить список",
+  "messages.page": "Страница",
 
   // Шаблоны сайтов
   "templates.title": "Шаблоны сайтов",

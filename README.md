@@ -74,6 +74,7 @@ Admin panel: `http://localhost:3000/admin`.
 | `npm run db:seed` | Fill the database with the demo site and the UI dictionary |
 | `npm run build:export-css` | Rebuild the CSS bundle shipped with exported sites |
 | `npm run art:generate` | Redraw the template artwork in `public/templates` |
+| `npm run db:media` | Put the artwork onto an already seeded demo site |
 
 ### Features
 
@@ -123,6 +124,34 @@ src/
 
 The guiding rule: **a block is described once**. Its React component and its HTML generator share the
 class strings in `blocks/classes.ts`, so the live site and the exported files look identical.
+
+### Security
+
+What the project does on its own:
+
+- One administrator account; the password is stored as a bcrypt hash, the session is a signed JWT in
+  an `httpOnly` cookie (`sameSite=lax`, `secure` in production).
+- Every server action and the ZIP export are behind `requireAdmin`. Redirects after signing in and
+  after switching the language accept internal paths only.
+- HTML from the editor is sanitized on save: only the tags TipTap can produce survive, `javascript:`
+  links, event handlers, `<script>` and `<iframe>` are stripped — on the live site and in the export.
+- The media library accepts PNG, JPEG, WebP, GIF and AVIF only. SVG is rejected on purpose: it is a
+  document that can carry a script and would be served from your own origin.
+- Sign-in is limited to ten attempts per ten minutes per address; the public contact form to five
+  submissions per hour, with caps on field count and length.
+- Responses carry `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options` and a restrictive
+  `Permissions-Policy`.
+
+What to keep in mind:
+
+- Change `ADMIN_PASSWORD` and set a long random `AUTH_SECRET` before exposing the app.
+- The rate limiter lives in the process memory: with several instances behind a balancer each keeps
+  its own count.
+- Signing out clears the cookie, but an already issued token stays valid until it expires (7 days).
+- There is no Content-Security-Policy yet — Next relies on inline scripts in development, so a strict
+  policy is a separate piece of work for deployment.
+- `npm audit` reports advisories in `mysql2`, a driver bundled with Prisma. This project uses SQLite,
+  the driver is never loaded; the only “fix” offered is a downgrade to Prisma 6, which is worse.
 
 ### Exporting a site
 
@@ -203,6 +232,7 @@ Boshqaruv paneli: `http://localhost:3000/admin`.
 | `npm run db:seed` | Bazani demo sayt va lug'at bilan to'ldirish |
 | `npm run build:export-css` | Eksport bilan ketadigan CSS to'plamini qayta yig'ish |
 | `npm run art:generate` | `public/templates` dagi shablon grafikasini qayta chizish |
+| `npm run db:media` | Grafikani allaqachon yaratilgan demo saytga joylash |
 
 ### Imkoniyatlar
 
@@ -246,6 +276,37 @@ src/
 Asosiy qoida: **blok bir marta tasvirlanadi**. Uning React komponenti va HTML generatori
 `blocks/classes.ts` dagi umumiy sinf satrlaridan foydalanadi, shuning uchun jonli sayt va eksport
 qilingan fayllar bir xil ko'rinadi.
+
+### Xavfsizlik
+
+Loyiha o'zi bajaradigan narsalar:
+
+- Bitta administrator hisobi; parol bcrypt xeshi sifatida saqlanadi, sessiya — `httpOnly` kukidagi
+  imzolangan JWT (`sameSite=lax`, produkshenda `secure`).
+- Barcha server action'lar va ZIP eksport `requireAdmin` ostida. Kirishdan keyin va til
+  almashtirilgandan keyingi qaytishlar faqat ichki manzillarni qabul qiladi.
+- Muharrirdan kelgan HTML saqlashda tozalanadi: faqat TipTap yarata oladigan teglar qoladi,
+  `javascript:` havolalar, hodisa ishlovchilari, `<script>` va `<iframe>` olib tashlanadi — ham
+  jonli saytda, ham eksportda.
+- Mediateka faqat PNG, JPEG, WebP, GIF va AVIF qabul qiladi. SVG ataylab rad etiladi: uning ichida
+  skript bo'lishi mumkin, u esa sizning domeningizdan beriladi.
+- Kirish har bir manzil uchun o'n daqiqada o'n urinish bilan cheklangan; ochiq aloqa shakli — soatiga
+  besh yuborish, maydonlar soni va uzunligi ham cheklangan.
+- Javoblarda `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options` va cheklovchi
+  `Permissions-Policy` bor.
+
+Nimani yodda tutish kerak:
+
+- Ilovani ochiq qo'yishdan oldin `ADMIN_PASSWORD` ni almashtiring va uzun tasodifiy `AUTH_SECRET`
+  qo'ying.
+- Chastota cheklovi jarayon xotirasida yashaydi: balansirovchi ortida bir nechta nusxa bo'lsa, har
+  biri o'z hisobini yuritadi.
+- Chiqish kukini o'chiradi, lekin allaqachon berilgan token muddati tugaguncha (7 kun) amal qiladi.
+- Content-Security-Policy hali yo'q — Next ishlab chiqishda inline skriptlardan foydalanadi, shuning
+  uchun qat'iy siyosat joylashtirish paytidagi alohida ish.
+- `npm audit` Prisma bilan keladigan `mysql2` drayveridagi ogohlantirishlarni ko'rsatadi. Loyiha
+  SQLite ishlatadi, drayver hech qachon yuklanmaydi; taklif qilingan yagona «tuzatish» — Prisma 6 ga
+  tushish, bu esa yomonroq.
 
 ### Saytni yuklab olish
 
@@ -326,6 +387,7 @@ npm run dev
 | `npm run db:seed` | Наполнение базы демо-сайтом и словарём переводов |
 | `npm run build:export-css` | Пересборка CSS-бандла для выгружаемой статики |
 | `npm run art:generate` | Перерисовка графики шаблонов в `public/templates` |
+| `npm run db:media` | Разложить графику по уже созданному демо-сайту |
 
 ### Возможности
 
@@ -375,6 +437,35 @@ src/
 
 Ключевой принцип: **блок описан один раз** — его React-компонент и генератор статического HTML берут
 общие строки классов из `blocks/classes.ts`, поэтому живой сайт и выгруженная статика выглядят одинаково.
+
+### Безопасность
+
+Что проект делает сам:
+
+- Один администратор; пароль хранится как bcrypt-хеш, сессия — подписанный JWT в куке `httpOnly`
+  (`sameSite=lax`, в проде `secure`).
+- Все server actions и выгрузка ZIP закрыты `requireAdmin`. Возвраты после входа и после смены языка
+  принимают только внутренние адреса.
+- HTML из редактора чистится при сохранении: остаются лишь теги, которые умеет TipTap; ссылки
+  `javascript:`, обработчики событий, `<script>` и `<iframe>` вырезаются — и на сайте, и в экспорте.
+- Медиатека принимает только PNG, JPEG, WebP, GIF и AVIF. SVG отклоняется сознательно: это документ,
+  внутри которого может лежать скрипт, а отдаётся он с вашего же домена.
+- Вход ограничен десятью попытками за десять минут с адреса; публичная форма — пятью отправками в
+  час, с ограничением числа полей и их длины.
+- В ответах стоят `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options` и урезанная
+  `Permissions-Policy`.
+
+Что держать в голове:
+
+- Смените `ADMIN_PASSWORD` и задайте длинный случайный `AUTH_SECRET` до публичного размещения.
+- Ограничение частоты живёт в памяти процесса: при нескольких экземплярах за балансировщиком у
+  каждого будет свой счётчик.
+- Выход стирает куку, но уже выпущенный токен действует до истечения срока (7 дней).
+- Content-Security-Policy пока нет: Next в разработке использует инлайн-скрипты, поэтому строгая
+  политика — отдельная работа при выкладке.
+- `npm audit` показывает предупреждения в `mysql2` — драйвере, который приходит вместе с Prisma.
+  Проект работает на SQLite, драйвер не загружается; единственное предлагаемое «исправление» —
+  откат на Prisma 6, что хуже.
 
 ### Выгрузка сайта
 

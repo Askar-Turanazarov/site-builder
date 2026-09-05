@@ -8,6 +8,7 @@ import { restaurantHomepage } from "../src/lib/templates/homepage/restaurant";
 import { aboutTemplate } from "../src/lib/templates/inner/about";
 import { contactTemplate } from "../src/lib/templates/inner/contact";
 import { serializeBlocks } from "../src/blocks/types";
+import { seedDemoMedia } from "../src/lib/seed-data/demo-media";
 
 const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL ?? "file:./dev.db" });
 const prisma = new PrismaClient({ adapter });
@@ -199,6 +200,8 @@ async function main() {
   const categories = await seedCategories();
   await seedPosts(categories);
   await seedMenu(pages);
+  const images = await seedDemoMedia(prisma);
+  console.log(`  Demo media ready: ${images} images.`);
   console.log("Done.");
 }
 

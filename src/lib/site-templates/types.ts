@@ -85,7 +85,7 @@ export function materializeBlocks(
     ...(block.style ? { style: block.style } : {}),
   }));
   const parsed = blockListSchema.parse(localized) as Block[];
-  return artKey ? withTemplateArt(parsed, artKey) : parsed;
+  return artKey ? fillTemplateArt(parsed, artKey) : parsed;
 }
 
 /**
@@ -96,7 +96,7 @@ export function materializeBlocks(
  * Вместо этого пустые медиа-поля заполняются по порядку из набора графики
  * шаблона (см. ./art.ts). Если в шаблоне поле всё-таки задано, оно побеждает.
  */
-function withTemplateArt(blocks: Block[], artKey: string): Block[] {
+export function fillTemplateArt(blocks: Block[], artKey: string): Block[] {
   const next = { frame: 0, tile: 0, portrait: 0 };
   const pick = (kind: keyof typeof next, total: number): string => {
     const index = (next[kind] % total) + 1;
@@ -129,6 +129,20 @@ function withTemplateArt(blocks: Block[], artKey: string): Block[] {
           items: data.items.map((item) => ({
             ...item,
             imageMediaId: item.imageMediaId ?? pick("tile", 8),
+          })),
+        },
+      };
+    }
+
+    if (block.type === "testimonials") {
+      const data = block.data as BlockDataOf<"testimonials">;
+      return {
+        ...block,
+        data: {
+          ...data,
+          items: data.items.map((item) => ({
+            ...item,
+            avatarMediaId: item.avatarMediaId ?? pick("portrait", 6),
           })),
         },
       };

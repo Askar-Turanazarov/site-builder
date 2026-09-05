@@ -72,6 +72,13 @@ export const IconDictionary = (p: SVGProps<SVGSVGElement>) => (
   </Icon>
 );
 
+export const IconMessages = (p: SVGProps<SVGSVGElement>) => (
+  <Icon {...p}>
+    <path d="M3 4.5h14v10H7.5L3 18v-3.5H3Z" />
+    <path d="M6.5 8.5h7M6.5 11h4.5" />
+  </Icon>
+);
+
 export const IconSettings = (p: SVGProps<SVGSVGElement>) => (
   <Icon {...p}>
     <circle cx="10" cy="10" r="2.6" />

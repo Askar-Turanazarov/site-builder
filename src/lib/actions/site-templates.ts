@@ -1,7 +1,5 @@
 "use server";
 
-import { copyFile, mkdir, stat } from "node:fs/promises";
-import path from "node:path";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
@@ -13,14 +11,8 @@ import {
   templatePostCover,
   type SiteTemplate,
 } from "@/lib/site-templates";
-import {
-  TEMPLATE_ART_SHEET,
-  collectArtIds,
-  parseTemplateArtId,
-  remapArtIds,
-  templateArtAlt,
-  templateArtPublicPath,
-} from "@/lib/site-templates/art";
+import { collectArtIds, remapArtIds } from "@/lib/site-templates/art";
+import { importTemplateArt } from "@/lib/site-templates/import-art";
 
 export type ApplyTemplateMode = "replace" | "append";
 
@@ -53,7 +45,7 @@ export async function applySiteTemplateAction(key: string, mode: ApplyTemplateMo
   // Графика шаблона переезжает в медиатеку: после применения это обычные
   // картинки сайта — их видно в библиотеке, можно заменить своими, и
   // статический экспорт забирает их вместе с остальными загрузками.
-  const artMap = await importTemplateArt(template);
+  const artMap = await importTemplateArt(prisma, templateArtIds(template), template.label);
 
   await prisma.$transaction(async (tx) => {
     if (mode === "replace") {
@@ -206,12 +198,8 @@ function blocksFor(
   return serializeBlocks(remapArtIds<Block[]>(materialized, artMap));
 }
 
-/**
- * Копирует графику шаблона в медиатеку и возвращает карту
- * «идентификатор шаблона → Media.id». Повторное применение не плодит копии:
- * запись ищется по пути файла.
- */
-async function importTemplateArt(template: SiteTemplate): Promise<Map<string, string>> {
+/** Идентификаторы графики, которые встречаются в развёрнутом шаблоне. */
+function templateArtIds(template: SiteTemplate): Set<string> {
   // Достаточно одного языка: картинки от языка не зависят.
   const used = new Set<string>();
   for (const page of template.pages) {
@@ -221,53 +209,7 @@ async function importTemplateArt(template: SiteTemplate): Promise<Map<string, st
     collectArtIds(materializeBlocks(post.blocks, "ru", template.key), used);
     used.add(templatePostCover(template.key, index));
   }
-
-  const sizes = new Map(TEMPLATE_ART_SHEET.map((item) => [item.name, item]));
-  const map = new Map<string, string>();
-
-  for (const artId of used) {
-    const parsed = parseTemplateArtId(artId);
-    if (!parsed) continue;
-
-    const relative = templateArtPublicPath(parsed.templateKey, parsed.name);
-    const source = path.join(process.cwd(), "public", relative);
-    const target = path.join(process.cwd(), "public", "uploads", relative);
-
-    let size: number;
-    try {
-      size = (await stat(source)).size;
-    } catch {
-      // Файла нет (набор не сгенерирован) — блок просто останется без картинки.
-      continue;
-    }
-
-    const existing = await prisma.media.findFirst({ where: { path: relative } });
-    if (existing) {
-      map.set(artId, existing.id);
-      continue;
-    }
-
-    await mkdir(path.dirname(target), { recursive: true });
-    await copyFile(source, target);
-
-    const dimensions = sizes.get(parsed.name as (typeof TEMPLATE_ART_SHEET)[number]["name"]);
-    const created = await prisma.media.create({
-      data: {
-        filename: `${parsed.templateKey}-${parsed.name}.svg`,
-        path: relative,
-        mimeType: "image/svg+xml",
-        size,
-        width: dimensions?.width ?? null,
-        height: dimensions?.height ?? null,
-        altRu: templateArtAlt(template.label.ru, "ru"),
-        altUz: templateArtAlt(template.label.uz, "uz"),
-        altEn: templateArtAlt(template.label.en, "en"),
-      },
-    });
-    map.set(artId, created.id);
-  }
-
-  return map;
+  return used;
 }
 
 function withSuffix(slug: string, suffix: string): string {
