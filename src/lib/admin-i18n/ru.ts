@@ -273,6 +273,11 @@ export const ru = {
   "templates.modeAppendHint":
     "Оставит существующее содержимое и добавит страницы и статьи шаблона рядом.",
   "templates.applied": "Шаблон применён",
+  "templates.resultHint":
+    "Содержимое шаблона уже в базе. Дальше можно посмотреть сайт или сразу править страницы.",
+  "templates.openSite": "Открыть мой сайт",
+  "templates.editPages": "Редактировать страницы",
+  "templates.backToList": "Вернуться к шаблонам",
   "templates.previewBack": "← К шаблонам",
   "templates.previewNote": "Демонстрация шаблона. Сайт пока не изменён.",
   "templates.applyFromPreview": "Применить этот шаблон",

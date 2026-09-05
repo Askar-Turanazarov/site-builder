@@ -255,6 +255,11 @@ export const en: AdminDict = {
   "templates.modeAppendHint":
     "Keeps existing content and adds the template's pages and articles alongside it.",
   "templates.applied": "Template applied",
+  "templates.resultHint":
+    "The template content is now in the database. Look at the site, or start editing the pages.",
+  "templates.openSite": "Open my site",
+  "templates.editPages": "Edit pages",
+  "templates.backToList": "Back to templates",
   "templates.previewBack": "← Back to templates",
   "templates.previewNote": "Template demo. Your site hasn't been changed yet.",
   "templates.applyFromPreview": "Apply this template",

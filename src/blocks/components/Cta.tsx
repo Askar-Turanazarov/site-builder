@@ -37,7 +37,7 @@ export function CtaBlock({ data, ctx }: { data: BlockDataOf<"cta">; ctx: RenderC
           </div>
           {data.buttonLabel && (
             <a
-              href={resolveHref(data.buttonLink, ctx.locale)}
+              href={resolveHref(data.buttonLink, ctx.locale, ctx.linkBase)}
               className={cx(
                 CX.button,
                 "shrink-0",

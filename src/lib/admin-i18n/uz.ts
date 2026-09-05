@@ -255,6 +255,11 @@ export const uz: AdminDict = {
   "templates.modeAppendHint":
     "Mavjud tarkibni qoldiradi va shablon sahifalari bilan maqolalarini yoniga qo'shadi.",
   "templates.applied": "Shablon qo'llandi",
+  "templates.resultHint":
+    "Shablon mazmuni bazada. Endi saytni ko'rish yoki sahifalarni darhol tahrirlash mumkin.",
+  "templates.openSite": "Saytimni ochish",
+  "templates.editPages": "Sahifalarni tahrirlash",
+  "templates.backToList": "Shablonlarga qaytish",
   "templates.previewBack": "← Shablonlarga",
   "templates.previewNote": "Shablon namoyishi. Sayt hali o'zgartirilmagan.",
   "templates.applyFromPreview": "Shu shablonni qo'llash",

@@ -25,7 +25,7 @@ export function pricingToHtml(data: BlockDataOf<"pricing">, ctx: RenderContext):
           </ul>`
         : "";
       const cta = plan.ctaLabel
-        ? `<a href="${escapeAttr(resolveHref(plan.ctaLink, ctx.locale))}" class="${cx(CX.button, "mt-6 w-full", plan.highlighted ? CX.buttonSolid : CX.buttonOutline)}">${escapeHtml(plan.ctaLabel)}</a>`
+        ? `<a href="${escapeAttr(resolveHref(plan.ctaLink, ctx.locale, ctx.linkBase))}" class="${cx(CX.button, "mt-6 w-full", plan.highlighted ? CX.buttonSolid : CX.buttonOutline)}">${escapeHtml(plan.ctaLabel)}</a>`
         : "";
 
       return `

@@ -30,7 +30,7 @@ export function ImageTextBlock({
             {data.heading && <h2 className={CX.h2}>{data.heading}</h2>}
             {data.body && <p className={cx(CX.body, "mt-4 whitespace-pre-line")}>{data.body}</p>}
             {data.ctaLabel && (
-              <a href={resolveHref(data.ctaLink, ctx.locale)} className={cx(CX.button, CX.buttonOutline, "mt-6")}>
+              <a href={resolveHref(data.ctaLink, ctx.locale, ctx.linkBase)} className={cx(CX.button, CX.buttonOutline, "mt-6")}>
                 {data.ctaLabel}
               </a>
             )}

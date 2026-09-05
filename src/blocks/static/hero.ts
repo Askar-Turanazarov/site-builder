@@ -22,7 +22,7 @@ export function heroToHtml(data: BlockDataOf<"hero">, ctx: RenderContext): strin
     ? `<p class="${cx(CX.lead, "mt-5", onImage && "text-white/85", isCentered && "mx-auto")}">${escapeHtml(data.subheading)}</p>`
     : "";
   const cta = data.ctaLabel
-    ? `<div class="${cx("mt-8", isCentered && "flex justify-center")}"><a href="${escapeAttr(resolveHref(data.ctaLink, ctx.locale))}" class="${cx(CX.button, CX.buttonSolid)}">${escapeHtml(data.ctaLabel)}</a></div>`
+    ? `<div class="${cx("mt-8", isCentered && "flex justify-center")}"><a href="${escapeAttr(resolveHref(data.ctaLink, ctx.locale, ctx.linkBase))}" class="${cx(CX.button, CX.buttonSolid)}">${escapeHtml(data.ctaLabel)}</a></div>`
     : "";
 
   const media_ = isSplit && media

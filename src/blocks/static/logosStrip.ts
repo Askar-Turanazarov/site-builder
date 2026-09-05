@@ -18,7 +18,7 @@ export function logosStripToHtml(data: BlockDataOf<"logosStrip">, ctx: RenderCon
   const items = logos
     .map(({ logo, media }) => {
       const img = `<img src="${escapeAttr(media!.url)}" alt="${escapeAttr(media!.alt)}" class="h-8 w-auto object-contain" />`;
-      return logo.link ? `<a href="${escapeAttr(resolveHref(logo.link, ctx.locale))}" class="h-8">${img}</a>` : img;
+      return logo.link ? `<a href="${escapeAttr(resolveHref(logo.link, ctx.locale, ctx.linkBase))}" class="h-8">${img}</a>` : img;
     })
     .join("\n");
 

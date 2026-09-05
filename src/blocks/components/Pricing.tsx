@@ -59,7 +59,7 @@ export function PricingBlock({ data, ctx }: { data: BlockDataOf<"pricing">; ctx:
               )}
               {plan.ctaLabel && (
                 <a
-                  href={resolveHref(plan.ctaLink, ctx.locale)}
+                  href={resolveHref(plan.ctaLink, ctx.locale, ctx.linkBase)}
                   className={cx(
                     CX.button,
                     "mt-6 w-full",

@@ -15,7 +15,7 @@ export function ctaToHtml(data: BlockDataOf<"cta">, ctx: RenderContext): string 
     ? `<p class="${cx("mt-2 max-w-xl text-base", solid ? "text-[var(--tpl-on-accent)]/85" : "text-[var(--tpl-ink-soft)]")}">${escapeHtml(data.body)}</p>`
     : "";
   const button = data.buttonLabel
-    ? `<a href="${escapeAttr(resolveHref(data.buttonLink, ctx.locale))}" class="${cx(CX.button, "shrink-0", solid ? "bg-[var(--tpl-surface)] text-[var(--tpl-ink)] hover:opacity-90" : CX.buttonSolid)}">${escapeHtml(data.buttonLabel)}</a>`
+    ? `<a href="${escapeAttr(resolveHref(data.buttonLink, ctx.locale, ctx.linkBase))}" class="${cx(CX.button, "shrink-0", solid ? "bg-[var(--tpl-surface)] text-[var(--tpl-ink)] hover:opacity-90" : CX.buttonSolid)}">${escapeHtml(data.buttonLabel)}</a>`
     : "";
 
   return `

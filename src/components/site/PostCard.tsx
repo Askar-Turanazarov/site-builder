@@ -12,10 +12,19 @@ export interface PostCardData {
   publishedAt: string | null;
 }
 
-export function PostCard({ post, locale }: { post: PostCardData; locale: Locale }) {
+export function PostCard({
+  post,
+  locale,
+  base = "",
+}: {
+  post: PostCardData;
+  locale: Locale;
+  /** Префикс адресов: пусто на сайте, `/demo/<ключ>` в демонстрации шаблона. */
+  base?: string;
+}) {
   return (
     <article className="group">
-      <Link href={`/${locale}/news/${post.categorySlug}/${post.slug}`} className="block">
+      <Link href={`${base}/${locale}/news/${post.categorySlug}/${post.slug}`} className="block">
         <div className="sb-post-cover aspect-[4/3] overflow-hidden rounded-[var(--tpl-radius)] bg-[var(--tpl-surface)]">
           {post.coverUrl && (
             // eslint-disable-next-line @next/next/no-img-element

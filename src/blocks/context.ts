@@ -24,6 +24,12 @@ export interface RenderContext {
   /** Slug of the page/post currently rendering, for attributing form submissions etc. */
   pageSlug?: string | null;
   /**
+   * Префикс для внутренних ссылок. Пусто на настоящем сайте (`/ru/about`) и
+   * равно `/demo/<ключ>` в демонстрации шаблона, чтобы меню и кнопки внутри
+   * демо водили по самому демо, а не по страницам собранного сайта.
+   */
+  linkBase?: string;
+  /**
    * Only meaningful to the static-export ContactForm generator: an external
    * form endpoint (e.g. a Formspree-style URL) to submit to, since the
    * exported site has no backend of its own. The live site ignores this

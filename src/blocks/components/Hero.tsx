@@ -60,7 +60,7 @@ export function HeroBlock({ data, ctx }: { data: BlockDataOf<"hero">; ctx: Rende
             )}
             {data.ctaLabel && (
               <div className={cx("mt-8", isCentered && "flex justify-center")}>
-                <a href={resolveHref(data.ctaLink, ctx.locale)} className={cx(CX.button, CX.buttonSolid)}>
+                <a href={resolveHref(data.ctaLink, ctx.locale, ctx.linkBase)} className={cx(CX.button, CX.buttonSolid)}>
                   {data.ctaLabel}
                 </a>
               </div>

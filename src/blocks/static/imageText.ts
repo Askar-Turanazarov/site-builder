@@ -16,7 +16,7 @@ export function imageTextToHtml(data: BlockDataOf<"imageText">, ctx: RenderConte
   const textHtml = `
     ${data.heading ? `<h2 class="${CX.h2}">${escapeHtml(data.heading)}</h2>` : ""}
     ${data.body ? `<p class="${cx(CX.body, "mt-4 whitespace-pre-line")}">${escapeHtml(data.body)}</p>` : ""}
-    ${data.ctaLabel ? `<a href="${escapeAttr(resolveHref(data.ctaLink, ctx.locale))}" class="${cx(CX.button, CX.buttonOutline, "mt-6")}">${escapeHtml(data.ctaLabel)}</a>` : ""}
+    ${data.ctaLabel ? `<a href="${escapeAttr(resolveHref(data.ctaLink, ctx.locale, ctx.linkBase))}" class="${cx(CX.button, CX.buttonOutline, "mt-6")}">${escapeHtml(data.ctaLabel)}</a>` : ""}
   `;
 
   return `

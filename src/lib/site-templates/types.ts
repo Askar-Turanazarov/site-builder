@@ -1,7 +1,8 @@
 import type { Locale } from "@/blocks/context";
 import type { ThemeKey } from "@/blocks/palette";
 import type { BlockStyle } from "@/blocks/style";
-import { blockListSchema, type Block } from "@/blocks/types";
+import { blockListSchema, type Block, type BlockDataOf } from "@/blocks/types";
+import { templateArtId, type TemplateArtName } from "./art";
 
 /**
  * Шаблон сайта целиком: страницы, рубрики, статьи, меню, тема и настройки.
@@ -72,14 +73,88 @@ export function S(block: TemplateBlock, style: Partial<BlockStyle>): TemplateBlo
  * ту же схему, что и содержимое из базы: ошибка в шаблоне обнаружится сразу,
  * а не превратится в пустую страницу (parseBlocks на сбое отдаёт []).
  */
-export function materializeBlocks(blocks: TemplateBlock[], locale: Locale): Block[] {
+export function materializeBlocks(
+  blocks: TemplateBlock[],
+  locale: Locale,
+  artKey?: string,
+): Block[] {
   const localized = blocks.map((block) => ({
     id: block.id,
     type: block.type,
     data: localizeValue(block.data, locale),
     ...(block.style ? { style: block.style } : {}),
   }));
-  return blockListSchema.parse(localized) as Block[];
+  const parsed = blockListSchema.parse(localized) as Block[];
+  return artKey ? withTemplateArt(parsed, artKey) : parsed;
+}
+
+/**
+ * Расставляет картинки шаблона по блокам.
+ *
+ * Изображения не прописаны в 12 файлах шаблонов руками: их около полутора
+ * сотен, и любая правка набора превратилась бы в ручную перестановку ссылок.
+ * Вместо этого пустые медиа-поля заполняются по порядку из набора графики
+ * шаблона (см. ./art.ts). Если в шаблоне поле всё-таки задано, оно побеждает.
+ */
+function withTemplateArt(blocks: Block[], artKey: string): Block[] {
+  const next = { frame: 0, tile: 0, portrait: 0 };
+  const pick = (kind: keyof typeof next, total: number): string => {
+    const index = (next[kind] % total) + 1;
+    next[kind] += 1;
+    return templateArtId(artKey, `${kind}-${index}` as TemplateArtName);
+  };
+
+  // `Block` не размеченное объединение: тип блока лежит рядом с данными, а не
+  // внутри них, поэтому сузить `data` проверкой `block.type` нельзя — приводим
+  // тип явно в каждой ветке.
+  return blocks.map((block) => {
+    if (block.type === "hero") {
+      const data = block.data as BlockDataOf<"hero">;
+      if (data.imageMediaId) return block;
+      return { ...block, data: { ...data, imageMediaId: templateArtId(artKey, "hero") } };
+    }
+
+    if (block.type === "imageText") {
+      const data = block.data as BlockDataOf<"imageText">;
+      if (data.imageMediaId) return block;
+      return { ...block, data: { ...data, imageMediaId: pick("frame", 3) } };
+    }
+
+    if (block.type === "gallery") {
+      const data = block.data as BlockDataOf<"gallery">;
+      return {
+        ...block,
+        data: {
+          ...data,
+          items: data.items.map((item) => ({
+            ...item,
+            imageMediaId: item.imageMediaId ?? pick("tile", 8),
+          })),
+        },
+      };
+    }
+
+    if (block.type === "team") {
+      const data = block.data as BlockDataOf<"team">;
+      return {
+        ...block,
+        data: {
+          ...data,
+          members: data.members.map((member) => ({
+            ...member,
+            photoMediaId: member.photoMediaId ?? pick("portrait", 6),
+          })),
+        },
+      };
+    }
+
+    return block;
+  }) as Block[];
+}
+
+/** Обложка статьи шаблона: по порядку из набора cover-1…cover-4. */
+export function templatePostCover(artKey: string, index: number): string {
+  return templateArtId(artKey, `cover-${(index % 4) + 1}` as TemplateArtName);
 }
 
 export interface SiteTemplatePage {

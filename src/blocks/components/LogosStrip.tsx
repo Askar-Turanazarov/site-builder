@@ -24,7 +24,7 @@ export function LogosStripBlock({
           {logos.map(({ logo, media }, i) =>
             media ? (
               logo.link ? (
-                <a key={i} href={resolveHref(logo.link, ctx.locale)} className="h-8">
+                <a key={i} href={resolveHref(logo.link, ctx.locale, ctx.linkBase)} className="h-8">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={media.url} alt={media.alt} className="h-8 w-auto object-contain" />
                 </a>

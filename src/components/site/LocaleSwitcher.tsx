@@ -10,8 +10,12 @@ export function LocaleSwitcher({ current }: { current: Locale }) {
   const pathname = usePathname();
 
   function pathForLocale(locale: Locale): string {
+    // Меняем первый сегмент, который является языком, а не всегда второй:
+    // на сайте это /ru/about, а в демонстрации шаблона — /demo/cafe/ru/about.
     const segments = pathname.split("/");
-    segments[1] = locale; // ["", locale, ...rest]
+    const index = segments.findIndex((segment) => LOCALES.includes(segment as Locale));
+    if (index === -1) return `/${locale}`;
+    segments[index] = locale;
     return segments.join("/") || `/${locale}`;
   }
 

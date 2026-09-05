@@ -19,7 +19,7 @@ export interface LoginLabels {
   errorInvalid: string;
 }
 
-export function LoginForm({ labels }: { labels: LoginLabels }) {
+export function LoginForm({ labels, next }: { labels: LoginLabels; next?: string }) {
   const [state, formAction, pending] = useActionState(loginAction, initialState);
 
   return (
@@ -34,6 +34,7 @@ export function LoginForm({ labels }: { labels: LoginLabels }) {
         </div>
 
         <form action={formAction} className="rounded-lg border border-border bg-surface p-6 shadow-sm">
+          {next && <input type="hidden" name="next" value={next} />}
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-ink-soft">

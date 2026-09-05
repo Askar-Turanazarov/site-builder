@@ -9,6 +9,7 @@ export function Footer({
   contactEmail,
   contactPhone,
   contactAddress,
+  builderLabel,
 }: {
   siteName: string;
   tagline: string | null;
@@ -17,6 +18,8 @@ export function Footer({
   contactEmail: string | null;
   contactPhone: string | null;
   contactAddress: string | null;
+  /** Подпись «Сделано на Site Builder». Есть на живом сайте, нет в экспорте. */
+  builderLabel?: string | null;
 }) {
   return (
     <footer className="sb-footer border-t border-[var(--tpl-ink)]/10 bg-[var(--tpl-surface)]">
@@ -58,11 +61,14 @@ export function Footer({
           )}
         </div>
 
-        {footerNote && (
-          <p className="mt-10 border-t border-[var(--tpl-ink)]/10 pt-6 text-xs text-[var(--tpl-ink-soft)]">
-            {footerNote}
-          </p>
-        )}
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--tpl-ink)]/10 pt-6 text-xs text-[var(--tpl-ink-soft)]">
+          {footerNote && <p>{footerNote}</p>}
+          {builderLabel && (
+            <Link href="/" className="hover:text-[var(--tpl-ink)]">
+              {builderLabel}
+            </Link>
+          )}
+        </div>
       </div>
     </footer>
   );

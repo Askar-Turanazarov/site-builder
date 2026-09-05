@@ -27,5 +27,9 @@ export async function loginAction(
   }
 
   await createSessionCookie({ sub: user.id, email: user.email });
-  redirect("/admin");
+
+  // Возврат к тому, ради чего просили войти (например, к применению шаблона
+  // с портала). Берём только внутренние адреса: значение приходит из формы.
+  const next = String(formData.get("next") ?? "");
+  redirect(next.startsWith("/") && !next.startsWith("//") ? next : "/admin");
 }

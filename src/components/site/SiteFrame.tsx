@@ -1,10 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import { getSiteSettings } from "@/lib/site-settings";
+import { getPortalT } from "@/lib/portal-i18n/server";
 import type { Locale } from "@/blocks/context";
 import { googleFontsHref, themeStyleVars } from "@/blocks/palette";
 import { siteDesignFromSettings } from "@/lib/site-design";
 import { localeField } from "@/lib/locale-field";
 import { resolveMenuItems } from "@/lib/menu";
+import { AdminBar } from "./AdminBar";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 
@@ -20,7 +22,8 @@ export async function SiteFrame({
   locale: Locale;
   children: React.ReactNode;
 }) {
-  const [settings, menuItems] = await Promise.all([
+  const [t, settings, menuItems] = await Promise.all([
+    getPortalT(),
     getSiteSettings(),
     prisma.menuItem.findMany({
       include: {
@@ -47,6 +50,7 @@ export async function SiteFrame({
       className="flex min-h-screen flex-col bg-[var(--tpl-paper)]"
     >
       {fontsHref && <link rel="stylesheet" href={fontsHref} />}
+      <AdminBar />
       <Header
         siteName={localeField(settings, "siteName", locale)}
         logoUrl={logo ? `/uploads/${logo.path}` : null}
@@ -63,6 +67,7 @@ export async function SiteFrame({
         contactEmail={settings.contactEmail}
         contactPhone={settings.contactPhone}
         contactAddress={localeField(settings, "contactAddress", locale) || null}
+        builderLabel={t("footer.made")}
       />
     </div>
   );
