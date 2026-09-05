@@ -73,7 +73,7 @@ Admin panel: `http://localhost:3000/admin`.
 | `npm run lint` | ESLint |
 | `npm run db:seed` | Fill the database with the demo site and the UI dictionary |
 | `npm run build:export-css` | Rebuild the CSS bundle shipped with exported sites |
-| `npm run art:generate` | Redraw the template artwork in `public/templates` |
+| `npm run photos:fetch` | Download the template photos into `public/templates` |
 | `npm run db:media` | Put the artwork onto an already seeded demo site |
 
 ### Features
@@ -97,8 +97,8 @@ Admin panel: `http://localhost:3000/admin`.
 
 ```
 prisma/                    schema, migrations, seed
-scripts/                   template artwork generator
-public/templates/          generated template artwork
+scripts/                   template photo downloader
+public/templates/          bundled template photos + manifest.json
 src/
   app/
     (portal)/              the builder's own site: home page and template gallery
@@ -231,7 +231,7 @@ Boshqaruv paneli: `http://localhost:3000/admin`.
 | `npm run lint` | ESLint |
 | `npm run db:seed` | Bazani demo sayt va lug'at bilan to'ldirish |
 | `npm run build:export-css` | Eksport bilan ketadigan CSS to'plamini qayta yig'ish |
-| `npm run art:generate` | `public/templates` dagi shablon grafikasini qayta chizish |
+| `npm run photos:fetch` | Shablon fotolarini `public/templates` ga yuklab olish |
 | `npm run db:media` | Grafikani allaqachon yaratilgan demo saytga joylash |
 
 ### Imkoniyatlar
@@ -254,8 +254,8 @@ Boshqaruv paneli: `http://localhost:3000/admin`.
 
 ```
 prisma/                    sxema, migratsiyalar, sid
-scripts/                   shablon grafikasi generatori
-public/templates/          yaratilgan shablon grafikasi
+scripts/                   shablon fotolari yuklovchisi
+public/templates/          shablon fotolari va manifest.json
 src/
   app/
     (portal)/              konstruktorning o'z sayti
@@ -386,7 +386,7 @@ npm run dev
 | `npm run lint` | ESLint |
 | `npm run db:seed` | Наполнение базы демо-сайтом и словарём переводов |
 | `npm run build:export-css` | Пересборка CSS-бандла для выгружаемой статики |
-| `npm run art:generate` | Перерисовка графики шаблонов в `public/templates` |
+| `npm run photos:fetch` | Загрузка фотографий шаблонов в `public/templates` |
 | `npm run db:media` | Разложить графику по уже созданному демо-сайту |
 
 ### Возможности
@@ -410,8 +410,8 @@ npm run dev
 
 ```
 prisma/                    схема БД, миграции, сид
-scripts/                   генератор графики шаблонов
-public/templates/          сгенерированная графика шаблонов
+scripts/                   загрузчик фотографий шаблонов
+public/templates/          фотографии шаблонов и manifest.json
 src/
   app/
     (portal)/              сайт самого конструктора: главная и витрина шаблонов

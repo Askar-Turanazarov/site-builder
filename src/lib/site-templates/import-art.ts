@@ -1,12 +1,6 @@
 import { copyFile, mkdir, stat } from "node:fs/promises";
 import path from "node:path";
-import {
-  TEMPLATE_ART_SHEET,
-  parseTemplateArtId,
-  templateArtAlt,
-  templateArtPublicPath,
-  type TemplateArtName,
-} from "./art";
+import { parseTemplateArtId, templateArtAlt, templatePhoto } from "./art";
 import type { Tri } from "./types";
 
 /** Минимум, который нужен импорту от Prisma — чтобы сид мог передать свой клиент. */
@@ -33,14 +27,16 @@ export async function importTemplateArt(
   artIds: Iterable<string>,
   label: Tri,
 ): Promise<Map<string, string>> {
-  const sizes = new Map(TEMPLATE_ART_SHEET.map((item) => [item.name as string, item]));
   const map = new Map<string, string>();
 
   for (const artId of artIds) {
     const parsed = parseTemplateArtId(artId);
     if (!parsed) continue;
 
-    const relative = templateArtPublicPath(parsed.templateKey, parsed.name);
+    const photo = templatePhoto(parsed.templateKey, parsed.name);
+    if (!photo) continue;
+
+    const relative = `templates/${photo.file}`;
     const source = path.join(process.cwd(), "public", relative);
     const target = path.join(process.cwd(), "public", "uploads", relative);
 
@@ -48,7 +44,7 @@ export async function importTemplateArt(
     try {
       size = (await stat(source)).size;
     } catch {
-      // Набор графики не сгенерирован — блок просто останется без картинки.
+      // Фотографии нет на диске (набор не загружен) — блок останется без картинки.
       continue;
     }
 
@@ -61,18 +57,17 @@ export async function importTemplateArt(
     await mkdir(path.dirname(target), { recursive: true });
     await copyFile(source, target);
 
-    const dimensions = sizes.get(parsed.name as TemplateArtName);
     const created = await db.media.create({
       data: {
-        filename: `${parsed.templateKey}-${parsed.name}.svg`,
+        filename: photo.file.replace(/\//g, "-"),
         path: relative,
-        mimeType: "image/svg+xml",
+        mimeType: photo.file.endsWith(".png") ? "image/png" : "image/jpeg",
         size,
-        width: dimensions?.width ?? null,
-        height: dimensions?.height ?? null,
-        altRu: templateArtAlt(label.ru, "ru"),
-        altUz: templateArtAlt(label.uz, "uz"),
-        altEn: templateArtAlt(label.en, "en"),
+        width: photo.width,
+        height: photo.height,
+        altRu: photo.title || templateArtAlt(label.ru, "ru"),
+        altUz: photo.title || templateArtAlt(label.uz, "uz"),
+        altEn: photo.title || templateArtAlt(label.en, "en"),
       },
     });
     map.set(artId, created.id);

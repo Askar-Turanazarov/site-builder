@@ -1,0 +1,2162 @@
+/**
+ * Манифест фотографий шаблонов — создаётся scripts/fetch-template-photos.ts.
+ * Руками не правится.
+ *
+ * Ключ — «<шаблон>/<имя>», как в идентификаторах `tpl:<шаблон>/<имя>`.
+ * Файл лежит в public/templates/<file>. Автор, лицензия и ссылка на источник
+ * продублированы в PHOTO-CREDITS.md.
+ */
+export interface TemplatePhoto {
+  file: string;
+  width: number;
+  height: number;
+  title: string;
+  creator: string;
+  license: string;
+  source: string;
+}
+
+export const TEMPLATE_PHOTOS: Record<string, TemplatePhoto> = {
+  "corporate/hero": {
+    "file": "corporate/hero.jpg",
+    "width": 4724,
+    "height": 3543,
+    "title": "Modern architecture of university buildings at the campus Roeterseiland; free photo Amsterdam, Fons Heijnsbroek 10-2021",
+    "creator": "Fons Heijnsbroek",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Modern_architecture_of_university_buildings_at_the_campus_Roeterseiland;_free_photo_Amsterdam,_Fons_Heijnsbroek_10-2021.jpg"
+  },
+  "corporate/frame-1": {
+    "file": "corporate/frame-1.jpg",
+    "width": 3000,
+    "height": 2000,
+    "title": "Small Business Administrator Isabel Guzman participates in a meeting with child care businesses, lenders, national child care organizations and philanthropy, March 24, 2024, at the White House",
+    "creator": "The White House",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Small_Business_Administrator_Isabel_Guzman_participates_in_a_meeting_with_child_care_businesses,_lenders,_national_child_care_organizations_and_philanthropy,_March_24,_2024,_at_the_White_House.jpg"
+  },
+  "corporate/frame-2": {
+    "file": "corporate/frame-2.jpg",
+    "width": 3000,
+    "height": 2000,
+    "title": "Small Business Administrator Isabel Guzman participates in a meeting with child care businesses, lenders, national child care organizations and philanthropy, March 24, 2024, in the Eisenhower Executive Office Building at the White House",
+    "creator": "The White House",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Small_Business_Administrator_Isabel_Guzman_participates_in_a_meeting_with_child_care_businesses,_lenders,_national_child_care_organizations_and_philanthropy,_March_24,_2024,_in_the_Eisenhower_Executive_Office_Building_at_the_White_House.jpg"
+  },
+  "corporate/frame-3": {
+    "file": "corporate/frame-3.jpg",
+    "width": 3000,
+    "height": 2000,
+    "title": "President Biden at the Business Roundtable’s CEO Quarterly Meeting 2022 Q1",
+    "creator": "White House",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:President_Biden_at_the_Business_Roundtable%E2%80%99s_CEO_Quarterly_Meeting_2022_Q1.jpg"
+  },
+  "corporate/tile-1": {
+    "file": "corporate/tile-1.png",
+    "width": 4032,
+    "height": 3024,
+    "title": "View of the open space by the Platform 1 entrance of Swanscombe Railway Station",
+    "creator": "Sunolafjagtenben-hur",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:View_of_the_open_space_by_the_Platform_1_entrance_of_Swanscombe_Railway_Station.png"
+  },
+  "corporate/tile-2": {
+    "file": "corporate/tile-2.jpg",
+    "width": 4000,
+    "height": 2667,
+    "title": "Desks in an open office space (Unsplash)",
+    "creator": "Crew crew",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Desks_in_an_open_office_space_(Unsplash).jpg"
+  },
+  "corporate/tile-3": {
+    "file": "corporate/tile-3.jpg",
+    "width": 4896,
+    "height": 3264,
+    "title": "Working in open office space (Unsplash)",
+    "creator": "Crew crew",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Working_in_open_office_space_(Unsplash).jpg"
+  },
+  "corporate/tile-4": {
+    "file": "corporate/tile-4.jpg",
+    "width": 2048,
+    "height": 1536,
+    "title": "Rustic conference room",
+    "creator": "Rose Abrams",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Rustic_conference_room.jpg"
+  },
+  "corporate/tile-5": {
+    "file": "corporate/tile-5.jpg",
+    "width": 4636,
+    "height": 3076,
+    "title": "Meeting room Säynätsalo Town Hall",
+    "creator": "Antti Leppänen",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Meeting_room_S%C3%A4yn%C3%A4tsalo_Town_Hall.jpg"
+  },
+  "corporate/tile-6": {
+    "file": "corporate/tile-6.jpg",
+    "width": 4608,
+    "height": 3456,
+    "title": "The Hive Office Space, Portsmouth Central Library",
+    "creator": "Tim Sheerman-Chase",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:The_Hive_Office_Space,_Portsmouth_Central_Library.jpg"
+  },
+  "corporate/cover-1": {
+    "file": "corporate/tile-3.jpg",
+    "width": 4896,
+    "height": 3264,
+    "title": "Working in open office space (Unsplash)",
+    "creator": "Crew crew",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Working_in_open_office_space_(Unsplash).jpg"
+  },
+  "corporate/cover-2": {
+    "file": "corporate/tile-4.jpg",
+    "width": 2048,
+    "height": 1536,
+    "title": "Rustic conference room",
+    "creator": "Rose Abrams",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Rustic_conference_room.jpg"
+  },
+  "corporate/cover-3": {
+    "file": "corporate/tile-5.jpg",
+    "width": 4636,
+    "height": 3076,
+    "title": "Meeting room Säynätsalo Town Hall",
+    "creator": "Antti Leppänen",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Meeting_room_S%C3%A4yn%C3%A4tsalo_Town_Hall.jpg"
+  },
+  "corporate/cover-4": {
+    "file": "corporate/tile-6.jpg",
+    "width": 4608,
+    "height": 3456,
+    "title": "The Hive Office Space, Portsmouth Central Library",
+    "creator": "Tim Sheerman-Chase",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:The_Hive_Office_Space,_Portsmouth_Central_Library.jpg"
+  },
+  "corporate/portrait-1": {
+    "file": "_people/portrait-1.jpg",
+    "width": 1835,
+    "height": 1920,
+    "title": "Charles Beale - Portrait Study of a Man's Face - B1997.19.2 - Yale Center for British Art",
+    "creator": "Charles Beale",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Charles_Beale_-_Portrait_Study_of_a_Man%27s_Face_-_B1997.19.2_-_Yale_Center_for_British_Art.jpg"
+  },
+  "corporate/portrait-2": {
+    "file": "_people/portrait-2.jpg",
+    "width": 2794,
+    "height": 3855,
+    "title": "Portrait of a Young Man MET DP161258",
+    "creator": "—",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_Young_Man_MET_DP161258.jpg"
+  },
+  "corporate/portrait-3": {
+    "file": "_people/portrait-3.jpg",
+    "width": 2500,
+    "height": 1743,
+    "title": "Sad face of a Wayuu Woman",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sad_face_of_a_Wayuu_Woman.jpg"
+  },
+  "corporate/portrait-4": {
+    "file": "_people/portrait-4.jpg",
+    "width": 3840,
+    "height": 2581,
+    "title": "Wayuu woman with sad face in the market buying",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wayuu_woman_with_sad_face_in_the_market_buying.jpg"
+  },
+  "corporate/portrait-5": {
+    "file": "_people/portrait-5.jpg",
+    "width": 2124,
+    "height": 2676,
+    "title": "Fresco Portrait of a Woman, Detail",
+    "creator": "TyB",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresco_Portrait_of_a_Woman,_Detail.jpg"
+  },
+  "corporate/portrait-6": {
+    "file": "_people/portrait-6.jpg",
+    "width": 2736,
+    "height": 3648,
+    "title": "Maasai woman with stretched ears",
+    "creator": "William Warby from London, England",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Maasai_woman_with_stretched_ears.jpg"
+  },
+  "agency/hero": {
+    "file": "agency/hero.jpg",
+    "width": 4032,
+    "height": 3024,
+    "title": "Workspace Setup",
+    "creator": "FreshDev",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Workspace_Setup.jpg"
+  },
+  "agency/frame-1": {
+    "file": "agency/frame-1.jpg",
+    "width": 6000,
+    "height": 4000,
+    "title": "Jen Simmons on Real Art Direction for the Web – An Event Apart Nashville 2016",
+    "creator": "Jeffrey Zeldman",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Jen_Simmons_on_Real_Art_Direction_for_the_Web_%E2%80%93_An_Event_Apart_Nashville_2016.jpg"
+  },
+  "agency/frame-2": {
+    "file": "agency/frame-2.jpg",
+    "width": 6000,
+    "height": 3376,
+    "title": "Jen Simmons at -AEASEA",
+    "creator": "Jeffrey Zeldman",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Jen_Simmons_at_-AEASEA.jpg"
+  },
+  "agency/frame-3": {
+    "file": "agency/frame-3.jpg",
+    "width": 6000,
+    "height": 4000,
+    "title": "Jen Simmons, Modern Layouts- Getting Out of Our Ruts -AEASF 2015",
+    "creator": "Jeffrey Zeldman",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Jen_Simmons,_Modern_Layouts-_Getting_Out_of_Our_Ruts_-AEASF_2015.jpg"
+  },
+  "agency/tile-1": {
+    "file": "agency/tile-1.png",
+    "width": 1398,
+    "height": 1020,
+    "title": "Three Desks Block Access To Bed To Max Workspace",
+    "creator": "JianfaTsai",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Three_Desks_Block_Access_To_Bed_To_Max_Workspace.png"
+  },
+  "agency/tile-2": {
+    "file": "agency/tile-2.jpg",
+    "width": 1644,
+    "height": 1125,
+    "title": "Minimalistic workspace with tablet",
+    "creator": "Spnq",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Minimalistic_workspace_with_tablet.jpg"
+  },
+  "agency/tile-3": {
+    "file": "agency/tile-3.jpg",
+    "width": 4032,
+    "height": 3024,
+    "title": "LOOM office workspaces",
+    "creator": "Loominade",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:LOOM_office_workspaces.jpg"
+  },
+  "agency/tile-4": {
+    "file": "agency/tile-4.jpg",
+    "width": 6000,
+    "height": 4000,
+    "title": "Winter Workspace 2 (Unsplash)",
+    "creator": "Norbert Levajsics levajsics",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Winter_Workspace_2_(Unsplash).jpg"
+  },
+  "agency/tile-5": {
+    "file": "agency/tile-5.jpg",
+    "width": 6000,
+    "height": 4000,
+    "title": "Wacom Cintiq 22HD workspace 2 (Unsplash)",
+    "creator": "Norbert Levajsics levajsics",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wacom_Cintiq_22HD_workspace_2_(Unsplash).jpg"
+  },
+  "agency/tile-6": {
+    "file": "agency/tile-6.jpg",
+    "width": 6000,
+    "height": 4000,
+    "title": "Winter Workspace (Unsplash)",
+    "creator": "Norbert Levajsics levajsics",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Winter_Workspace_(Unsplash).jpg"
+  },
+  "agency/cover-1": {
+    "file": "agency/tile-3.jpg",
+    "width": 4032,
+    "height": 3024,
+    "title": "LOOM office workspaces",
+    "creator": "Loominade",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:LOOM_office_workspaces.jpg"
+  },
+  "agency/cover-2": {
+    "file": "agency/tile-4.jpg",
+    "width": 6000,
+    "height": 4000,
+    "title": "Winter Workspace 2 (Unsplash)",
+    "creator": "Norbert Levajsics levajsics",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Winter_Workspace_2_(Unsplash).jpg"
+  },
+  "agency/cover-3": {
+    "file": "agency/tile-5.jpg",
+    "width": 6000,
+    "height": 4000,
+    "title": "Wacom Cintiq 22HD workspace 2 (Unsplash)",
+    "creator": "Norbert Levajsics levajsics",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wacom_Cintiq_22HD_workspace_2_(Unsplash).jpg"
+  },
+  "agency/cover-4": {
+    "file": "agency/tile-6.jpg",
+    "width": 6000,
+    "height": 4000,
+    "title": "Winter Workspace (Unsplash)",
+    "creator": "Norbert Levajsics levajsics",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Winter_Workspace_(Unsplash).jpg"
+  },
+  "agency/portrait-1": {
+    "file": "_people/portrait-1.jpg",
+    "width": 1835,
+    "height": 1920,
+    "title": "Charles Beale - Portrait Study of a Man's Face - B1997.19.2 - Yale Center for British Art",
+    "creator": "Charles Beale",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Charles_Beale_-_Portrait_Study_of_a_Man%27s_Face_-_B1997.19.2_-_Yale_Center_for_British_Art.jpg"
+  },
+  "agency/portrait-2": {
+    "file": "_people/portrait-2.jpg",
+    "width": 2794,
+    "height": 3855,
+    "title": "Portrait of a Young Man MET DP161258",
+    "creator": "—",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_Young_Man_MET_DP161258.jpg"
+  },
+  "agency/portrait-3": {
+    "file": "_people/portrait-3.jpg",
+    "width": 2500,
+    "height": 1743,
+    "title": "Sad face of a Wayuu Woman",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sad_face_of_a_Wayuu_Woman.jpg"
+  },
+  "agency/portrait-4": {
+    "file": "_people/portrait-4.jpg",
+    "width": 3840,
+    "height": 2581,
+    "title": "Wayuu woman with sad face in the market buying",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wayuu_woman_with_sad_face_in_the_market_buying.jpg"
+  },
+  "agency/portrait-5": {
+    "file": "_people/portrait-5.jpg",
+    "width": 2124,
+    "height": 2676,
+    "title": "Fresco Portrait of a Woman, Detail",
+    "creator": "TyB",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresco_Portrait_of_a_Woman,_Detail.jpg"
+  },
+  "agency/portrait-6": {
+    "file": "_people/portrait-6.jpg",
+    "width": 2736,
+    "height": 3648,
+    "title": "Maasai woman with stretched ears",
+    "creator": "William Warby from London, England",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Maasai_woman_with_stretched_ears.jpg"
+  },
+  "cafe/hero": {
+    "file": "cafe/hero.jpg",
+    "width": 7944,
+    "height": 6041,
+    "title": "French Coffee Shop, Dieppe 2026-05-11",
+    "creator": "Andy Li",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:French_Coffee_Shop,_Dieppe_2026-05-11.jpg"
+  },
+  "cafe/frame-1": {
+    "file": "cafe/frame-1.jpg",
+    "width": 7360,
+    "height": 4912,
+    "title": "Fresh Bread (Unsplash)",
+    "creator": "Roman Kraft romankraft",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresh_Bread_(Unsplash).jpg"
+  },
+  "cafe/frame-2": {
+    "file": "cafe/frame-2.jpg",
+    "width": 2284,
+    "height": 1788,
+    "title": "US Navy 100223-N-7939W-011 Aviation Ordnanceman Seaman Megan Alascia wraps fresh slices of baked bread",
+    "creator": "U.S. Navy photo by Mass Communication Specialist 3rd Class Nichelle Noelle Whitf",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:US_Navy_100223-N-7939W-011_Aviation_Ordnanceman_Seaman_Megan_Alascia_wraps_fresh_slices_of_baked_bread.jpg"
+  },
+  "cafe/frame-3": {
+    "file": "cafe/frame-3.jpg",
+    "width": 2100,
+    "height": 1500,
+    "title": "US Navy 090716-N-6720T-017 Culinary Specialist Seaman Samantha Garza butters loaves of fresh baked bread in the bakeshop aboard the aircraft carrier USS George Washington (CVN 73)",
+    "creator": "U.S. Navy photo by Mass Communication Specialist Seaman Adam K. Thomas",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:US_Navy_090716-N-6720T-017_Culinary_Specialist_Seaman_Samantha_Garza_butters_loaves_of_fresh_baked_bread_in_the_bakeshop_aboard_the_aircraft_carrier_USS_George_Washington_(CVN_73).jpg"
+  },
+  "cafe/tile-1": {
+    "file": "cafe/tile-1.jpg",
+    "width": 3072,
+    "height": 2500,
+    "title": "Equal Exchange coffee beans",
+    "creator": "Mx. Granger",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Equal_Exchange_coffee_beans.jpg"
+  },
+  "cafe/tile-2": {
+    "file": "cafe/tile-2.jpg",
+    "width": 5760,
+    "height": 3840,
+    "title": "Coffee cup on coffee beans",
+    "creator": "Toni Cuenca",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Coffee_cup_on_coffee_beans.jpg"
+  },
+  "cafe/tile-3": {
+    "file": "cafe/tile-3.jpg",
+    "width": 3857,
+    "height": 2728,
+    "title": "Cup of coffee surrounded by beans",
+    "creator": "Zacharias Korsalka from Vienna, Austria",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Cup_of_coffee_surrounded_by_beans.jpg"
+  },
+  "cafe/tile-4": {
+    "file": "cafe/tile-4.jpg",
+    "width": 1547,
+    "height": 1024,
+    "title": "Coffee cup and coffee bean",
+    "creator": "mcfoodie",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Coffee_cup_and_coffee_bean.jpg"
+  },
+  "cafe/tile-5": {
+    "file": "cafe/tile-5.jpg",
+    "width": 3454,
+    "height": 2302,
+    "title": "Coffee beans spilling out of a cup",
+    "creator": "Christoph",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Coffee_beans_spilling_out_of_a_cup.jpg"
+  },
+  "cafe/tile-6": {
+    "file": "cafe/tile-6.jpg",
+    "width": 2945,
+    "height": 1958,
+    "title": "Starbucks coffee grounds and beans in a Safeway supermarket, Wheat Ridge, 2009",
+    "creator": "DimiTalen",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Starbucks_coffee_grounds_and_beans_in_a_Safeway_supermarket,_Wheat_Ridge,_2009.jpg"
+  },
+  "cafe/cover-1": {
+    "file": "cafe/tile-3.jpg",
+    "width": 3857,
+    "height": 2728,
+    "title": "Cup of coffee surrounded by beans",
+    "creator": "Zacharias Korsalka from Vienna, Austria",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Cup_of_coffee_surrounded_by_beans.jpg"
+  },
+  "cafe/cover-2": {
+    "file": "cafe/tile-4.jpg",
+    "width": 1547,
+    "height": 1024,
+    "title": "Coffee cup and coffee bean",
+    "creator": "mcfoodie",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Coffee_cup_and_coffee_bean.jpg"
+  },
+  "cafe/cover-3": {
+    "file": "cafe/tile-5.jpg",
+    "width": 3454,
+    "height": 2302,
+    "title": "Coffee beans spilling out of a cup",
+    "creator": "Christoph",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Coffee_beans_spilling_out_of_a_cup.jpg"
+  },
+  "cafe/cover-4": {
+    "file": "cafe/tile-6.jpg",
+    "width": 2945,
+    "height": 1958,
+    "title": "Starbucks coffee grounds and beans in a Safeway supermarket, Wheat Ridge, 2009",
+    "creator": "DimiTalen",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Starbucks_coffee_grounds_and_beans_in_a_Safeway_supermarket,_Wheat_Ridge,_2009.jpg"
+  },
+  "cafe/portrait-1": {
+    "file": "_people/portrait-1.jpg",
+    "width": 1835,
+    "height": 1920,
+    "title": "Charles Beale - Portrait Study of a Man's Face - B1997.19.2 - Yale Center for British Art",
+    "creator": "Charles Beale",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Charles_Beale_-_Portrait_Study_of_a_Man%27s_Face_-_B1997.19.2_-_Yale_Center_for_British_Art.jpg"
+  },
+  "cafe/portrait-2": {
+    "file": "_people/portrait-2.jpg",
+    "width": 2794,
+    "height": 3855,
+    "title": "Portrait of a Young Man MET DP161258",
+    "creator": "—",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_Young_Man_MET_DP161258.jpg"
+  },
+  "cafe/portrait-3": {
+    "file": "_people/portrait-3.jpg",
+    "width": 2500,
+    "height": 1743,
+    "title": "Sad face of a Wayuu Woman",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sad_face_of_a_Wayuu_Woman.jpg"
+  },
+  "cafe/portrait-4": {
+    "file": "_people/portrait-4.jpg",
+    "width": 3840,
+    "height": 2581,
+    "title": "Wayuu woman with sad face in the market buying",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wayuu_woman_with_sad_face_in_the_market_buying.jpg"
+  },
+  "cafe/portrait-5": {
+    "file": "_people/portrait-5.jpg",
+    "width": 2124,
+    "height": 2676,
+    "title": "Fresco Portrait of a Woman, Detail",
+    "creator": "TyB",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresco_Portrait_of_a_Woman,_Detail.jpg"
+  },
+  "cafe/portrait-6": {
+    "file": "_people/portrait-6.jpg",
+    "width": 2736,
+    "height": 3648,
+    "title": "Maasai woman with stretched ears",
+    "creator": "William Warby from London, England",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Maasai_woman_with_stretched_ears.jpg"
+  },
+  "blog/hero": {
+    "file": "blog/hero.jpg",
+    "width": 3998,
+    "height": 2539,
+    "title": "Wiślna Street, view from N, Old Town , Kraków, Poland",
+    "creator": "Igor123121",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wi%C5%9Blna_Street,_view_from_N,_Old_Town_,_Krak%C3%B3w,_Poland.jpg"
+  },
+  "blog/frame-1": {
+    "file": "blog/frame-1.jpg",
+    "width": 4368,
+    "height": 2912,
+    "title": "Camera keys notebook coffee (Unsplash)",
+    "creator": "Melinda Pack melindapack",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Camera_keys_notebook_coffee_(Unsplash).jpg"
+  },
+  "blog/frame-2": {
+    "file": "blog/frame-2.jpg",
+    "width": 2976,
+    "height": 1896,
+    "title": "Speckled cowl (Unsplash)",
+    "creator": "Giulia Bertelli unpeusauvage",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Speckled_cowl_(Unsplash).jpg"
+  },
+  "blog/frame-3": {
+    "file": "blog/frame-3.jpg",
+    "width": 5472,
+    "height": 3648,
+    "title": "Coffee, notebooks and pen (Unsplash)",
+    "creator": "Freddy Castro readysetfreddy",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Coffee,_notebooks_and_pen_(Unsplash).jpg"
+  },
+  "blog/tile-1": {
+    "file": "blog/tile-1.jpg",
+    "width": 4096,
+    "height": 3072,
+    "title": "Sangameshwar Reddy preparing pani puri at Shiva Shankar Chat Bandar street food stall in Nyalakal village, Telangana, India",
+    "creator": "Photograph by Sangameshwar Reddy",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sangameshwar_Reddy_preparing_pani_puri_at_Shiva_Shankar_Chat_Bandar_street_food_stall_in_Nyalakal_village,_Telangana,_India.jpg"
+  },
+  "blog/tile-2": {
+    "file": "blog/tile-2.jpg",
+    "width": 4608,
+    "height": 2592,
+    "title": "Goalpara street food stall",
+    "creator": "Medhi jyoti",
+    "license": "CC BY 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Goalpara_street_food_stall.jpg"
+  },
+  "blog/tile-3": {
+    "file": "blog/tile-3.jpg",
+    "width": 4608,
+    "height": 2592,
+    "title": "Street food stall in Goalpara",
+    "creator": "Medhi jyoti",
+    "license": "CC BY 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Street_food_stall_in_Goalpara.jpg"
+  },
+  "blog/tile-4": {
+    "file": "blog/tile-4.jpg",
+    "width": 4608,
+    "height": 3072,
+    "title": "Hong Kong Soya Sauce Chicken Rice and Noodle - Singapore - March 28 2017",
+    "creator": "Nesnad",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Hong_Kong_Soya_Sauce_Chicken_Rice_and_Noodle_-_Singapore_-_March_28_2017.jpg"
+  },
+  "blog/tile-5": {
+    "file": "blog/tile-5.jpg",
+    "width": 2606,
+    "height": 1466,
+    "title": "Food stall in Letpadan, Myanmar, 20160811 121505",
+    "creator": "Jakub Hałun",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Food_stall_in_Letpadan,_Myanmar,_20160811_121505.jpg"
+  },
+  "blog/tile-6": {
+    "file": "blog/tile-6.jpg",
+    "width": 4288,
+    "height": 2848,
+    "title": "Street Food Stall - Chowringhee Road - Kolkata 2015-02-07 2147",
+    "creator": "Biswarup Ganguly",
+    "license": "CC BY 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Street_Food_Stall_-_Chowringhee_Road_-_Kolkata_2015-02-07_2147.JPG"
+  },
+  "blog/cover-1": {
+    "file": "blog/tile-3.jpg",
+    "width": 4608,
+    "height": 2592,
+    "title": "Street food stall in Goalpara",
+    "creator": "Medhi jyoti",
+    "license": "CC BY 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Street_food_stall_in_Goalpara.jpg"
+  },
+  "blog/cover-2": {
+    "file": "blog/tile-4.jpg",
+    "width": 4608,
+    "height": 3072,
+    "title": "Hong Kong Soya Sauce Chicken Rice and Noodle - Singapore - March 28 2017",
+    "creator": "Nesnad",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Hong_Kong_Soya_Sauce_Chicken_Rice_and_Noodle_-_Singapore_-_March_28_2017.jpg"
+  },
+  "blog/cover-3": {
+    "file": "blog/tile-5.jpg",
+    "width": 2606,
+    "height": 1466,
+    "title": "Food stall in Letpadan, Myanmar, 20160811 121505",
+    "creator": "Jakub Hałun",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Food_stall_in_Letpadan,_Myanmar,_20160811_121505.jpg"
+  },
+  "blog/cover-4": {
+    "file": "blog/tile-6.jpg",
+    "width": 4288,
+    "height": 2848,
+    "title": "Street Food Stall - Chowringhee Road - Kolkata 2015-02-07 2147",
+    "creator": "Biswarup Ganguly",
+    "license": "CC BY 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Street_Food_Stall_-_Chowringhee_Road_-_Kolkata_2015-02-07_2147.JPG"
+  },
+  "blog/portrait-1": {
+    "file": "_people/portrait-1.jpg",
+    "width": 1835,
+    "height": 1920,
+    "title": "Charles Beale - Portrait Study of a Man's Face - B1997.19.2 - Yale Center for British Art",
+    "creator": "Charles Beale",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Charles_Beale_-_Portrait_Study_of_a_Man%27s_Face_-_B1997.19.2_-_Yale_Center_for_British_Art.jpg"
+  },
+  "blog/portrait-2": {
+    "file": "_people/portrait-2.jpg",
+    "width": 2794,
+    "height": 3855,
+    "title": "Portrait of a Young Man MET DP161258",
+    "creator": "—",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_Young_Man_MET_DP161258.jpg"
+  },
+  "blog/portrait-3": {
+    "file": "_people/portrait-3.jpg",
+    "width": 2500,
+    "height": 1743,
+    "title": "Sad face of a Wayuu Woman",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sad_face_of_a_Wayuu_Woman.jpg"
+  },
+  "blog/portrait-4": {
+    "file": "_people/portrait-4.jpg",
+    "width": 3840,
+    "height": 2581,
+    "title": "Wayuu woman with sad face in the market buying",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wayuu_woman_with_sad_face_in_the_market_buying.jpg"
+  },
+  "blog/portrait-5": {
+    "file": "_people/portrait-5.jpg",
+    "width": 2124,
+    "height": 2676,
+    "title": "Fresco Portrait of a Woman, Detail",
+    "creator": "TyB",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresco_Portrait_of_a_Woman,_Detail.jpg"
+  },
+  "blog/portrait-6": {
+    "file": "_people/portrait-6.jpg",
+    "width": 2736,
+    "height": 3648,
+    "title": "Maasai woman with stretched ears",
+    "creator": "William Warby from London, England",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Maasai_woman_with_stretched_ears.jpg"
+  },
+  "construction/hero": {
+    "file": "construction/hero.jpg",
+    "width": 1484,
+    "height": 1044,
+    "title": "Limassol suburbs under construction in 1987",
+    "creator": "Salwa Farwaneh Dameh",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Limassol_suburbs_under_construction_in_1987.jpg"
+  },
+  "construction/frame-1": {
+    "file": "construction/frame-1.jpg",
+    "width": 5344,
+    "height": 3008,
+    "title": "Window glasses for the renovation of a Habion 110-Morgen apartment, Hillegersberg, Rotterdam (2021) 02",
+    "creator": "Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons - © CC BY-SA 4.0 Intern",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Window_glasses_for_the_renovation_of_a_Habion_110-Morgen_apartment,_Hillegersberg,_Rotterdam_(2021)_02.jpg"
+  },
+  "construction/frame-2": {
+    "file": "construction/frame-2.jpg",
+    "width": 5344,
+    "height": 3008,
+    "title": "Window glasses for the renovation of a Habion 110-Morgen apartment, Hillegersberg, Rotterdam (2021) 04",
+    "creator": "Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons - © CC BY-SA 4.0 Intern",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Window_glasses_for_the_renovation_of_a_Habion_110-Morgen_apartment,_Hillegersberg,_Rotterdam_(2021)_04.jpg"
+  },
+  "construction/frame-3": {
+    "file": "construction/frame-3.jpg",
+    "width": 4864,
+    "height": 2736,
+    "title": "Onze Woning apartment renovation, Hillegersberg, Rotterdam (2020) 06",
+    "creator": "Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons - © CC BY-SA 4.0 Intern",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Onze_Woning_apartment_renovation,_Hillegersberg,_Rotterdam_(2020)_06.jpg"
+  },
+  "construction/tile-1": {
+    "file": "construction/tile-1.png",
+    "width": 1345,
+    "height": 736,
+    "title": "Construction Workers Staffing",
+    "creator": "StaffingAgency",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Construction_Workers_Staffing.png"
+  },
+  "construction/tile-2": {
+    "file": "construction/tile-2.jpg",
+    "width": 4080,
+    "height": 3072,
+    "title": "Laser construction tool at Tsukuba Station",
+    "creator": "Syced",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Laser_construction_tool_at_Tsukuba_Station.jpg"
+  },
+  "construction/tile-3": {
+    "file": "construction/tile-3.jpg",
+    "width": 4080,
+    "height": 3072,
+    "title": "Laser construction tool at Tsukuba Station 2",
+    "creator": "Syced",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Laser_construction_tool_at_Tsukuba_Station_2.jpg"
+  },
+  "construction/tile-4": {
+    "file": "construction/tile-4.jpg",
+    "width": 4080,
+    "height": 3072,
+    "title": "Laser construction tool at Tsukuba Station 3",
+    "creator": "Syced",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Laser_construction_tool_at_Tsukuba_Station_3.jpg"
+  },
+  "construction/tile-5": {
+    "file": "construction/tile-5.jpg",
+    "width": 4753,
+    "height": 3610,
+    "title": "Andersen's Blacksmithing (workshop building), Chico",
+    "creator": "Photograph: Radomianin",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Andersen%27s_Blacksmithing_(workshop_building),_Chico.jpg"
+  },
+  "construction/tile-6": {
+    "file": "construction/tile-6.jpg",
+    "width": 5663,
+    "height": 4599,
+    "title": "Construction-work-carpenter-tools (23697903934)",
+    "creator": "www.Pixel.la Free Stock Photos",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Construction-work-carpenter-tools_(23697903934).jpg"
+  },
+  "construction/cover-1": {
+    "file": "construction/tile-3.jpg",
+    "width": 4080,
+    "height": 3072,
+    "title": "Laser construction tool at Tsukuba Station 2",
+    "creator": "Syced",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Laser_construction_tool_at_Tsukuba_Station_2.jpg"
+  },
+  "construction/cover-2": {
+    "file": "construction/tile-4.jpg",
+    "width": 4080,
+    "height": 3072,
+    "title": "Laser construction tool at Tsukuba Station 3",
+    "creator": "Syced",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Laser_construction_tool_at_Tsukuba_Station_3.jpg"
+  },
+  "construction/cover-3": {
+    "file": "construction/tile-5.jpg",
+    "width": 4753,
+    "height": 3610,
+    "title": "Andersen's Blacksmithing (workshop building), Chico",
+    "creator": "Photograph: Radomianin",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Andersen%27s_Blacksmithing_(workshop_building),_Chico.jpg"
+  },
+  "construction/cover-4": {
+    "file": "construction/tile-6.jpg",
+    "width": 5663,
+    "height": 4599,
+    "title": "Construction-work-carpenter-tools (23697903934)",
+    "creator": "www.Pixel.la Free Stock Photos",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Construction-work-carpenter-tools_(23697903934).jpg"
+  },
+  "construction/portrait-1": {
+    "file": "_people/portrait-1.jpg",
+    "width": 1835,
+    "height": 1920,
+    "title": "Charles Beale - Portrait Study of a Man's Face - B1997.19.2 - Yale Center for British Art",
+    "creator": "Charles Beale",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Charles_Beale_-_Portrait_Study_of_a_Man%27s_Face_-_B1997.19.2_-_Yale_Center_for_British_Art.jpg"
+  },
+  "construction/portrait-2": {
+    "file": "_people/portrait-2.jpg",
+    "width": 2794,
+    "height": 3855,
+    "title": "Portrait of a Young Man MET DP161258",
+    "creator": "—",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_Young_Man_MET_DP161258.jpg"
+  },
+  "construction/portrait-3": {
+    "file": "_people/portrait-3.jpg",
+    "width": 2500,
+    "height": 1743,
+    "title": "Sad face of a Wayuu Woman",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sad_face_of_a_Wayuu_Woman.jpg"
+  },
+  "construction/portrait-4": {
+    "file": "_people/portrait-4.jpg",
+    "width": 3840,
+    "height": 2581,
+    "title": "Wayuu woman with sad face in the market buying",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wayuu_woman_with_sad_face_in_the_market_buying.jpg"
+  },
+  "construction/portrait-5": {
+    "file": "_people/portrait-5.jpg",
+    "width": 2124,
+    "height": 2676,
+    "title": "Fresco Portrait of a Woman, Detail",
+    "creator": "TyB",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresco_Portrait_of_a_Woman,_Detail.jpg"
+  },
+  "construction/portrait-6": {
+    "file": "_people/portrait-6.jpg",
+    "width": 2736,
+    "height": 3648,
+    "title": "Maasai woman with stretched ears",
+    "creator": "William Warby from London, England",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Maasai_woman_with_stretched_ears.jpg"
+  },
+  "beauty/hero": {
+    "file": "beauty/hero.jpg",
+    "width": 2028,
+    "height": 1520,
+    "title": "Friseursalon 1970er P4670514-HDR",
+    "creator": "Fernost",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Friseursalon_1970er_P4670514-HDR.jpg"
+  },
+  "beauty/frame-1": {
+    "file": "beauty/frame-1.jpg",
+    "width": 2713,
+    "height": 1637,
+    "title": "Kilstett coiffure hair & style rue du lieutenant de bettignies89",
+    "creator": "Didivo67",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Kilstett_coiffure_hair_%26_style_rue_du_lieutenant_de_bettignies89.jpg"
+  },
+  "beauty/frame-2": {
+    "file": "beauty/frame-2.jpg",
+    "width": 3000,
+    "height": 2000,
+    "title": "Hair Salon In Iran",
+    "creator": "Mostafameraji",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Hair_Salon_In_Iran.jpg"
+  },
+  "beauty/frame-3": {
+    "file": "beauty/frame-3.jpg",
+    "width": 5712,
+    "height": 4284,
+    "title": "Salon Coiffure Estra Coiff Estrablin 02",
+    "creator": "Jlgay38",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Salon_Coiffure_Estra_Coiff_Estrablin_02.jpg"
+  },
+  "beauty/tile-1": {
+    "file": "beauty/tile-1.jpg",
+    "width": 4080,
+    "height": 3060,
+    "title": "HK KT 觀塘 Kwun Tong 創紀之城 APM mall shop beautycare make-up cosmetic products January 2026 N13P 02",
+    "creator": "MAISONWM 6628 LSINGAOR",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:HK_KT_%E8%A7%80%E5%A1%98_Kwun_Tong_%E5%89%B5%E7%B4%80%E4%B9%8B%E5%9F%8E_APM_mall_shop_beautycare_make-up_cosmetic_products_January_2026_N13P_02.jpg"
+  },
+  "beauty/tile-2": {
+    "file": "beauty/tile-2.jpg",
+    "width": 4080,
+    "height": 3060,
+    "title": "HK KT 觀塘 Kwun Tong 創紀之城 APM mall shop beautycare make-up cosmetic products January 2026 N13P 03",
+    "creator": "MAISONWM 6628 LSINGAOR",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:HK_KT_%E8%A7%80%E5%A1%98_Kwun_Tong_%E5%89%B5%E7%B4%80%E4%B9%8B%E5%9F%8E_APM_mall_shop_beautycare_make-up_cosmetic_products_January_2026_N13P_03.jpg"
+  },
+  "beauty/tile-3": {
+    "file": "beauty/tile-3.jpg",
+    "width": 4080,
+    "height": 3060,
+    "title": "HK KT 觀塘 Kwun Tong 創紀之城 APM mall shop beautycare make-up cosmetic products January 2026 N13P 01",
+    "creator": "MAISONWM 6628 LSINGAOR",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:HK_KT_%E8%A7%80%E5%A1%98_Kwun_Tong_%E5%89%B5%E7%B4%80%E4%B9%8B%E5%9F%8E_APM_mall_shop_beautycare_make-up_cosmetic_products_January_2026_N13P_01.jpg"
+  },
+  "beauty/tile-4": {
+    "file": "beauty/tile-4.jpg",
+    "width": 4080,
+    "height": 3060,
+    "title": "HK KT 觀塘 Kwun Tong 創紀之城 APM mall shop beautycare make-up cosmetic products January 2026 N13P 04",
+    "creator": "MAISONWM 6628 LSINGAOR",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:HK_KT_%E8%A7%80%E5%A1%98_Kwun_Tong_%E5%89%B5%E7%B4%80%E4%B9%8B%E5%9F%8E_APM_mall_shop_beautycare_make-up_cosmetic_products_January_2026_N13P_04.jpg"
+  },
+  "beauty/tile-5": {
+    "file": "beauty/tile-5.jpg",
+    "width": 4080,
+    "height": 3060,
+    "title": "HK KT 觀塘 Kwun Tong 創紀之城 APM mall shop beautycare make-up cosmetic products January 2026 N13P 05",
+    "creator": "MAISONWM 6628 LSINGAOR",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:HK_KT_%E8%A7%80%E5%A1%98_Kwun_Tong_%E5%89%B5%E7%B4%80%E4%B9%8B%E5%9F%8E_APM_mall_shop_beautycare_make-up_cosmetic_products_January_2026_N13P_05.jpg"
+  },
+  "beauty/tile-6": {
+    "file": "beauty/tile-6.jpg",
+    "width": 4080,
+    "height": 3060,
+    "title": "HK KT 觀塘 Kwun Tong 創紀之城 APM mall shop beautycare make-up cosmetic products January 2026 N13P 08",
+    "creator": "MAISONWM 6628 LSINGAOR",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:HK_KT_%E8%A7%80%E5%A1%98_Kwun_Tong_%E5%89%B5%E7%B4%80%E4%B9%8B%E5%9F%8E_APM_mall_shop_beautycare_make-up_cosmetic_products_January_2026_N13P_08.jpg"
+  },
+  "beauty/cover-1": {
+    "file": "beauty/tile-3.jpg",
+    "width": 4080,
+    "height": 3060,
+    "title": "HK KT 觀塘 Kwun Tong 創紀之城 APM mall shop beautycare make-up cosmetic products January 2026 N13P 01",
+    "creator": "MAISONWM 6628 LSINGAOR",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:HK_KT_%E8%A7%80%E5%A1%98_Kwun_Tong_%E5%89%B5%E7%B4%80%E4%B9%8B%E5%9F%8E_APM_mall_shop_beautycare_make-up_cosmetic_products_January_2026_N13P_01.jpg"
+  },
+  "beauty/cover-2": {
+    "file": "beauty/tile-4.jpg",
+    "width": 4080,
+    "height": 3060,
+    "title": "HK KT 觀塘 Kwun Tong 創紀之城 APM mall shop beautycare make-up cosmetic products January 2026 N13P 04",
+    "creator": "MAISONWM 6628 LSINGAOR",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:HK_KT_%E8%A7%80%E5%A1%98_Kwun_Tong_%E5%89%B5%E7%B4%80%E4%B9%8B%E5%9F%8E_APM_mall_shop_beautycare_make-up_cosmetic_products_January_2026_N13P_04.jpg"
+  },
+  "beauty/cover-3": {
+    "file": "beauty/tile-5.jpg",
+    "width": 4080,
+    "height": 3060,
+    "title": "HK KT 觀塘 Kwun Tong 創紀之城 APM mall shop beautycare make-up cosmetic products January 2026 N13P 05",
+    "creator": "MAISONWM 6628 LSINGAOR",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:HK_KT_%E8%A7%80%E5%A1%98_Kwun_Tong_%E5%89%B5%E7%B4%80%E4%B9%8B%E5%9F%8E_APM_mall_shop_beautycare_make-up_cosmetic_products_January_2026_N13P_05.jpg"
+  },
+  "beauty/cover-4": {
+    "file": "beauty/tile-6.jpg",
+    "width": 4080,
+    "height": 3060,
+    "title": "HK KT 觀塘 Kwun Tong 創紀之城 APM mall shop beautycare make-up cosmetic products January 2026 N13P 08",
+    "creator": "MAISONWM 6628 LSINGAOR",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:HK_KT_%E8%A7%80%E5%A1%98_Kwun_Tong_%E5%89%B5%E7%B4%80%E4%B9%8B%E5%9F%8E_APM_mall_shop_beautycare_make-up_cosmetic_products_January_2026_N13P_08.jpg"
+  },
+  "beauty/portrait-1": {
+    "file": "_people/portrait-1.jpg",
+    "width": 1835,
+    "height": 1920,
+    "title": "Charles Beale - Portrait Study of a Man's Face - B1997.19.2 - Yale Center for British Art",
+    "creator": "Charles Beale",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Charles_Beale_-_Portrait_Study_of_a_Man%27s_Face_-_B1997.19.2_-_Yale_Center_for_British_Art.jpg"
+  },
+  "beauty/portrait-2": {
+    "file": "_people/portrait-2.jpg",
+    "width": 2794,
+    "height": 3855,
+    "title": "Portrait of a Young Man MET DP161258",
+    "creator": "—",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_Young_Man_MET_DP161258.jpg"
+  },
+  "beauty/portrait-3": {
+    "file": "_people/portrait-3.jpg",
+    "width": 2500,
+    "height": 1743,
+    "title": "Sad face of a Wayuu Woman",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sad_face_of_a_Wayuu_Woman.jpg"
+  },
+  "beauty/portrait-4": {
+    "file": "_people/portrait-4.jpg",
+    "width": 3840,
+    "height": 2581,
+    "title": "Wayuu woman with sad face in the market buying",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wayuu_woman_with_sad_face_in_the_market_buying.jpg"
+  },
+  "beauty/portrait-5": {
+    "file": "_people/portrait-5.jpg",
+    "width": 2124,
+    "height": 2676,
+    "title": "Fresco Portrait of a Woman, Detail",
+    "creator": "TyB",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresco_Portrait_of_a_Woman,_Detail.jpg"
+  },
+  "beauty/portrait-6": {
+    "file": "_people/portrait-6.jpg",
+    "width": 2736,
+    "height": 3648,
+    "title": "Maasai woman with stretched ears",
+    "creator": "William Warby from London, England",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Maasai_woman_with_stretched_ears.jpg"
+  },
+  "travel/hero": {
+    "file": "travel/hero.jpg",
+    "width": 4812,
+    "height": 2144,
+    "title": "Registan 01",
+    "creator": "Bernard Gagnon",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Registan_01.jpg"
+  },
+  "travel/frame-1": {
+    "file": "travel/frame-1.jpg",
+    "width": 2559,
+    "height": 2009,
+    "title": "Bukhara Uzbekistan (29775254157)",
+    "creator": "r chelseth",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Bukhara_Uzbekistan_(29775254157).jpg"
+  },
+  "travel/frame-2": {
+    "file": "travel/frame-2.jpg",
+    "width": 2868,
+    "height": 1977,
+    "title": "Portrait of a Bukhara merchant",
+    "creator": "Jamshid Nurkulov",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_Bukhara_merchant.jpg"
+  },
+  "travel/frame-3": {
+    "file": "travel/frame-3.jpg",
+    "width": 2964,
+    "height": 1976,
+    "title": "Chevrolet Spark. Bukhara, Uzbekistan",
+    "creator": "Jamshid Nurkulov",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Chevrolet_Spark._Bukhara,_Uzbekistan.jpg"
+  },
+  "travel/tile-1": {
+    "file": "travel/tile-1.jpg",
+    "width": 2816,
+    "height": 2112,
+    "title": "Greater Chimgan Mountain",
+    "creator": "Jabez at English Wikipedia",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Greater_Chimgan_Mountain.JPG"
+  },
+  "travel/tile-2": {
+    "file": "travel/tile-2.jpg",
+    "width": 1600,
+    "height": 1200,
+    "title": "Chimgan Peak in Winter",
+    "creator": "Jabez (talk) (Uploads)",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Chimgan_Peak_in_Winter.JPG"
+  },
+  "travel/tile-3": {
+    "file": "travel/tile-3.jpg",
+    "width": 1600,
+    "height": 1200,
+    "title": "Chimgan Winter Attempt",
+    "creator": "Jabez (talk) (Uploads)",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Chimgan_Winter_Attempt.JPG"
+  },
+  "travel/tile-4": {
+    "file": "travel/tile-4.jpg",
+    "width": 5568,
+    "height": 3712,
+    "title": "First snow - Flickr - pelevinmk",
+    "creator": "Mikhail Pelevin",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:First_snow_-_Flickr_-_pelevinmk.jpg"
+  },
+  "travel/tile-5": {
+    "file": "travel/tile-5.jpg",
+    "width": 1936,
+    "height": 1296,
+    "title": "Большой Чимган на закате - panoramio",
+    "creator": "vit5112",
+    "license": "CC BY 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:%D0%91%D0%BE%D0%BB%D1%8C%D1%88%D0%BE%D0%B9_%D0%A7%D0%B8%D0%BC%D0%B3%D0%B0%D0%BD_%D0%BD%D0%B0_%D0%B7%D0%B0%D0%BA%D0%B0%D1%82%D0%B5_-_panoramio.jpg"
+  },
+  "travel/tile-6": {
+    "file": "travel/tile-6.jpg",
+    "width": 4096,
+    "height": 2304,
+    "title": "Большой Чимган и Охотничий пик(Аукашка)",
+    "creator": "Галиев Ярослав",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:%D0%91%D0%BE%D0%BB%D1%8C%D1%88%D0%BE%D0%B9_%D0%A7%D0%B8%D0%BC%D0%B3%D0%B0%D0%BD_%D0%B8_%D0%9E%D1%85%D0%BE%D1%82%D0%BD%D0%B8%D1%87%D0%B8%D0%B9_%D0%BF%D0%B8%D0%BA(%D0%90%D1%83%D0%BA%D0%B0%D1%88%D0%BA%D0%B0).jpg"
+  },
+  "travel/cover-1": {
+    "file": "travel/tile-3.jpg",
+    "width": 1600,
+    "height": 1200,
+    "title": "Chimgan Winter Attempt",
+    "creator": "Jabez (talk) (Uploads)",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Chimgan_Winter_Attempt.JPG"
+  },
+  "travel/cover-2": {
+    "file": "travel/tile-4.jpg",
+    "width": 5568,
+    "height": 3712,
+    "title": "First snow - Flickr - pelevinmk",
+    "creator": "Mikhail Pelevin",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:First_snow_-_Flickr_-_pelevinmk.jpg"
+  },
+  "travel/cover-3": {
+    "file": "travel/tile-5.jpg",
+    "width": 1936,
+    "height": 1296,
+    "title": "Большой Чимган на закате - panoramio",
+    "creator": "vit5112",
+    "license": "CC BY 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:%D0%91%D0%BE%D0%BB%D1%8C%D1%88%D0%BE%D0%B9_%D0%A7%D0%B8%D0%BC%D0%B3%D0%B0%D0%BD_%D0%BD%D0%B0_%D0%B7%D0%B0%D0%BA%D0%B0%D1%82%D0%B5_-_panoramio.jpg"
+  },
+  "travel/cover-4": {
+    "file": "travel/tile-6.jpg",
+    "width": 4096,
+    "height": 2304,
+    "title": "Большой Чимган и Охотничий пик(Аукашка)",
+    "creator": "Галиев Ярослав",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:%D0%91%D0%BE%D0%BB%D1%8C%D1%88%D0%BE%D0%B9_%D0%A7%D0%B8%D0%BC%D0%B3%D0%B0%D0%BD_%D0%B8_%D0%9E%D1%85%D0%BE%D1%82%D0%BD%D0%B8%D1%87%D0%B8%D0%B9_%D0%BF%D0%B8%D0%BA(%D0%90%D1%83%D0%BA%D0%B0%D1%88%D0%BA%D0%B0).jpg"
+  },
+  "travel/portrait-1": {
+    "file": "_people/portrait-1.jpg",
+    "width": 1835,
+    "height": 1920,
+    "title": "Charles Beale - Portrait Study of a Man's Face - B1997.19.2 - Yale Center for British Art",
+    "creator": "Charles Beale",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Charles_Beale_-_Portrait_Study_of_a_Man%27s_Face_-_B1997.19.2_-_Yale_Center_for_British_Art.jpg"
+  },
+  "travel/portrait-2": {
+    "file": "_people/portrait-2.jpg",
+    "width": 2794,
+    "height": 3855,
+    "title": "Portrait of a Young Man MET DP161258",
+    "creator": "—",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_Young_Man_MET_DP161258.jpg"
+  },
+  "travel/portrait-3": {
+    "file": "_people/portrait-3.jpg",
+    "width": 2500,
+    "height": 1743,
+    "title": "Sad face of a Wayuu Woman",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sad_face_of_a_Wayuu_Woman.jpg"
+  },
+  "travel/portrait-4": {
+    "file": "_people/portrait-4.jpg",
+    "width": 3840,
+    "height": 2581,
+    "title": "Wayuu woman with sad face in the market buying",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wayuu_woman_with_sad_face_in_the_market_buying.jpg"
+  },
+  "travel/portrait-5": {
+    "file": "_people/portrait-5.jpg",
+    "width": 2124,
+    "height": 2676,
+    "title": "Fresco Portrait of a Woman, Detail",
+    "creator": "TyB",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresco_Portrait_of_a_Woman,_Detail.jpg"
+  },
+  "travel/portrait-6": {
+    "file": "_people/portrait-6.jpg",
+    "width": 2736,
+    "height": 3648,
+    "title": "Maasai woman with stretched ears",
+    "creator": "William Warby from London, England",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Maasai_woman_with_stretched_ears.jpg"
+  },
+  "shop/hero": {
+    "file": "shop/hero.jpg",
+    "width": 6048,
+    "height": 4024,
+    "title": "DZ6 1705 Night market scene with rows of headless mannequins displaying dresses and outfits along a busy lit sidewalk",
+    "creator": "PattayaPatrol",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:DZ6_1705_Night_market_scene_with_rows_of_headless_mannequins_displaying_dresses_and_outfits_along_a_busy_lit_sidewalk.jpg"
+  },
+  "shop/frame-1": {
+    "file": "shop/frame-1.jpg",
+    "width": 5276,
+    "height": 3508,
+    "title": "Bars of pure Marseille and Aleppo soap, 2024",
+    "creator": "DimiTalen",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Bars_of_pure_Marseille_and_Aleppo_soap,_2024.jpg"
+  },
+  "shop/frame-2": {
+    "file": "shop/frame-2.jpg",
+    "width": 4999,
+    "height": 3750,
+    "title": "Mydło z Aleppo, 1",
+    "creator": "Cybularny",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Myd%C5%82o_z_Aleppo,_1.jpg"
+  },
+  "shop/frame-3": {
+    "file": "shop/frame-3.jpg",
+    "width": 4927,
+    "height": 3696,
+    "title": "Mydło z Aleppo, 2",
+    "creator": "Cybularny",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Myd%C5%82o_z_Aleppo,_2.jpg"
+  },
+  "shop/tile-1": {
+    "file": "shop/tile-1.jpg",
+    "width": 4032,
+    "height": 3024,
+    "title": "Eight jars of body cream from company Rituals on sale shelf in German shop (2023)",
+    "creator": "Pittigrilli",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Eight_jars_of_body_cream_from_company_Rituals_on_sale_shelf_in_German_shop_(2023).jpg"
+  },
+  "shop/tile-2": {
+    "file": "shop/tile-2.jpg",
+    "width": 2707,
+    "height": 2256,
+    "title": "Eight jars of body cream from company Rituals on sale shelf in German shop (2023) (cropped)",
+    "creator": "Pittigrilli",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Eight_jars_of_body_cream_from_company_Rituals_on_sale_shelf_in_German_shop_(2023)_(cropped).jpg"
+  },
+  "shop/tile-3": {
+    "file": "shop/tile-3.jpg",
+    "width": 4224,
+    "height": 2376,
+    "title": "博多あまおう 2個セット (2309459695)",
+    "creator": "CoCreatr from Yokohama, Japan",
+    "license": "CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:%E5%8D%9A%E5%A4%9A%E3%81%82%E3%81%BE%E3%81%8A%E3%81%86_2%E5%80%8B%E3%82%BB%E3%83%83%E3%83%88_(2309459695).jpg"
+  },
+  "shop/tile-4": {
+    "file": "shop/tile-4.jpg",
+    "width": 1642,
+    "height": 738,
+    "title": "An encyclopedia of plants; - comprising the specific culture, history, application in the arts, and every other desirable particular respecting all the plants indigenous, cultivated in, or introduced (16672446855)",
+    "creator": "Internet Archive Book Images",
+    "license": "No restrictions",
+    "source": "https://commons.wikimedia.org/wiki/File:An_encyclopedia_of_plants;_-_comprising_the_specific_culture,_history,_application_in_the_arts,_and_every_other_desirable_particular_respecting_all_the_plants_indigenous,_cultivated_in,_or_introduced_(16672446855).jpg"
+  },
+  "shop/cover-1": {
+    "file": "shop/tile-3.jpg",
+    "width": 4224,
+    "height": 2376,
+    "title": "博多あまおう 2個セット (2309459695)",
+    "creator": "CoCreatr from Yokohama, Japan",
+    "license": "CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:%E5%8D%9A%E5%A4%9A%E3%81%82%E3%81%BE%E3%81%8A%E3%81%86_2%E5%80%8B%E3%82%BB%E3%83%83%E3%83%88_(2309459695).jpg"
+  },
+  "shop/cover-2": {
+    "file": "shop/tile-4.jpg",
+    "width": 1642,
+    "height": 738,
+    "title": "An encyclopedia of plants; - comprising the specific culture, history, application in the arts, and every other desirable particular respecting all the plants indigenous, cultivated in, or introduced (16672446855)",
+    "creator": "Internet Archive Book Images",
+    "license": "No restrictions",
+    "source": "https://commons.wikimedia.org/wiki/File:An_encyclopedia_of_plants;_-_comprising_the_specific_culture,_history,_application_in_the_arts,_and_every_other_desirable_particular_respecting_all_the_plants_indigenous,_cultivated_in,_or_introduced_(16672446855).jpg"
+  },
+  "shop/cover-3": {
+    "file": "shop/tile-1.jpg",
+    "width": 4032,
+    "height": 3024,
+    "title": "Eight jars of body cream from company Rituals on sale shelf in German shop (2023)",
+    "creator": "Pittigrilli",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Eight_jars_of_body_cream_from_company_Rituals_on_sale_shelf_in_German_shop_(2023).jpg"
+  },
+  "shop/cover-4": {
+    "file": "shop/tile-1.jpg",
+    "width": 4032,
+    "height": 3024,
+    "title": "Eight jars of body cream from company Rituals on sale shelf in German shop (2023)",
+    "creator": "Pittigrilli",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Eight_jars_of_body_cream_from_company_Rituals_on_sale_shelf_in_German_shop_(2023).jpg"
+  },
+  "shop/portrait-1": {
+    "file": "_people/portrait-1.jpg",
+    "width": 1835,
+    "height": 1920,
+    "title": "Charles Beale - Portrait Study of a Man's Face - B1997.19.2 - Yale Center for British Art",
+    "creator": "Charles Beale",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Charles_Beale_-_Portrait_Study_of_a_Man%27s_Face_-_B1997.19.2_-_Yale_Center_for_British_Art.jpg"
+  },
+  "shop/portrait-2": {
+    "file": "_people/portrait-2.jpg",
+    "width": 2794,
+    "height": 3855,
+    "title": "Portrait of a Young Man MET DP161258",
+    "creator": "—",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_Young_Man_MET_DP161258.jpg"
+  },
+  "shop/portrait-3": {
+    "file": "_people/portrait-3.jpg",
+    "width": 2500,
+    "height": 1743,
+    "title": "Sad face of a Wayuu Woman",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sad_face_of_a_Wayuu_Woman.jpg"
+  },
+  "shop/portrait-4": {
+    "file": "_people/portrait-4.jpg",
+    "width": 3840,
+    "height": 2581,
+    "title": "Wayuu woman with sad face in the market buying",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wayuu_woman_with_sad_face_in_the_market_buying.jpg"
+  },
+  "shop/portrait-5": {
+    "file": "_people/portrait-5.jpg",
+    "width": 2124,
+    "height": 2676,
+    "title": "Fresco Portrait of a Woman, Detail",
+    "creator": "TyB",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresco_Portrait_of_a_Woman,_Detail.jpg"
+  },
+  "shop/portrait-6": {
+    "file": "_people/portrait-6.jpg",
+    "width": 2736,
+    "height": 3648,
+    "title": "Maasai woman with stretched ears",
+    "creator": "William Warby from London, England",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Maasai_woman_with_stretched_ears.jpg"
+  },
+  "clinic/hero": {
+    "file": "clinic/hero.jpg",
+    "width": 8640,
+    "height": 5760,
+    "title": "Amistad 2026 turns small Capiatá clinic into high-impact hub (9785176)",
+    "creator": "U.S. Air Force photo by Andrea Jenkins",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Amistad_2026_turns_small_Capiat%C3%A1_clinic_into_high-impact_hub_(9785176).jpg"
+  },
+  "clinic/frame-1": {
+    "file": "clinic/frame-1.jpg",
+    "width": 6016,
+    "height": 4016,
+    "title": "Hand holds a test device next to a stethoscope and an open book on a wooden desk during morning light",
+    "creator": "Shixart1985",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Hand_holds_a_test_device_next_to_a_stethoscope_and_an_open_book_on_a_wooden_desk_during_morning_light.jpg"
+  },
+  "clinic/frame-2": {
+    "file": "clinic/frame-2.jpg",
+    "width": 1600,
+    "height": 1348,
+    "title": "A deputation from Jonathan's and the Free-Masons (BM 1868,0808.4458)",
+    "creator": "—",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:A_deputation_from_Jonathan%27s_and_the_Free-Masons_(BM_1868,0808.4458).jpg"
+  },
+  "clinic/frame-3": {
+    "file": "clinic/frame-3.jpg",
+    "width": 1600,
+    "height": 1449,
+    "title": "A deputation from Jonathan's and the Free-Masons (BM 1868,0808.4458 1)",
+    "creator": "—",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:A_deputation_from_Jonathan%27s_and_the_Free-Masons_(BM_1868,0808.4458_1).jpg"
+  },
+  "clinic/tile-1": {
+    "file": "clinic/tile-1.jpg",
+    "width": 8256,
+    "height": 5231,
+    "title": "Kittitain, U S Providers Deliver Specialized Surgical Care During LAMAT 2026 (9543389)",
+    "creator": "U.S. Air Force photo by Tech. Sgt. Jessica Smith McMahan",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Kittitain,_U_S_Providers_Deliver_Specialized_Surgical_Care_During_LAMAT_2026_(9543389).jpg"
+  },
+  "clinic/tile-2": {
+    "file": "clinic/tile-2.jpg",
+    "width": 8117,
+    "height": 5710,
+    "title": "View of scientist looking at a Surveyor III components with a microscope in a Lunar Receiving Laboratory sterile vacuum cabinet (s70-22401)",
+    "creator": "NASA",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:View_of_scientist_looking_at_a_Surveyor_III_components_with_a_microscope_in_a_Lunar_Receiving_Laboratory_sterile_vacuum_cabinet_(s70-22401).jpg"
+  },
+  "clinic/tile-3": {
+    "file": "clinic/tile-3.jpg",
+    "width": 5600,
+    "height": 4480,
+    "title": "US, Ghana medical staff participate in medical readiness exercise (8419985)",
+    "creator": "U.S. Army photo by Sgt. Kylejian Francia",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:US,_Ghana_medical_staff_participate_in_medical_readiness_exercise_(8419985).jpg"
+  },
+  "clinic/tile-4": {
+    "file": "clinic/tile-4.jpg",
+    "width": 4160,
+    "height": 2340,
+    "title": "Antique medicine and chemical bottles in Cedar Key Historical Museum in Cedar Key, Florida, US, on 23 January 2021",
+    "creator": "MatthewHoobin",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Antique_medicine_and_chemical_bottles_in_Cedar_Key_Historical_Museum_in_Cedar_Key,_Florida,_US,_on_23_January_2021.jpg"
+  },
+  "clinic/tile-5": {
+    "file": "clinic/tile-5.jpg",
+    "width": 3648,
+    "height": 2736,
+    "title": "Bed in Three Persons Room, Internal Medicine Ward, NTUH East Campus 20101204a",
+    "creator": "玄史生",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Bed_in_Three_Persons_Room,_Internal_Medicine_Ward,_NTUH_East_Campus_20101204a.JPG"
+  },
+  "clinic/tile-6": {
+    "file": "clinic/tile-6.jpg",
+    "width": 3648,
+    "height": 2736,
+    "title": "Bed in Three Persons Room, Internal Medicine Ward, NTUH East Campus 20101204b",
+    "creator": "玄史生",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Bed_in_Three_Persons_Room,_Internal_Medicine_Ward,_NTUH_East_Campus_20101204b.JPG"
+  },
+  "clinic/cover-1": {
+    "file": "clinic/tile-3.jpg",
+    "width": 5600,
+    "height": 4480,
+    "title": "US, Ghana medical staff participate in medical readiness exercise (8419985)",
+    "creator": "U.S. Army photo by Sgt. Kylejian Francia",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:US,_Ghana_medical_staff_participate_in_medical_readiness_exercise_(8419985).jpg"
+  },
+  "clinic/cover-2": {
+    "file": "clinic/tile-4.jpg",
+    "width": 4160,
+    "height": 2340,
+    "title": "Antique medicine and chemical bottles in Cedar Key Historical Museum in Cedar Key, Florida, US, on 23 January 2021",
+    "creator": "MatthewHoobin",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Antique_medicine_and_chemical_bottles_in_Cedar_Key_Historical_Museum_in_Cedar_Key,_Florida,_US,_on_23_January_2021.jpg"
+  },
+  "clinic/cover-3": {
+    "file": "clinic/tile-5.jpg",
+    "width": 3648,
+    "height": 2736,
+    "title": "Bed in Three Persons Room, Internal Medicine Ward, NTUH East Campus 20101204a",
+    "creator": "玄史生",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Bed_in_Three_Persons_Room,_Internal_Medicine_Ward,_NTUH_East_Campus_20101204a.JPG"
+  },
+  "clinic/cover-4": {
+    "file": "clinic/tile-6.jpg",
+    "width": 3648,
+    "height": 2736,
+    "title": "Bed in Three Persons Room, Internal Medicine Ward, NTUH East Campus 20101204b",
+    "creator": "玄史生",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Bed_in_Three_Persons_Room,_Internal_Medicine_Ward,_NTUH_East_Campus_20101204b.JPG"
+  },
+  "clinic/portrait-1": {
+    "file": "_people/portrait-1.jpg",
+    "width": 1835,
+    "height": 1920,
+    "title": "Charles Beale - Portrait Study of a Man's Face - B1997.19.2 - Yale Center for British Art",
+    "creator": "Charles Beale",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Charles_Beale_-_Portrait_Study_of_a_Man%27s_Face_-_B1997.19.2_-_Yale_Center_for_British_Art.jpg"
+  },
+  "clinic/portrait-2": {
+    "file": "_people/portrait-2.jpg",
+    "width": 2794,
+    "height": 3855,
+    "title": "Portrait of a Young Man MET DP161258",
+    "creator": "—",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_Young_Man_MET_DP161258.jpg"
+  },
+  "clinic/portrait-3": {
+    "file": "_people/portrait-3.jpg",
+    "width": 2500,
+    "height": 1743,
+    "title": "Sad face of a Wayuu Woman",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sad_face_of_a_Wayuu_Woman.jpg"
+  },
+  "clinic/portrait-4": {
+    "file": "_people/portrait-4.jpg",
+    "width": 3840,
+    "height": 2581,
+    "title": "Wayuu woman with sad face in the market buying",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wayuu_woman_with_sad_face_in_the_market_buying.jpg"
+  },
+  "clinic/portrait-5": {
+    "file": "_people/portrait-5.jpg",
+    "width": 2124,
+    "height": 2676,
+    "title": "Fresco Portrait of a Woman, Detail",
+    "creator": "TyB",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresco_Portrait_of_a_Woman,_Detail.jpg"
+  },
+  "clinic/portrait-6": {
+    "file": "_people/portrait-6.jpg",
+    "width": 2736,
+    "height": 3648,
+    "title": "Maasai woman with stretched ears",
+    "creator": "William Warby from London, England",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Maasai_woman_with_stretched_ears.jpg"
+  },
+  "education/hero": {
+    "file": "education/hero.jpg",
+    "width": 4000,
+    "height": 3000,
+    "title": "YunTech Computer Classroom 20220612",
+    "creator": "S099001",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:YunTech_Computer_Classroom_20220612.jpg"
+  },
+  "education/frame-1": {
+    "file": "education/frame-1.jpg",
+    "width": 2048,
+    "height": 1400,
+    "title": "Illustration for wiki convention 02",
+    "creator": "Canva",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Illustration_for_wiki_convention_02.jpg"
+  },
+  "education/frame-2": {
+    "file": "education/frame-2.jpg",
+    "width": 7360,
+    "height": 4912,
+    "title": "Two Loves (Unsplash)",
+    "creator": "Ehud Neuhaus paramir",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Two_Loves_(Unsplash).jpg"
+  },
+  "education/frame-3": {
+    "file": "education/frame-3.jpg",
+    "width": 6000,
+    "height": 4000,
+    "title": "Macro laptop coding (Unsplash)",
+    "creator": "Marc Mueller seven11nash",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Macro_laptop_coding_(Unsplash).jpg"
+  },
+  "education/tile-1": {
+    "file": "education/tile-1.jpg",
+    "width": 4080,
+    "height": 3072,
+    "title": "De La Salle University – Dasmariñas (DLSU–D) Information and Communications Technology Center (ICTC) laboratory room 203 (ICT203) — normal view",
+    "creator": "UndueMarmot",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:De_La_Salle_University_%E2%80%93_Dasmari%C3%B1as_(DLSU%E2%80%93D)_Information_and_Communications_Technology_Center_(ICTC)_laboratory_room_203_(ICT203)_%E2%80%94_normal_view.jpg"
+  },
+  "education/tile-2": {
+    "file": "education/tile-2.jpg",
+    "width": 2576,
+    "height": 1932,
+    "title": "De La Salle University – Dasmariñas (DLSU–D) Information and Communications Technology Center (ICTC) laboratory room 203 (ICT203) — fisheye view",
+    "creator": "UndueMarmot",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:De_La_Salle_University_%E2%80%93_Dasmari%C3%B1as_(DLSU%E2%80%93D)_Information_and_Communications_Technology_Center_(ICTC)_laboratory_room_203_(ICT203)_%E2%80%94_fisheye_view.jpg"
+  },
+  "education/tile-3": {
+    "file": "education/tile-3.jpg",
+    "width": 6960,
+    "height": 4192,
+    "title": "Global Asset Trading Room",
+    "creator": "ManoBV16",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Global_Asset_Trading_Room.jpg"
+  },
+  "education/tile-4": {
+    "file": "education/tile-4.jpg",
+    "width": 2000,
+    "height": 1500,
+    "title": "Computer hacked eighth day event proposal",
+    "creator": "Tamatak 'v chamatak ki",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Computer_hacked_eighth_day_event_proposal.jpg"
+  },
+  "education/tile-5": {
+    "file": "education/tile-5.jpg",
+    "width": 8256,
+    "height": 5504,
+    "title": "Infrastructure and Education Facility Upgrades in South Carolina, with Under Secretary Small (20220809-RD-LSC-0434)",
+    "creator": "USDAgov",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Infrastructure_and_Education_Facility_Upgrades_in_South_Carolina,_with_Under_Secretary_Small_(20220809-RD-LSC-0434).jpg"
+  },
+  "education/tile-6": {
+    "file": "education/tile-6.jpg",
+    "width": 14884,
+    "height": 5196,
+    "title": "Infrastructure and Education Facility Upgrades in South Carolina, with Under Secretary Small (20220809-RD-LSC-0598)",
+    "creator": "USDAgov",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Infrastructure_and_Education_Facility_Upgrades_in_South_Carolina,_with_Under_Secretary_Small_(20220809-RD-LSC-0598).jpg"
+  },
+  "education/cover-1": {
+    "file": "education/tile-3.jpg",
+    "width": 6960,
+    "height": 4192,
+    "title": "Global Asset Trading Room",
+    "creator": "ManoBV16",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Global_Asset_Trading_Room.jpg"
+  },
+  "education/cover-2": {
+    "file": "education/tile-4.jpg",
+    "width": 2000,
+    "height": 1500,
+    "title": "Computer hacked eighth day event proposal",
+    "creator": "Tamatak 'v chamatak ki",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Computer_hacked_eighth_day_event_proposal.jpg"
+  },
+  "education/cover-3": {
+    "file": "education/tile-5.jpg",
+    "width": 8256,
+    "height": 5504,
+    "title": "Infrastructure and Education Facility Upgrades in South Carolina, with Under Secretary Small (20220809-RD-LSC-0434)",
+    "creator": "USDAgov",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Infrastructure_and_Education_Facility_Upgrades_in_South_Carolina,_with_Under_Secretary_Small_(20220809-RD-LSC-0434).jpg"
+  },
+  "education/cover-4": {
+    "file": "education/tile-6.jpg",
+    "width": 14884,
+    "height": 5196,
+    "title": "Infrastructure and Education Facility Upgrades in South Carolina, with Under Secretary Small (20220809-RD-LSC-0598)",
+    "creator": "USDAgov",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Infrastructure_and_Education_Facility_Upgrades_in_South_Carolina,_with_Under_Secretary_Small_(20220809-RD-LSC-0598).jpg"
+  },
+  "education/portrait-1": {
+    "file": "_people/portrait-1.jpg",
+    "width": 1835,
+    "height": 1920,
+    "title": "Charles Beale - Portrait Study of a Man's Face - B1997.19.2 - Yale Center for British Art",
+    "creator": "Charles Beale",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Charles_Beale_-_Portrait_Study_of_a_Man%27s_Face_-_B1997.19.2_-_Yale_Center_for_British_Art.jpg"
+  },
+  "education/portrait-2": {
+    "file": "_people/portrait-2.jpg",
+    "width": 2794,
+    "height": 3855,
+    "title": "Portrait of a Young Man MET DP161258",
+    "creator": "—",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_Young_Man_MET_DP161258.jpg"
+  },
+  "education/portrait-3": {
+    "file": "_people/portrait-3.jpg",
+    "width": 2500,
+    "height": 1743,
+    "title": "Sad face of a Wayuu Woman",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sad_face_of_a_Wayuu_Woman.jpg"
+  },
+  "education/portrait-4": {
+    "file": "_people/portrait-4.jpg",
+    "width": 3840,
+    "height": 2581,
+    "title": "Wayuu woman with sad face in the market buying",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wayuu_woman_with_sad_face_in_the_market_buying.jpg"
+  },
+  "education/portrait-5": {
+    "file": "_people/portrait-5.jpg",
+    "width": 2124,
+    "height": 2676,
+    "title": "Fresco Portrait of a Woman, Detail",
+    "creator": "TyB",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresco_Portrait_of_a_Woman,_Detail.jpg"
+  },
+  "education/portrait-6": {
+    "file": "_people/portrait-6.jpg",
+    "width": 2736,
+    "height": 3648,
+    "title": "Maasai woman with stretched ears",
+    "creator": "William Warby from London, England",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Maasai_woman_with_stretched_ears.jpg"
+  },
+  "law/hero": {
+    "file": "law/hero.jpg",
+    "width": 2048,
+    "height": 1536,
+    "title": "Charles R. McNeill Library bookshelves",
+    "creator": "Willthacheerleader18",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Charles_R._McNeill_Library_bookshelves.jpg"
+  },
+  "law/frame-1": {
+    "file": "law/frame-1.jpg",
+    "width": 1700,
+    "height": 1133,
+    "title": "Barack Obama engrossed in reading at the Resolute Desk while illuminated by some interesting, autumnal, western sunlight falling through the garden windows (31901910102)",
+    "creator": "Pete Souza",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Barack_Obama_engrossed_in_reading_at_the_Resolute_Desk_while_illuminated_by_some_interesting,_autumnal,_western_sunlight_falling_through_the_garden_windows_(31901910102).jpg"
+  },
+  "law/frame-2": {
+    "file": "law/frame-2.jpg",
+    "width": 1522,
+    "height": 1171,
+    "title": "Teacher's Training College within the University of Sydney, Professor Alexander Mackie at his desk (16512381991)",
+    "creator": "State Records NSW",
+    "license": "No restrictions",
+    "source": "https://commons.wikimedia.org/wiki/File:Teacher%27s_Training_College_within_the_University_of_Sydney,_Professor_Alexander_Mackie_at_his_desk_(16512381991).jpg"
+  },
+  "law/frame-3": {
+    "file": "law/frame-3.jpg",
+    "width": 1704,
+    "height": 1424,
+    "title": "Honolulu-CBrewer-frontdesk",
+    "creator": "Joel Bradshaw",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Honolulu-CBrewer-frontdesk.JPG"
+  },
+  "law/tile-1": {
+    "file": "law/tile-1.jpg",
+    "width": 4608,
+    "height": 3456,
+    "title": "Library bookshelf",
+    "creator": "Mshuang2",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Library_bookshelf.jpg"
+  },
+  "law/tile-2": {
+    "file": "law/tile-2.jpg",
+    "width": 4896,
+    "height": 3264,
+    "title": "On the Shelf (Unsplash)",
+    "creator": "Jonathan Simcoe jdsimcoe",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:On_the_Shelf_(Unsplash).jpg"
+  },
+  "law/tile-3": {
+    "file": "law/tile-3.jpg",
+    "width": 3264,
+    "height": 2176,
+    "title": "Old books on a shelf (Unsplash)",
+    "creator": "Roman Kraft romankraft",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Old_books_on_a_shelf_(Unsplash).jpg"
+  },
+  "law/tile-4": {
+    "file": "law/tile-4.jpg",
+    "width": 4032,
+    "height": 3024,
+    "title": "Website design books (Unsplash)",
+    "creator": "Greg Rakozy grakozy",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Website_design_books_(Unsplash).jpg"
+  },
+  "law/tile-5": {
+    "file": "law/tile-5.jpg",
+    "width": 3848,
+    "height": 2566,
+    "title": "Children's books (Unsplash)",
+    "creator": "Robyn Budlender robzy_m",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Children%27s_books_(Unsplash).jpg"
+  },
+  "law/tile-6": {
+    "file": "law/tile-6.jpg",
+    "width": 3264,
+    "height": 2448,
+    "title": "Books on a shelf 2",
+    "creator": "MarkBuckawicki",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Books_on_a_shelf_2.jpg"
+  },
+  "law/cover-1": {
+    "file": "law/tile-3.jpg",
+    "width": 3264,
+    "height": 2176,
+    "title": "Old books on a shelf (Unsplash)",
+    "creator": "Roman Kraft romankraft",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Old_books_on_a_shelf_(Unsplash).jpg"
+  },
+  "law/cover-2": {
+    "file": "law/tile-4.jpg",
+    "width": 4032,
+    "height": 3024,
+    "title": "Website design books (Unsplash)",
+    "creator": "Greg Rakozy grakozy",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Website_design_books_(Unsplash).jpg"
+  },
+  "law/cover-3": {
+    "file": "law/tile-5.jpg",
+    "width": 3848,
+    "height": 2566,
+    "title": "Children's books (Unsplash)",
+    "creator": "Robyn Budlender robzy_m",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Children%27s_books_(Unsplash).jpg"
+  },
+  "law/cover-4": {
+    "file": "law/tile-6.jpg",
+    "width": 3264,
+    "height": 2448,
+    "title": "Books on a shelf 2",
+    "creator": "MarkBuckawicki",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Books_on_a_shelf_2.jpg"
+  },
+  "law/portrait-1": {
+    "file": "_people/portrait-1.jpg",
+    "width": 1835,
+    "height": 1920,
+    "title": "Charles Beale - Portrait Study of a Man's Face - B1997.19.2 - Yale Center for British Art",
+    "creator": "Charles Beale",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Charles_Beale_-_Portrait_Study_of_a_Man%27s_Face_-_B1997.19.2_-_Yale_Center_for_British_Art.jpg"
+  },
+  "law/portrait-2": {
+    "file": "_people/portrait-2.jpg",
+    "width": 2794,
+    "height": 3855,
+    "title": "Portrait of a Young Man MET DP161258",
+    "creator": "—",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_Young_Man_MET_DP161258.jpg"
+  },
+  "law/portrait-3": {
+    "file": "_people/portrait-3.jpg",
+    "width": 2500,
+    "height": 1743,
+    "title": "Sad face of a Wayuu Woman",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sad_face_of_a_Wayuu_Woman.jpg"
+  },
+  "law/portrait-4": {
+    "file": "_people/portrait-4.jpg",
+    "width": 3840,
+    "height": 2581,
+    "title": "Wayuu woman with sad face in the market buying",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wayuu_woman_with_sad_face_in_the_market_buying.jpg"
+  },
+  "law/portrait-5": {
+    "file": "_people/portrait-5.jpg",
+    "width": 2124,
+    "height": 2676,
+    "title": "Fresco Portrait of a Woman, Detail",
+    "creator": "TyB",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresco_Portrait_of_a_Woman,_Detail.jpg"
+  },
+  "law/portrait-6": {
+    "file": "_people/portrait-6.jpg",
+    "width": 2736,
+    "height": 3648,
+    "title": "Maasai woman with stretched ears",
+    "creator": "William Warby from London, England",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Maasai_woman_with_stretched_ears.jpg"
+  },
+  "fitness/hero": {
+    "file": "fitness/hero.png",
+    "width": 2000,
+    "height": 1600,
+    "title": "Julia set f(z) = z*z -0.6900598700150440+0.2760264827846140i BDM",
+    "creator": "Soul windsurfer",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Julia_set_f(z)_%3D_z*z_-0.6900598700150440%2B0.2760264827846140i_BDM.png"
+  },
+  "fitness/frame-1": {
+    "file": "fitness/frame-1.jpg",
+    "width": 2048,
+    "height": 1365,
+    "title": "New Drawsko Pomorskie Training Area Gym (7411444)",
+    "creator": "U.S. Army National Guard photo by Capt. Lena Witham",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:New_Drawsko_Pomorskie_Training_Area_Gym_(7411444).jpg"
+  },
+  "fitness/frame-2": {
+    "file": "fitness/frame-2.jpg",
+    "width": 2560,
+    "height": 1440,
+    "title": "Weight plate for letters InPost in Poland",
+    "creator": "Warszawska róg Szerokiej w Tomaszowie Mazowieckim, w województwie łódzkim, PL, E",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Weight_plate_for_letters_InPost_in_Poland.jpg"
+  },
+  "fitness/frame-3": {
+    "file": "fitness/frame-3.jpg",
+    "width": 6016,
+    "height": 4016,
+    "title": "A dedicated individual engages in push-ups on a gym floor while weight plates rest nearby",
+    "creator": "Shixart1985",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:A_dedicated_individual_engages_in_push-ups_on_a_gym_floor_while_weight_plates_rest_nearby.jpg"
+  },
+  "fitness/tile-1": {
+    "file": "fitness/tile-1.jpg",
+    "width": 4928,
+    "height": 3264,
+    "title": "Gym workout machine",
+    "creator": "Samson Ssemakadde",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Gym_workout_machine.jpg"
+  },
+  "fitness/tile-2": {
+    "file": "fitness/tile-2.jpg",
+    "width": 6048,
+    "height": 4024,
+    "title": "Woman exercising on an elliptical machine in a bright indoor gym closeup undefined",
+    "creator": "Shixart1985",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Woman_exercising_on_an_elliptical_machine_in_a_bright_indoor_gym_closeup_undefined.jpg"
+  },
+  "fitness/tile-3": {
+    "file": "fitness/tile-3.jpg",
+    "width": 7360,
+    "height": 4912,
+    "title": "Strong woman using cable machine for upper body workout in gym",
+    "creator": "Shixart1985",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Strong_woman_using_cable_machine_for_upper_body_workout_in_gym.jpg"
+  },
+  "fitness/tile-4": {
+    "file": "fitness/tile-4.jpg",
+    "width": 6016,
+    "height": 4016,
+    "title": "Woman playing weights with legs on the exercise machine in the gym",
+    "creator": "Nenad Stojkovic",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Woman_playing_weights_with_legs_on_the_exercise_machine_in_the_gym.jpg"
+  },
+  "fitness/tile-5": {
+    "file": "fitness/tile-5.jpg",
+    "width": 6016,
+    "height": 4016,
+    "title": "This gym room showcases various workout machines",
+    "creator": "Shixart1985",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:This_gym_room_showcases_various_workout_machines.jpg"
+  },
+  "fitness/tile-6": {
+    "file": "fitness/tile-6.jpg",
+    "width": 3504,
+    "height": 2336,
+    "title": "OK Foundry Kettlebells (13890157702)",
+    "creator": "OKFoundryCompany from Richmond, USA",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:OK_Foundry_Kettlebells_(13890157702).jpg"
+  },
+  "fitness/cover-1": {
+    "file": "fitness/tile-3.jpg",
+    "width": 7360,
+    "height": 4912,
+    "title": "Strong woman using cable machine for upper body workout in gym",
+    "creator": "Shixart1985",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Strong_woman_using_cable_machine_for_upper_body_workout_in_gym.jpg"
+  },
+  "fitness/cover-2": {
+    "file": "fitness/tile-4.jpg",
+    "width": 6016,
+    "height": 4016,
+    "title": "Woman playing weights with legs on the exercise machine in the gym",
+    "creator": "Nenad Stojkovic",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Woman_playing_weights_with_legs_on_the_exercise_machine_in_the_gym.jpg"
+  },
+  "fitness/cover-3": {
+    "file": "fitness/tile-5.jpg",
+    "width": 6016,
+    "height": 4016,
+    "title": "This gym room showcases various workout machines",
+    "creator": "Shixart1985",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:This_gym_room_showcases_various_workout_machines.jpg"
+  },
+  "fitness/cover-4": {
+    "file": "fitness/tile-6.jpg",
+    "width": 3504,
+    "height": 2336,
+    "title": "OK Foundry Kettlebells (13890157702)",
+    "creator": "OKFoundryCompany from Richmond, USA",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:OK_Foundry_Kettlebells_(13890157702).jpg"
+  },
+  "fitness/portrait-1": {
+    "file": "_people/portrait-1.jpg",
+    "width": 1835,
+    "height": 1920,
+    "title": "Charles Beale - Portrait Study of a Man's Face - B1997.19.2 - Yale Center for British Art",
+    "creator": "Charles Beale",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Charles_Beale_-_Portrait_Study_of_a_Man%27s_Face_-_B1997.19.2_-_Yale_Center_for_British_Art.jpg"
+  },
+  "fitness/portrait-2": {
+    "file": "_people/portrait-2.jpg",
+    "width": 2794,
+    "height": 3855,
+    "title": "Portrait of a Young Man MET DP161258",
+    "creator": "—",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_Young_Man_MET_DP161258.jpg"
+  },
+  "fitness/portrait-3": {
+    "file": "_people/portrait-3.jpg",
+    "width": 2500,
+    "height": 1743,
+    "title": "Sad face of a Wayuu Woman",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sad_face_of_a_Wayuu_Woman.jpg"
+  },
+  "fitness/portrait-4": {
+    "file": "_people/portrait-4.jpg",
+    "width": 3840,
+    "height": 2581,
+    "title": "Wayuu woman with sad face in the market buying",
+    "creator": "Wilfredor",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wayuu_woman_with_sad_face_in_the_market_buying.jpg"
+  },
+  "fitness/portrait-5": {
+    "file": "_people/portrait-5.jpg",
+    "width": 2124,
+    "height": 2676,
+    "title": "Fresco Portrait of a Woman, Detail",
+    "creator": "TyB",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresco_Portrait_of_a_Woman,_Detail.jpg"
+  },
+  "fitness/portrait-6": {
+    "file": "_people/portrait-6.jpg",
+    "width": 2736,
+    "height": 3648,
+    "title": "Maasai woman with stretched ears",
+    "creator": "William Warby from London, England",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Maasai_woman_with_stretched_ears.jpg"
+  }
+};

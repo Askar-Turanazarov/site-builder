@@ -9,7 +9,7 @@
     "lint": "eslint",
     "postinstall": "prisma generate && npm run build:export-css",
     "db:seed": "tsx prisma/seed.ts",
-    "art:generate": "tsx scripts/generate-template-art.ts",
+    "photos:fetch": "tsx scripts/fetch-template-photos.ts",
     "db:media": "tsx scripts/seed-demo-media.ts",
     "build:export-css": "tailwindcss -i src/app/globals.css -o src/lib/export/assets/tailwind.generated.css --minify"
   },

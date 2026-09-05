@@ -1,4 +1,5 @@
 import type { Locale, MediaRef } from "@/blocks/context";
+import { TEMPLATE_PHOTOS, type TemplatePhoto } from "./photo-manifest";
 
 /**
  * Графика шаблонов.
@@ -11,33 +12,37 @@ import type { Locale, MediaRef } from "@/blocks/context";
  * применении шаблона файлы копируются в медиатеку и получают настоящие id.
  */
 
-/** Размеры холстов; имена файлов — единый источник правды для генератора. */
-export const TEMPLATE_ART_SHEET = [
-  { name: "hero", width: 1600, height: 700 },
-  { name: "frame-1", width: 1200, height: 900 },
-  { name: "frame-2", width: 1200, height: 900 },
-  { name: "frame-3", width: 1200, height: 900 },
-  { name: "tile-1", width: 1200, height: 900 },
-  { name: "tile-2", width: 1200, height: 900 },
-  { name: "tile-3", width: 1200, height: 900 },
-  { name: "tile-4", width: 1200, height: 900 },
-  { name: "tile-5", width: 1200, height: 900 },
-  { name: "tile-6", width: 1200, height: 900 },
-  { name: "tile-7", width: 1200, height: 900 },
-  { name: "tile-8", width: 1200, height: 900 },
-  { name: "cover-1", width: 1200, height: 900 },
-  { name: "cover-2", width: 1200, height: 900 },
-  { name: "cover-3", width: 1200, height: 900 },
-  { name: "cover-4", width: 1200, height: 900 },
-  { name: "portrait-1", width: 800, height: 800 },
-  { name: "portrait-2", width: 800, height: 800 },
-  { name: "portrait-3", width: 800, height: 800 },
-  { name: "portrait-4", width: 800, height: 800 },
-  { name: "portrait-5", width: 800, height: 800 },
-  { name: "portrait-6", width: 800, height: 800 },
+/**
+ * Слоты картинок в шаблоне. Имена одни и те же у всех шаблонов, а какие
+ * файлы за ними стоят, знает манифест фотографий (photo-manifest.ts),
+ * который заполняет scripts/fetch-template-photos.ts.
+ */
+export const TEMPLATE_ART_NAMES = [
+  "hero",
+  "frame-1",
+  "frame-2",
+  "frame-3",
+  "tile-1",
+  "tile-2",
+  "tile-3",
+  "tile-4",
+  "tile-5",
+  "tile-6",
+  "tile-7",
+  "tile-8",
+  "cover-1",
+  "cover-2",
+  "cover-3",
+  "cover-4",
+  "portrait-1",
+  "portrait-2",
+  "portrait-3",
+  "portrait-4",
+  "portrait-5",
+  "portrait-6",
 ] as const;
 
-export type TemplateArtName = (typeof TEMPLATE_ART_SHEET)[number]["name"];
+export type TemplateArtName = (typeof TEMPLATE_ART_NAMES)[number];
 
 const ART_PREFIX = "tpl:";
 
@@ -57,9 +62,15 @@ export function parseTemplateArtId(id: string): { templateKey: string; name: str
   return { templateKey, name };
 }
 
+/** Снимок для слота или null, если фотографии для него не нашлось. */
+export function templatePhoto(templateKey: string, name: string): TemplatePhoto | null {
+  return TEMPLATE_PHOTOS[`${templateKey}/${name}`] ?? null;
+}
+
 /** Путь внутри public/ — им пользуются и демонстрация, и копирование в медиатеку. */
-export function templateArtPublicPath(templateKey: string, name: string): string {
-  return `templates/${templateKey}/${name}.svg`;
+export function templateArtPublicPath(templateKey: string, name: string): string | null {
+  const photo = templatePhoto(templateKey, name);
+  return photo ? `templates/${photo.file}` : null;
 }
 
 const ALT: Record<Locale, (label: string) => string> = {
@@ -78,12 +89,14 @@ export function templateArtMediaMap(
   locale: Locale,
 ): Record<string, MediaRef> {
   const map: Record<string, MediaRef> = {};
-  for (const item of TEMPLATE_ART_SHEET) {
-    map[templateArtId(templateKey, item.name)] = {
-      url: `/${templateArtPublicPath(templateKey, item.name)}`,
-      alt: ALT[locale](label),
-      width: item.width,
-      height: item.height,
+  for (const name of TEMPLATE_ART_NAMES) {
+    const photo = templatePhoto(templateKey, name);
+    if (!photo) continue;
+    map[templateArtId(templateKey, name)] = {
+      url: `/templates/${photo.file}`,
+      alt: photo.title || ALT[locale](label),
+      width: photo.width,
+      height: photo.height,
     };
   }
   return map;

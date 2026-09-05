@@ -16,9 +16,13 @@ import { fillTemplateArt, templatePostCover } from "../site-templates/types";
  */
 
 const ART_KEY = "cafe";
+const MEDIA_KEYS = ["imageMediaId", "photoMediaId", "avatarMediaId", "coverMediaId"];
 const LABEL = { ru: "Кафе «Зерно»", uz: "«Zerno» kafesi", en: "Zerno Café" };
 
 interface ContentStore extends MediaStore {
+  media: MediaStore["media"] & {
+    findMany(args?: unknown): Promise<{ id: string }[]>;
+  };
   page: {
     findMany(args?: unknown): Promise<
       { id: string; blocksRu: string; blocksUz: string; blocksEn: string }[]
@@ -43,7 +47,21 @@ type LocaleField = "blocksRu" | "blocksUz" | "blocksEn";
 const FIELDS: LocaleField[] = ["blocksRu", "blocksUz", "blocksEn"];
 
 export async function seedDemoMedia(db: ContentStore): Promise<number> {
-  const [pages, posts] = await Promise.all([db.page.findMany(), db.post.findMany()]);
+  const [pages, posts, media] = await Promise.all([
+    db.page.findMany(),
+    db.post.findMany(),
+    db.media.findMany(),
+  ]);
+
+  // Ссылки на удалённые картинки чистим: иначе блок считается заполненным и
+  // новая фотография в него не встанет, а на сайте зияет пустое место.
+  const alive = new Set(media.map((m) => m.id));
+  const prune = (blocks: Block[]): Block[] =>
+    JSON.parse(
+      JSON.stringify(blocks, (key, value) =>
+        MEDIA_KEYS.includes(key) && typeof value === "string" && !alive.has(value) ? null : value,
+      ),
+    ) as Block[];
 
   // Сначала выясняем, какие картинки понадобятся: три языковых дерева одной
   // страницы устроены одинаково, поэтому идентификаторы совпадут.
@@ -53,14 +71,16 @@ export async function seedDemoMedia(db: ContentStore): Promise<number> {
   for (const row of [...pages, ...posts]) {
     const trees = {} as Record<LocaleField, Block[]>;
     for (const field of FIELDS) {
-      trees[field] = fillTemplateArt(parseBlocks(row[field]), ART_KEY);
+      trees[field] = fillTemplateArt(prune(parseBlocks(row[field])), ART_KEY);
       collectArtIds(trees[field], needed);
     }
     filled.set(row.id, trees);
   }
 
   posts.forEach((post, index) => {
-    if (!post.coverMediaId) needed.add(templatePostCover(ART_KEY, index));
+    if (!post.coverMediaId || !alive.has(post.coverMediaId)) {
+      needed.add(templatePostCover(ART_KEY, index));
+    }
   });
 
   if (needed.size === 0) return 0;
@@ -88,7 +108,10 @@ export async function seedDemoMedia(db: ContentStore): Promise<number> {
         blocksRu: serializeBlocks(remapArtIds<Block[]>(trees.blocksRu, artMap)),
         blocksUz: serializeBlocks(remapArtIds<Block[]>(trees.blocksUz, artMap)),
         blocksEn: serializeBlocks(remapArtIds<Block[]>(trees.blocksEn, artMap)),
-        coverMediaId: post.coverMediaId ?? artMap.get(templatePostCover(ART_KEY, index)) ?? null,
+        coverMediaId:
+          post.coverMediaId && alive.has(post.coverMediaId)
+            ? post.coverMediaId
+            : (artMap.get(templatePostCover(ART_KEY, index)) ?? null),
       },
     });
   }
