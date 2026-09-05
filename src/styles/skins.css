@@ -1,0 +1,783 @@
+/*
+ * Стили оформления сайта («скины»).
+ *
+ * Тема (src/blocks/palette.ts) отвечает за цвет и шрифт. Скин отвечает за всё
+ * остальное, что делает сайты непохожими: ритм секций, меру набора,
+ * типографическую шкалу, трактовку карточки, кнопки, иконки и разделителей.
+ * Без скинов 12 шаблонов — это один макет в 12 покрасках.
+ *
+ * КАК ЭТО РАБОТАЕТ
+ * 1. Файл неслоёный (не в `@layer`), поэтому его правила перебивают утилиты
+ *    Tailwind (`py-16`, `max-w-6xl`, `rounded-*`, `text-4xl`) независимо от
+ *    специфичности. Благодаря этому скин меняет вид всех 14 блоков, не
+ *    требуя правки 28 файлов блоков.
+ * 2. Правила цепляются за классы-хуки `sb-*` из src/blocks/classes.ts —
+ *    их получают и живой сайт, и статический экспорт из одного источника.
+ * 3. Значения приходят из переменных `--sk-*`, которые скин объявляет на
+ *    корне сайта — том же элементе, где стоят переменные темы `--tpl-*`.
+ *    Дефолт каждой переменной записан прямо в месте использования
+ *    (`var(--sk-x, …)`), а не в `:root`: `--tpl-*` объявлены глубже, и
+ *    ссылка на них из `:root` вычислилась бы в пустоту.
+ *
+ * ПОРЯДОК В КАСКАДЕ (важно)
+ * Файл импортируется ДО src/styles/blocks.css. Четыре свойства —
+ * вертикальные отступы секции, ширина контейнера, размер h1/h2 и
+ * выравнивание — администратор задаёт пер-блочно, и его выбор обязан быть
+ * сильнее скина. Поэтому здесь эти свойства задаются ТОЛЬКО селекторами из
+ * одного класса (`.sb-section`, `.sb-container`, `.sb-h1`): у правил в
+ * blocks.css специфичность выше или равная при более позднем порядке.
+ * Внутри блоков `[data-skin="…"]` эти четыре свойства не трогаем — только
+ * переменные и всё остальное оформление.
+ */
+
+/* ---------------------------------------------------------------------------
+   Контракт: применение переменных скина к хукам разметки.
+   Дефолты повторяют базовое оформление, поэтому сайт без выбранного скина
+   выглядит ровно так же, как раньше.
+   --------------------------------------------------------------------------- */
+
+.sb-section {
+  padding-block: var(--sk-py, clamp(4rem, 6vw, 6rem));
+}
+
+.sb-container {
+  max-width: var(--sk-measure, 72rem);
+}
+
+.sb-container-narrow {
+  max-width: var(--sk-measure-narrow, 48rem);
+}
+
+.sb-h1 {
+  /* Скины вроде «poster» и «arena» набирают заголовок очень крупно и в
+     верхнем регистре: длинное русское слово на узком экране иначе вылезает
+     за край, а не переносится. */
+  overflow-wrap: break-word;
+  font-size: var(--sk-h1, clamp(2.25rem, 5.2vw, 3.75rem));
+  line-height: var(--sk-h1-leading, 1.05);
+  font-weight: var(--sk-h1-weight, 800);
+  letter-spacing: var(--sk-h1-tracking, -0.025em);
+  text-transform: var(--sk-h-case, none);
+  font-style: var(--sk-h-style, normal);
+}
+
+.sb-h2 {
+  overflow-wrap: break-word;
+  font-size: var(--sk-h2, clamp(1.875rem, 3vw, 2.25rem));
+  line-height: var(--sk-h2-leading, 1.15);
+  font-weight: var(--sk-h2-weight, 700);
+  letter-spacing: var(--sk-h2-tracking, -0.02em);
+  text-transform: var(--sk-h-case, none);
+  font-style: var(--sk-h-style, normal);
+}
+
+.sb-h3 {
+  font-size: var(--sk-h3, 1.25rem);
+  font-weight: var(--sk-h3-weight, 600);
+  letter-spacing: var(--sk-h3-tracking, 0);
+}
+
+.sb-lead {
+  font-size: var(--sk-lead, clamp(1.125rem, 1.4vw, 1.25rem));
+  line-height: var(--sk-lead-leading, 1.6);
+}
+
+.sb-body {
+  font-size: var(--sk-body, 1rem);
+  line-height: var(--sk-body-leading, 1.625);
+}
+
+.sb-eyebrow {
+  text-transform: var(--sk-eyebrow-case, uppercase);
+  letter-spacing: var(--sk-eyebrow-tracking, 0.025em);
+}
+
+.sb-grid {
+  gap: var(--sk-gap, 2rem);
+}
+
+.sb-card {
+  background: var(--sk-card-bg, var(--tpl-surface));
+  border-width: var(--sk-card-border-width, 1px);
+  border-style: solid;
+  border-color: var(--sk-card-border-color, color-mix(in srgb, var(--tpl-ink) 10%, transparent));
+  border-radius: var(--sk-card-radius, var(--tpl-radius));
+  box-shadow: var(--sk-card-shadow, var(--tpl-shadow));
+  padding: var(--sk-card-pad, 1.5rem);
+}
+
+/* Выделенный тариф. Идёт после .sb-card, поэтому перебивает его при равной
+   специфичности — и остаётся заметным в любом скине. */
+.sb-card-featured {
+  border-width: var(--sk-card-featured-width, 2px);
+  border-color: var(--sk-card-featured-color, var(--tpl-accent));
+  box-shadow: var(--sk-card-featured-shadow, 0 14px 34px color-mix(in srgb, var(--tpl-ink) 14%, transparent));
+}
+
+.sb-btn {
+  border-radius: var(--sk-btn-radius, var(--tpl-radius));
+  padding: var(--sk-btn-pad-y, 0.75rem) var(--sk-btn-pad-x, 1.5rem);
+  font-size: var(--sk-btn-size, 0.875rem);
+  font-weight: var(--sk-btn-weight, 600);
+  text-transform: var(--sk-btn-case, none);
+  letter-spacing: var(--sk-btn-tracking, 0);
+}
+
+.sb-cta {
+  border-radius: var(--sk-cta-radius, var(--tpl-radius));
+}
+
+.sb-icon {
+  border-radius: var(--sk-icon-radius, var(--tpl-radius));
+}
+
+/* Пустые плейсхолдеры медиа не показываем: серый прямоугольник на месте
+   ненайденной фотографии сотрудника или обложки статьи читается как брак
+   вёрстки, а не как «изображение будет позже». */
+.sb-team-photo:empty,
+.sb-post-cover:empty {
+  display: none;
+}
+
+.sb-stat-value {
+  font-size: var(--sk-stat, clamp(2.25rem, 3.6vw, 3rem));
+  font-style: var(--sk-stat-style, normal);
+  letter-spacing: var(--sk-stat-tracking, -0.02em);
+}
+
+/* ---------------------------------------------------------------------------
+   1. ledger — корпоративный сайт.
+   Реестровая строгость: плотный ритм, волосяные линейки, прямые углы,
+   карточка без тени. Спокойный документ, а не витрина.
+   --------------------------------------------------------------------------- */
+
+[data-skin="ledger"] {
+  --sk-py: clamp(3.25rem, 4.5vw, 4.5rem);
+  --sk-measure: 68rem;
+  --sk-h1: clamp(2rem, 4vw, 3rem);
+  --sk-h1-weight: 700;
+  --sk-h1-tracking: -0.015em;
+  --sk-h1-leading: 1.1;
+  --sk-h2: clamp(1.5rem, 2.2vw, 1.875rem);
+  --sk-h3: 1.0625rem;
+  --sk-eyebrow-tracking: 0.14em;
+  --sk-card-radius: 2px;
+  --sk-card-shadow: none;
+  --sk-card-pad: 1.75rem;
+  --sk-card-border-color: color-mix(in srgb, var(--tpl-ink) 16%, transparent);
+  --sk-btn-radius: 2px;
+  --sk-icon-radius: 2px;
+  --sk-gap: 1.5rem;
+  --sk-stat: 2rem;
+}
+
+[data-skin="ledger"] [data-blk-type]:not([data-blk-type="cta"]) .sb-h2::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-bottom: 1.1rem;
+  background: color-mix(in srgb, var(--tpl-ink) 22%, transparent);
+}
+
+[data-skin="ledger"] [data-blk-type="stats"] .sb-grid,
+[data-skin="ledger"] [data-blk-type="stats"] .sb-container > div {
+  border-block: 1px solid color-mix(in srgb, var(--tpl-ink) 16%, transparent);
+  padding-block: 2rem;
+}
+
+/* ---------------------------------------------------------------------------
+   2. poster — агентство. Тёмный плакат.
+   Гигантский набор в верхнем регистре, карточек нет вообще: услуги идут
+   строками во всю ширину, разделённые толстой акцентной линейкой.
+   --------------------------------------------------------------------------- */
+
+[data-skin="poster"] {
+  --sk-py: clamp(4.5rem, 8vw, 7.5rem);
+  --sk-measure: 78rem;
+  --sk-h1: clamp(2.75rem, 9vw, 7rem);
+  --sk-h1-leading: 0.92;
+  --sk-h1-tracking: -0.04em;
+  --sk-h2: clamp(2rem, 5vw, 3.5rem);
+  --sk-h2-weight: 800;
+  --sk-h2-tracking: -0.03em;
+  --sk-h-case: uppercase;
+  --sk-h3: 1.375rem;
+  --sk-h3-weight: 700;
+  --sk-lead: clamp(1.125rem, 1.8vw, 1.5rem);
+  --sk-card-bg: transparent;
+  --sk-card-border-width: 0;
+  --sk-card-shadow: none;
+  --sk-card-radius: 0;
+  --sk-card-pad: 1.5rem 0 0;
+  --sk-card-featured-width: 0;
+  --sk-card-featured-shadow: none;
+  --sk-btn-radius: 0;
+  --sk-btn-case: uppercase;
+  --sk-btn-tracking: 0.1em;
+  --sk-btn-weight: 700;
+  --sk-btn-pad-x: 2rem;
+  --sk-eyebrow-tracking: 0.2em;
+  --sk-gap: 2.5rem;
+  --sk-stat: clamp(2.75rem, 5vw, 4rem);
+  --sk-cta-radius: 0;
+}
+
+[data-skin="poster"] .sb-card {
+  border-top: 1px solid color-mix(in srgb, var(--tpl-ink) 28%, transparent);
+}
+
+[data-skin="poster"] .sb-card-featured {
+  border-top: 3px solid var(--tpl-accent);
+}
+
+/* Услуги — не сетка карточек, а полосы во всю ширину */
+[data-skin="poster"] [data-blk-type="featuresGrid"] .sb-grid {
+  display: block;
+}
+
+[data-skin="poster"] [data-blk-type="featuresGrid"] .sb-grid > div {
+  display: grid;
+  gap: 0.75rem 3rem;
+  border-top: 2px solid var(--tpl-accent);
+  padding-block: 2rem;
+}
+
+@media (min-width: 900px) {
+  [data-skin="poster"] [data-blk-type="featuresGrid"] .sb-grid > div {
+    grid-template-columns: minmax(14rem, 22rem) 1fr;
+  }
+}
+
+[data-skin="poster"] .sb-icon {
+  display: none;
+}
+
+[data-skin="poster"] .sb-cta {
+  padding: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem);
+}
+
+/* ---------------------------------------------------------------------------
+   3. retail — интернет-магазин.
+   Плотная витрина: короткие отбивки, четыре колонки вместо трёх, компактная
+   карточка-товар, которая приподнимается при наведении.
+   --------------------------------------------------------------------------- */
+
+[data-skin="retail"] {
+  --sk-py: clamp(2.75rem, 3.5vw, 3.75rem);
+  --sk-measure: 76rem;
+  --sk-h1: clamp(2rem, 3.6vw, 2.75rem);
+  --sk-h1-weight: 700;
+  --sk-h1-leading: 1.12;
+  --sk-h2: clamp(1.375rem, 2vw, 1.75rem);
+  --sk-h3: 1rem;
+  --sk-body: 0.9375rem;
+  --sk-card-pad: 1.125rem;
+  --sk-card-radius: 12px;
+  --sk-card-shadow: 0 1px 2px color-mix(in srgb, var(--tpl-ink) 8%, transparent);
+  --sk-btn-radius: 999px;
+  --sk-btn-pad-y: 0.6rem;
+  --sk-icon-radius: 12px;
+  --sk-gap: 1rem;
+  --sk-eyebrow-tracking: 0.06em;
+  --sk-stat: 2.25rem;
+}
+
+@media (min-width: 1024px) {
+  [data-skin="retail"] .sb-grid-3 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+[data-skin="retail"] .sb-card {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+[data-skin="retail"] .sb-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--tpl-ink) 14%, transparent);
+}
+
+[data-skin="retail"] .sb-card-featured {
+  background: color-mix(in srgb, var(--tpl-accent) 7%, var(--tpl-surface));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-skin="retail"] .sb-card,
+  [data-skin="retail"] .sb-card:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   4. menu — кафе и пекарня.
+   Печатное меню: антиква, узкая мера, коробки без теней и выносные точечные
+   линии от названия к цене.
+   --------------------------------------------------------------------------- */
+
+[data-skin="menu"] {
+  --sk-py: clamp(3.5rem, 5vw, 5.5rem);
+  --sk-measure: 62rem;
+  --sk-measure-narrow: 42rem;
+  --sk-h1: clamp(2.5rem, 5.5vw, 4rem);
+  --sk-h1-weight: 600;
+  --sk-h1-tracking: -0.01em;
+  --sk-h1-leading: 1.08;
+  --sk-h2: clamp(1.75rem, 3vw, 2.5rem);
+  --sk-h2-weight: 600;
+  --sk-h2-tracking: -0.01em;
+  --sk-h3: 1.125rem;
+  --sk-h3-weight: 600;
+  --sk-card-bg: transparent;
+  --sk-card-border-color: color-mix(in srgb, var(--tpl-ink) 24%, transparent);
+  --sk-card-shadow: none;
+  --sk-card-radius: 0;
+  --sk-card-pad: 1.75rem;
+  --sk-btn-radius: 999px;
+  --sk-btn-pad-x: 1.85rem;
+  --sk-icon-radius: 999px;
+  --sk-eyebrow-tracking: 0.18em;
+  --sk-gap: 1.75rem;
+  --sk-stat: 2.5rem;
+}
+
+/* Выносная линия меню: от названия позиции к правому краю коробки */
+[data-skin="menu"] .sb-card .sb-h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+[data-skin="menu"] .sb-card .sb-h3::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px dotted color-mix(in srgb, var(--tpl-ink) 38%, transparent);
+  transform: translateY(-0.25rem);
+}
+
+/* Бумага с еле заметной фактурой — как меловая карта в зале */
+[data-skin="menu"] {
+  background-image: repeating-linear-gradient(
+    0deg,
+    color-mix(in srgb, var(--tpl-ink) 2%, transparent) 0 1px,
+    transparent 1px 5px
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   5. reading — личный блог.
+   Всё подчинено чтению: узкая мера на всех блоках, крупный интерлиньяж,
+   карточек нет — только строки с волосяной линейкой. Буквица в тексте.
+   --------------------------------------------------------------------------- */
+
+[data-skin="reading"] {
+  --sk-py: clamp(3rem, 5vw, 4.5rem);
+  --sk-measure: 46rem;
+  --sk-measure-narrow: 42rem;
+  --sk-h1: clamp(2.25rem, 4.5vw, 3.25rem);
+  --sk-h1-weight: 700;
+  --sk-h1-leading: 1.1;
+  --sk-h2: clamp(1.5rem, 2.4vw, 2rem);
+  --sk-h3: 1.125rem;
+  --sk-body: 1.0625rem;
+  --sk-body-leading: 1.8;
+  --sk-lead: 1.25rem;
+  --sk-lead-leading: 1.7;
+  --sk-card-bg: transparent;
+  --sk-card-border-width: 0;
+  --sk-card-shadow: none;
+  --sk-card-pad: 1.25rem 0 0;
+  --sk-card-featured-width: 0;
+  --sk-card-featured-shadow: none;
+  --sk-btn-radius: 999px;
+  --sk-icon-radius: 999px;
+  --sk-gap: 2.5rem;
+  --sk-eyebrow-tracking: 0.12em;
+  --sk-stat: 2rem;
+}
+
+[data-skin="reading"] .sb-card {
+  border-top: 1px solid color-mix(in srgb, var(--tpl-ink) 14%, transparent);
+}
+
+[data-skin="reading"] .sb-card-featured {
+  border-top: 2px solid var(--tpl-accent);
+}
+
+[data-skin="reading"] [data-blk-type="richText"] .prose-content > p:first-child::first-letter {
+  float: left;
+  padding: 0.08em 0.12em 0 0;
+  font-family: var(--tpl-font-display);
+  font-size: 3.4em;
+  line-height: 0.82;
+  font-weight: 700;
+  color: var(--tpl-ink);
+}
+
+/* ---------------------------------------------------------------------------
+   6. care — медцентр.
+   Воздух и мягкость: крупный корпусный кегль для пожилых посетителей,
+   скруглённые поверхности, акцентный рельс слева у карточек, спокойное
+   чередование тонированных полос.
+   --------------------------------------------------------------------------- */
+
+[data-skin="care"] {
+  --sk-py: clamp(4rem, 6.5vw, 6.5rem);
+  --sk-measure: 74rem;
+  --sk-h1: clamp(2.25rem, 4.4vw, 3.4rem);
+  --sk-h1-weight: 700;
+  --sk-h1-leading: 1.1;
+  --sk-h2: clamp(1.625rem, 2.6vw, 2.125rem);
+  --sk-h3: 1.125rem;
+  --sk-body: 1.0625rem;
+  --sk-body-leading: 1.72;
+  --sk-card-radius: 18px;
+  --sk-card-pad: 1.75rem;
+  --sk-card-border-color: transparent;
+  --sk-card-shadow: 0 1px 2px color-mix(in srgb, var(--tpl-ink) 6%, transparent),
+    0 16px 32px color-mix(in srgb, var(--tpl-ink) 7%, transparent);
+  --sk-btn-radius: 999px;
+  --sk-btn-pad-x: 1.75rem;
+  --sk-icon-radius: 999px;
+  --sk-gap: 1.5rem;
+  --sk-stat: clamp(2.25rem, 3.4vw, 2.875rem);
+}
+
+[data-skin="care"] .sb-card {
+  border-left: 3px solid color-mix(in srgb, var(--tpl-accent) 55%, transparent);
+}
+
+[data-skin="care"] [data-blk-type="featuresGrid"],
+[data-skin="care"] [data-blk-type="faq"] {
+  background: color-mix(in srgb, var(--tpl-accent) 5%, var(--tpl-paper));
+}
+
+/* ---------------------------------------------------------------------------
+   7. campus — учебный центр.
+   Учебная доска: жирный акцентный штрих под заголовком секции и акцентная
+   полоса сверху карточки. Ритм короче, чем у клиники, — материала много.
+   --------------------------------------------------------------------------- */
+
+[data-skin="campus"] {
+  --sk-py: clamp(3.5rem, 5.5vw, 5.5rem);
+  --sk-measure: 72rem;
+  --sk-h1: clamp(2.25rem, 4.6vw, 3.5rem);
+  --sk-h1-weight: 800;
+  --sk-h1-tracking: -0.03em;
+  --sk-h2: clamp(1.625rem, 2.8vw, 2.25rem);
+  --sk-h2-weight: 800;
+  --sk-h3: 1.125rem;
+  --sk-h3-weight: 700;
+  --sk-card-radius: 10px;
+  --sk-card-pad: 1.5rem;
+  --sk-card-shadow: none;
+  --sk-card-border-color: color-mix(in srgb, var(--tpl-ink) 12%, transparent);
+  --sk-btn-radius: 8px;
+  --sk-btn-weight: 700;
+  --sk-icon-radius: 10px;
+  --sk-gap: 1.25rem;
+  --sk-eyebrow-tracking: 0.1em;
+  --sk-stat: clamp(2.5rem, 4vw, 3.25rem);
+}
+
+[data-skin="campus"] .sb-card {
+  border-top: 3px solid var(--tpl-accent);
+}
+
+[data-skin="campus"] [data-blk-type]:not([data-blk-type="cta"]) .sb-h2::after {
+  content: "";
+  display: block;
+  width: 3.5rem;
+  height: 4px;
+  margin-top: 0.9rem;
+  border-radius: 2px;
+  background: var(--tpl-accent);
+}
+
+/* ---------------------------------------------------------------------------
+   8. industrial — ремонт и строительство.
+   Прорабский язык: верхний регистр, нулевые радиусы, толстая верхняя граница
+   у карточек и разделитель сигнальной лентой.
+   --------------------------------------------------------------------------- */
+
+[data-skin="industrial"] {
+  --sk-py: clamp(3rem, 4.5vw, 4.5rem);
+  --sk-measure: 72rem;
+  --sk-h1: clamp(2.25rem, 5vw, 3.75rem);
+  --sk-h1-weight: 800;
+  --sk-h1-tracking: -0.005em;
+  --sk-h1-leading: 1.02;
+  --sk-h2: clamp(1.5rem, 2.6vw, 2rem);
+  --sk-h2-weight: 800;
+  --sk-h2-tracking: 0;
+  --sk-h-case: uppercase;
+  --sk-h3: 1.0625rem;
+  --sk-h3-weight: 700;
+  --sk-card-radius: 0;
+  --sk-card-shadow: none;
+  --sk-card-pad: 1.5rem;
+  --sk-card-border-color: color-mix(in srgb, var(--tpl-ink) 18%, transparent);
+  --sk-btn-radius: 0;
+  --sk-btn-case: uppercase;
+  --sk-btn-tracking: 0.08em;
+  --sk-btn-weight: 700;
+  --sk-icon-radius: 0;
+  --sk-eyebrow-tracking: 0.16em;
+  --sk-gap: 1rem;
+  --sk-cta-radius: 0;
+  --sk-stat: clamp(2.5rem, 4.2vw, 3.5rem);
+}
+
+[data-skin="industrial"] .sb-card {
+  border-top: 4px solid var(--tpl-ink);
+}
+
+[data-skin="industrial"] .sb-card-featured {
+  border-top-color: var(--tpl-accent);
+}
+
+[data-skin="industrial"] [data-blk-type]:not([data-blk-type="cta"]) .sb-h2::after {
+  content: "";
+  display: block;
+  width: 7rem;
+  height: 6px;
+  margin-top: 1rem;
+  background: repeating-linear-gradient(
+    135deg,
+    var(--tpl-accent) 0 8px,
+    transparent 8px 16px
+  );
+}
+
+[data-skin="industrial"] .sb-stat-value {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------------
+   9. broadsheet — юридическое бюро.
+   Газетная полоса: антиква, узкая мера, двойные линейки над секциями,
+   никаких скруглений, теней и карточек. Абзацный отступ в тексте.
+   --------------------------------------------------------------------------- */
+
+[data-skin="broadsheet"] {
+  --sk-py: clamp(3.25rem, 5vw, 5rem);
+  --sk-measure: 64rem;
+  --sk-measure-narrow: 40rem;
+  --sk-h1: clamp(2.25rem, 4.2vw, 3.25rem);
+  --sk-h1-weight: 700;
+  --sk-h1-leading: 1.14;
+  --sk-h1-tracking: -0.005em;
+  --sk-h2: clamp(1.5rem, 2.2vw, 1.875rem);
+  --sk-h2-leading: 1.2;
+  --sk-h3: 1.0625rem;
+  --sk-body: 1.0625rem;
+  --sk-body-leading: 1.75;
+  --sk-lead-leading: 1.65;
+  --sk-card-bg: transparent;
+  --sk-card-border-width: 0;
+  --sk-card-radius: 0;
+  --sk-card-shadow: none;
+  --sk-card-pad: 0;
+  --sk-card-featured-width: 0;
+  --sk-card-featured-shadow: none;
+  --sk-btn-radius: 0;
+  --sk-btn-tracking: 0.04em;
+  --sk-icon-radius: 0;
+  --sk-eyebrow-tracking: 0.22em;
+  --sk-gap: 2.25rem;
+  --sk-cta-radius: 0;
+  --sk-stat: 2.25rem;
+}
+
+[data-skin="broadsheet"] [data-blk-type]:not([data-blk-type="hero"]) > section > .sb-container {
+  border-top: 3px double color-mix(in srgb, var(--tpl-ink) 32%, transparent);
+  padding-top: 2.25rem;
+}
+
+[data-skin="broadsheet"] .sb-card {
+  border-left: 1px solid color-mix(in srgb, var(--tpl-ink) 16%, transparent);
+  padding-left: 1.5rem;
+}
+
+[data-skin="broadsheet"] .sb-card-featured {
+  border-left: 3px solid var(--tpl-accent);
+}
+
+[data-skin="broadsheet"] [data-blk-type="richText"] .prose-content > p + p {
+  text-indent: 1.4em;
+}
+
+/* ---------------------------------------------------------------------------
+   10. salon — салон красоты.
+   Мягкость и воздух: крупные скругления, глубокая рассеянная тень, светлый
+   разреженный дисплейный набор, асимметричная пара «текст — картинка».
+   --------------------------------------------------------------------------- */
+
+[data-skin="salon"] {
+  --sk-py: clamp(4rem, 6.5vw, 6.5rem);
+  --sk-measure: 70rem;
+  --sk-h1: clamp(2.5rem, 5vw, 4rem);
+  --sk-h1-weight: 500;
+  --sk-h1-tracking: -0.005em;
+  --sk-h1-leading: 1.12;
+  --sk-h2: clamp(1.75rem, 3vw, 2.5rem);
+  --sk-h2-weight: 500;
+  --sk-h2-tracking: -0.005em;
+  --sk-h3: 1.125rem;
+  --sk-h3-weight: 600;
+  --sk-card-radius: 26px;
+  --sk-card-pad: 2rem;
+  --sk-card-border-color: transparent;
+  --sk-card-shadow: 0 18px 44px color-mix(in srgb, var(--tpl-ink) 10%, transparent);
+  --sk-btn-radius: 999px;
+  --sk-btn-pad-x: 2rem;
+  --sk-btn-pad-y: 0.85rem;
+  --sk-btn-weight: 500;
+  --sk-btn-tracking: 0.04em;
+  --sk-icon-radius: 999px;
+  --sk-eyebrow-tracking: 0.24em;
+  --sk-gap: 1.75rem;
+  --sk-cta-radius: 26px;
+  --sk-stat: clamp(2.5rem, 4vw, 3.25rem);
+}
+
+[data-skin="salon"] [data-blk-type="pricing"],
+[data-skin="salon"] [data-blk-type="testimonials"] {
+  background: color-mix(in srgb, var(--tpl-accent) 7%, var(--tpl-paper));
+}
+
+@media (min-width: 1024px) {
+  [data-skin="salon"] [data-blk-type="imageText"] .sb-container > div {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 4rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   11. arena — фитнес-клуб. Тёмный зал.
+   Курсивный верхний регистр, жёсткие края, огромные цифры и диагональный
+   срез у призыва — язык спортивной афиши.
+   --------------------------------------------------------------------------- */
+
+[data-skin="arena"] {
+  --sk-py: clamp(3.5rem, 5.5vw, 5.5rem);
+  --sk-measure: 76rem;
+  --sk-h1: clamp(2.5rem, 7vw, 5rem);
+  --sk-h1-weight: 800;
+  --sk-h1-tracking: -0.03em;
+  --sk-h1-leading: 0.98;
+  --sk-h2: clamp(1.75rem, 3.4vw, 2.75rem);
+  --sk-h2-weight: 800;
+  --sk-h-case: uppercase;
+  --sk-h-style: italic;
+  --sk-h3: 1.0625rem;
+  --sk-h3-weight: 700;
+  --sk-card-bg: color-mix(in srgb, var(--tpl-ink) 6%, var(--tpl-surface));
+  --sk-card-radius: 2px;
+  --sk-card-shadow: none;
+  --sk-card-pad: 1.5rem;
+  --sk-card-border-color: color-mix(in srgb, var(--tpl-ink) 18%, transparent);
+  --sk-btn-radius: 2px;
+  --sk-btn-case: uppercase;
+  --sk-btn-tracking: 0.1em;
+  --sk-btn-weight: 800;
+  --sk-btn-pad-x: 2rem;
+  --sk-icon-radius: 2px;
+  --sk-eyebrow-tracking: 0.2em;
+  --sk-gap: 1rem;
+  --sk-cta-radius: 0;
+  --sk-stat: clamp(3rem, 6vw, 4.5rem);
+  --sk-stat-style: italic;
+  --sk-stat-tracking: -0.04em;
+}
+
+[data-skin="arena"] .sb-card-featured {
+  border-width: 2px;
+  border-color: var(--tpl-accent);
+  box-shadow: none;
+}
+
+[data-skin="arena"] .sb-cta {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 1.75rem), calc(100% - 3rem) 100%, 0 100%);
+}
+
+[data-skin="arena"] .sb-btn-outline {
+  border-width: 2px;
+  border-color: var(--tpl-accent);
+  color: var(--tpl-accent);
+}
+
+/* ---------------------------------------------------------------------------
+   12. guide — турагентство.
+   Путеводитель: крупные скругления у медиа, мягкая тень и пунктирный
+   «маршрут», который отбивает секции друг от друга.
+   --------------------------------------------------------------------------- */
+
+[data-skin="guide"] {
+  --sk-py: clamp(3.5rem, 5.5vw, 5.5rem);
+  --sk-measure: 74rem;
+  --sk-h1: clamp(2.25rem, 4.8vw, 3.6rem);
+  --sk-h1-weight: 700;
+  --sk-h1-leading: 1.08;
+  --sk-h2: clamp(1.625rem, 2.8vw, 2.25rem);
+  --sk-h3: 1.125rem;
+  --sk-card-radius: 20px;
+  --sk-card-pad: 1.5rem;
+  --sk-card-border-color: transparent;
+  --sk-card-shadow: 0 10px 26px color-mix(in srgb, var(--tpl-ink) 10%, transparent);
+  --sk-btn-radius: 14px;
+  --sk-btn-pad-x: 1.75rem;
+  --sk-icon-radius: 14px;
+  --sk-gap: 1.5rem;
+  --sk-eyebrow-tracking: 0.1em;
+  --sk-cta-radius: 20px;
+  --sk-stat: clamp(2.25rem, 3.6vw, 3rem);
+}
+
+[data-skin="guide"] [data-blk-type]:not([data-blk-type="hero"]) > section > .sb-container::before {
+  content: "";
+  display: block;
+  border-top: 2px dotted color-mix(in srgb, var(--tpl-accent) 45%, transparent);
+  margin-bottom: 2.25rem;
+}
+
+[data-skin="guide"] [data-blk-type="gallery"] figure,
+[data-skin="guide"] [data-blk-type="imageText"] .sb-container img {
+  border-radius: 20px;
+}
+
+/* ---------------------------------------------------------------------------
+   Шапка и подвал. Скин меняет их трактовку так же, как секции: у одних
+   сайтов навигация разреженная и капительная, у других — плотная.
+   --------------------------------------------------------------------------- */
+
+[data-skin="poster"] .sb-header,
+[data-skin="arena"] .sb-header,
+[data-skin="industrial"] .sb-header {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8125rem;
+}
+
+[data-skin="broadsheet"] .sb-header,
+[data-skin="menu"] .sb-header {
+  border-bottom-width: 3px;
+  border-bottom-style: double;
+  border-bottom-color: color-mix(in srgb, var(--tpl-ink) 30%, transparent);
+}
+
+[data-skin="salon"] .sb-header,
+[data-skin="care"] .sb-header,
+[data-skin="guide"] .sb-header {
+  border-bottom-color: transparent;
+  box-shadow: 0 6px 24px color-mix(in srgb, var(--tpl-ink) 7%, transparent);
+}
+
+[data-skin="reading"] .sb-header {
+  background: transparent;
+}
+
+[data-skin="poster"] .sb-footer,
+[data-skin="arena"] .sb-footer {
+  background: color-mix(in srgb, var(--tpl-ink) 8%, var(--tpl-paper));
+}

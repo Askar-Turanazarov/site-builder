@@ -15,7 +15,7 @@ export function TeamBlock({ data, ctx }: { data: BlockDataOf<"team">; ctx: Rende
             const photo = resolveMedia(ctx, member.photoMediaId);
             return (
               <div key={i}>
-                <div className="aspect-square overflow-hidden rounded-[var(--tpl-radius)] bg-[var(--tpl-surface)]">
+                <div className="sb-team-photo aspect-square overflow-hidden rounded-[var(--tpl-radius)] bg-[var(--tpl-surface)]">
                   {photo && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img

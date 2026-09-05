@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Site Builder — конструктор многоязычных сайтов
 
-## Getting Started
+Самостоятельная CMS-конструктор в духе WordPress/Tilda: визуальный блочный редактор страниц и статей,
+ручной перевод контента на три языка (RU / UZ / EN), рубрики и новости, медиатека, словарь статичных
+надписей сайта, готовые шаблоны сайтов целиком и выгрузка готового сайта в статические HTML/CSS/JS.
 
-First, run the development server:
+Каркас проекта создан официальным генератором Next.js (`create-next-app`) — от него остались только
+`package.json`, `tsconfig.json` и конфиги Tailwind/PostCSS/ESLint. Вся CMS (схема БД, блочная система,
+редактор, i18n, экспорт, шаблоны) написана в этом проекте.
+
+## Стек
+
+| Слой | Технология |
+|---|---|
+| Фреймворк | Next.js 16 (App Router), React 19, TypeScript |
+| Стили | Tailwind CSS v4 + CSS-переменные тем (`--tpl-*`) |
+| База данных | SQLite через Prisma 7 (адаптер `better-sqlite3`) |
+| Редактор текста | TipTap (ограниченный набор: жирный/курсив/ссылки/списки/H2-H3) |
+| Drag-and-drop | dnd-kit |
+| Экспорт | собственный генератор статики + `archiver` (ZIP) |
+
+## Быстрый старт
 
 ```bash
+npm install
+cp .env.example .env     # затем отредактируйте значения
+npx prisma migrate deploy
+npm run db:seed
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Публичный сайт: `http://localhost:3000` (редирект на язык по умолчанию).
+Админка: `http://localhost:3000/admin`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Переменные окружения (`.env`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Переменная | Назначение |
+|---|---|
+| `DATABASE_URL` | Путь к файлу SQLite, по умолчанию `file:./dev.db` |
+| `AUTH_SECRET` | Длинная случайная строка для подписи сессионной куки |
+| `ADMIN_EMAIL` | Email единственного администратора |
+| `ADMIN_PASSWORD` | Пароль администратора (учётка создаётся при первом входе или сидом) |
 
-## Learn More
+> Смените `ADMIN_PASSWORD` до любого реального использования.
 
-To learn more about Next.js, take a look at the following resources:
+## Скрипты
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Команда | Что делает |
+|---|---|
+| `npm run dev` | Дев-сервер |
+| `npm run build` | Сборка CSS для экспорта + прод-сборка Next |
+| `npm start` | Запуск прод-сборки |
+| `npm run lint` | ESLint |
+| `npm run db:seed` | Наполнение базы демо-сайтом и словарём переводов |
+| `npm run build:export-css` | Пересборка CSS-бандла для выгружаемой статики |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Возможности
 
-## Deploy on Vercel
+- **Блочный редактор.** 14 типов блоков (обложка, текст, изображение+текст, галерея, сетка преимуществ,
+  призыв к действию, отзывы, тарифы, команда, цифры, вопрос-ответ, форма, лента логотипов, видео).
+  Перетаскивание блоков прямо на превью, вставка между блоками, дублирование, скрытие.
+- **Три языка контента.** У каждой страницы и статьи три независимых дерева блоков (RU/UZ/EN);
+  структура блоков синхронизирована, различается только текст. Переключение — вкладками в редакторе.
+- **Стили без CSS.** Для каждого блока: фон, цвет текста и акцента (палитра + произвольный HEX),
+  размер заголовка, отступы, ширина контента, скругления, выравнивание.
+- **Дизайн сайта.** Выбор темы, пары шрифтов, глобальных цветов и радиусов — применяется и к сайту, и к экспорту.
+- **Новости и рубрики** с тем же редактором и переводами.
+- **Словарь UI-строк** публичного сайта (кнопки, навигация, сообщения форм) на трёх языках.
+- **Шаблоны:** готовые сайты целиком (страницы + рубрики + статьи + меню + тема) и шаблоны отдельных страниц.
+- **Экспорт в статику.** ZIP с деревом `/{locale}/...` и `assets/` — работает на любом статическом хостинге.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Структура проекта
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+prisma/                    схема БД, миграции, сид
+src/
+  app/
+    (public)/[locale]/     публичный сайт (главная, страницы, новости, рубрики, статьи)
+    admin/                 админка: страницы, новости, рубрики, медиа, меню, словарь,
+                           настройки, дизайн, шаблоны, экспорт
+  blocks/
+    types.ts               типы блоков, zod-схемы, спецификации полей редактора
+    registry.tsx           единая точка: React-рендер + рендер в статический HTML
+    components/            React-компоненты блоков (живой сайт и превью)
+    static/                генераторы HTML тех же блоков для экспорта
+    classes.ts palette.ts  общие классы вёрстки и палитры тем
+  components/admin/        интерфейс админки, включая редактор блоков
+  components/site/         шапка, подвал, переключатель языков публичного сайта
+  lib/
+    actions/               server actions (CRUD)
+    export/                генератор статики и упаковка в ZIP
+    site-templates/        готовые сайты-шаблоны
+    templates/             шаблоны отдельных страниц и статей
+    admin-i18n/            переводы интерфейса админки
+```
+
+Ключевой принцип: **блок описан один раз** — его React-компонент и генератор статического HTML используют
+общие строки классов из `blocks/classes.ts`, поэтому живой сайт и выгруженная статика выглядят одинаково.
+
+## Выгрузка сайта
+
+`/admin/export` → «Скачать ZIP-архив». Архив содержит готовые `index.html` по каталогам для каждого языка
+и папку `assets/`. Ссылки внутри абсолютные, поэтому содержимое архива нужно класть в **корень** хостинга,
+а хостинг должен отдавать `index.html` для путей-каталогов (поведение по умолчанию у Netlify, GitHub Pages,
+Cloudflare Pages, S3 и nginx). Для локальной проверки: `npx serve` в распакованной папке.
+
+Форма обратной связи в статике не имеет бэкенда: если в настройках указан внешний адрес обработчика
+(например, Formspree), форма отправляет туда, иначе открывает почтовый клиент посетителя.

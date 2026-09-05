@@ -22,7 +22,7 @@ export function Header({
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="border-b border-[var(--tpl-ink)]/10 bg-[var(--tpl-surface)]">
+    <header className="sb-header border-b border-[var(--tpl-ink)]/10 bg-[var(--tpl-surface)]">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link href={homeHref} className="flex items-center gap-2.5">
           {logoUrl ? (

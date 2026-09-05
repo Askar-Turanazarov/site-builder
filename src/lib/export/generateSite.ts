@@ -7,7 +7,7 @@ import { blockListToHtml } from "@/blocks/registry";
 import { articleHeaderToHtml } from "@/blocks/static/articleHeader";
 import { localeField } from "@/lib/locale-field";
 import { resolveMenuItems } from "@/lib/menu";
-import { isThemeKey } from "@/blocks/palette";
+import { siteDesignFromSettings } from "@/lib/site-design";
 import { renderDocument, type ShellData } from "./shell";
 import { SITE_JS } from "./site.js.template";
 import { CX } from "@/blocks/classes";
@@ -35,7 +35,7 @@ export async function generateSite(): Promise<ExportResult> {
     prisma.media.findMany(),
   ]);
 
-  const themeKey = isThemeKey(settings.themeKey) ? settings.themeKey : "business";
+  const design = siteDesignFromSettings(settings);
   const files: ExportFile[] = [];
   const usedMediaIds = new Set<string>();
 
@@ -118,12 +118,12 @@ export async function generateSite(): Promise<ExportResult> {
       if (page.isHomepage) {
         files.push({
           path: `${locale}/index.html`,
-          content: renderDocument({ shell, themeKey, title, description, pathAfterLocale: "", bodyHtml }),
+          content: renderDocument({ shell, design, title, description, pathAfterLocale: "", bodyHtml }),
         });
       } else {
         files.push({
           path: `${locale}/${page.slug}/index.html`,
-          content: renderDocument({ shell, themeKey, title, description, pathAfterLocale: `${page.slug}/`, bodyHtml }),
+          content: renderDocument({ shell, design, title, description, pathAfterLocale: `${page.slug}/`, bodyHtml }),
         });
       }
     }
@@ -138,7 +138,7 @@ export async function generateSite(): Promise<ExportResult> {
       path: `${locale}/news/index.html`,
       content: renderDocument({
         shell,
-        themeKey,
+        design,
         title: t("nav.news"),
         description: null,
         pathAfterLocale: "news/",
@@ -159,7 +159,7 @@ export async function generateSite(): Promise<ExportResult> {
         path: `${locale}/news/${category.slug}/index.html`,
         content: renderDocument({
           shell,
-          themeKey,
+          design,
           title: name,
           description: desc || null,
           pathAfterLocale: `news/${category.slug}/`,
@@ -185,7 +185,7 @@ export async function generateSite(): Promise<ExportResult> {
         path: `${locale}/news/${post.category.slug}/${post.slug}/index.html`,
         content: renderDocument({
           shell,
-          themeKey,
+          design,
           title: localeField(post, "title", locale),
           description: localeField(post, "metaDesc", locale) || localeField(post, "excerpt", locale) || null,
           pathAfterLocale: `news/${post.category.slug}/${post.slug}/`,
@@ -253,7 +253,7 @@ function postCardHtml(
   return `
 <article class="group">
   <a href="/${locale}/news/${post.category.slug}/${post.slug}/" class="block">
-    <div class="aspect-[4/3] overflow-hidden rounded-[var(--tpl-radius)] bg-[var(--tpl-surface)]">
+    <div class="sb-post-cover aspect-[4/3] overflow-hidden rounded-[var(--tpl-radius)] bg-[var(--tpl-surface)]">
       ${cover ? `<img src="${cover.url}" alt="${title}" class="h-full w-full object-cover transition duration-300 group-hover:scale-105" />` : ""}
     </div>
     <div class="mt-4 flex items-center gap-2 text-xs text-[var(--tpl-ink-soft)]">

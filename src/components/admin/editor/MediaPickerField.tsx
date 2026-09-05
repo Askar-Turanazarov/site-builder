@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { listMediaAction, uploadMediaAction, type UploadMediaState } from "@/lib/actions/media";
+import { useAdminT } from "@/components/admin/AdminI18nProvider";
 
 interface MediaRow {
   id: string;
@@ -16,6 +17,7 @@ export function MediaPickerField({
   value: string | null;
   onChange: (mediaId: string | null) => void;
 }) {
+  const t = useAdminT();
   const [open, setOpen] = useState(false);
   const [media, setMedia] = useState<MediaRow[]>([]);
   const [loading, startLoading] = useTransition();
@@ -61,7 +63,7 @@ export function MediaPickerField({
             // eslint-disable-next-line @next/next/no-img-element
             <img src={`/uploads/${selected.path}`} alt="" className="h-full w-full object-cover" />
           ) : (
-            <span className="text-xs text-muted">нет</span>
+            <span className="text-xs text-muted">{t("field.noFile")}</span>
           )}
         </div>
         <div className="flex flex-col gap-1.5">
@@ -70,7 +72,7 @@ export function MediaPickerField({
             onClick={() => setOpen((v) => !v)}
             className="rounded-md border border-border bg-surface px-3 py-1.5 text-xs font-medium text-ink hover:border-accent"
           >
-            Выбрать изображение
+            {t("field.chooseImage")}
           </button>
           {selected && (
             <button
@@ -78,7 +80,7 @@ export function MediaPickerField({
               onClick={() => onChange(null)}
               className="text-left text-xs text-muted hover:text-danger"
             >
-              Убрать
+              {t("field.removeImage")}
             </button>
           )}
         </div>
@@ -87,9 +89,9 @@ export function MediaPickerField({
       {open && (
         <div className="mt-3 rounded-md border border-border bg-surface p-3">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-medium text-ink-soft">Медиатека</span>
+            <span className="text-xs font-medium text-ink-soft">{t("field.mediaLibrary")}</span>
             <label className="cursor-pointer rounded-md bg-accent px-2.5 py-1 text-xs font-medium text-surface hover:bg-accent-strong">
-              {uploading ? "Загрузка…" : "Загрузить файл"}
+              {uploading ? t("media.uploading") : t("media.upload")}
               <input
                 ref={fileInputRef}
                 type="file"
@@ -100,8 +102,8 @@ export function MediaPickerField({
               />
             </label>
           </div>
-          {uploadState.error && <p className="mb-2 text-xs text-danger">{uploadState.error}</p>}
-          {loading && <p className="text-xs text-muted">Загрузка…</p>}
+          {uploadState.error && <p className="mb-2 text-xs text-danger">{t(uploadState.error)}</p>}
+          {loading && <p className="text-xs text-muted">{t("common.loading")}</p>}
           <div className="grid max-h-64 grid-cols-4 gap-2 overflow-y-auto">
             {media.map((m) => (
               <button
@@ -121,7 +123,7 @@ export function MediaPickerField({
               </button>
             ))}
             {media.length === 0 && !loading && (
-              <p className="col-span-4 text-xs text-muted">Пока нет загруженных файлов</p>
+              <p className="col-span-4 text-xs text-muted">{t("media.empty")}</p>
             )}
           </div>
         </div>

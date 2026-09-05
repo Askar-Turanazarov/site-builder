@@ -19,7 +19,7 @@ export function Footer({
   contactAddress: string | null;
 }) {
   return (
-    <footer className="border-t border-[var(--tpl-ink)]/10 bg-[var(--tpl-surface)]">
+    <footer className="sb-footer border-t border-[var(--tpl-ink)]/10 bg-[var(--tpl-surface)]">
       <div className="mx-auto max-w-6xl px-6 py-12">
         <div className="grid gap-8 sm:grid-cols-3">
           <div>

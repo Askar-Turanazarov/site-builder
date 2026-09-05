@@ -28,14 +28,14 @@ export interface PostInput {
 
 function validateBlocks(blocks: Block[]) {
   const result = blockListSchema.safeParse(blocks);
-  if (!result.success) throw new Error("Некорректные данные блоков");
+  if (!result.success) throw new Error("blocksInvalid");
   return result.data as Block[];
 }
 
 async function ensureUniqueSlug(slug: string, excludeId?: string) {
   const existing = await prisma.post.findUnique({ where: { slug } });
   if (existing && existing.id !== excludeId) {
-    throw new Error(`Статья со слагом "${slug}" уже существует`);
+    throw new Error("slugTaken");
   }
 }
 

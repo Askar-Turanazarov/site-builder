@@ -21,7 +21,7 @@ export function ctaToHtml(data: BlockDataOf<"cta">, ctx: RenderContext): string 
   return `
 <section class="${CX.section}">
   <div class="${CX.container}">
-    <div class="${cx("flex flex-col items-start gap-6 rounded-[var(--tpl-radius)] px-8 py-12 sm:flex-row sm:items-center sm:justify-between", solid ? "bg-[var(--tpl-accent)]" : "border border-[var(--tpl-ink)]/15")}">
+    <div class="${cx("sb-cta flex flex-col items-start gap-6 rounded-[var(--tpl-radius)] px-8 py-12 sm:flex-row sm:items-center sm:justify-between", solid ? "bg-[var(--tpl-accent)]" : "border border-[var(--tpl-ink)]/15")}">
       <div>
         ${heading}
         ${body}

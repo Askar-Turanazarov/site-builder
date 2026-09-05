@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { parseBlocks } from "@/blocks/types";
 import { PageEditor, type PageEditorInitial } from "@/components/admin/editor/PageEditor";
 import { getSiteSettings } from "@/lib/site-settings";
-import { isThemeKey } from "@/blocks/palette";
+import { siteDesignFromSettings } from "@/lib/site-design";
 
 export default async function EditPagePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -29,7 +29,7 @@ export default async function EditPagePage({ params }: { params: Promise<{ id: s
     status: page.status === "published" ? "published" : "draft",
   };
 
-  const themeKey = isThemeKey(settings.themeKey) ? settings.themeKey : "business";
+  const design = siteDesignFromSettings(settings);
 
-  return <PageEditor key={page.id} initial={initial} themeKey={themeKey} />;
+  return <PageEditor key={page.id} initial={initial} design={design} />;
 }

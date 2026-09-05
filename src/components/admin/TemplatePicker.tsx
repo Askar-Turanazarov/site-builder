@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { PageTemplate } from "@/lib/templates";
+import { getAdminT } from "@/lib/admin-i18n/server";
 
-export function TemplatePicker({
+export async function TemplatePicker({
   title,
   subtitle,
   blankHref,
@@ -14,6 +15,8 @@ export function TemplatePicker({
   groups: { heading: string; templates: PageTemplate[] }[];
   buildHref: (templateKey: string) => string;
 }) {
+  const t = await getAdminT();
+
   return (
     <div className="mx-auto max-w-4xl px-8 py-10">
       <h1 className="font-display text-2xl font-semibold text-ink">{title}</h1>
@@ -27,8 +30,8 @@ export function TemplatePicker({
           +
         </span>
         <div>
-          <div className="text-sm font-medium text-ink">Начать с пустой страницы</div>
-          <div className="text-xs text-muted">Без готовых блоков — соберёте с нуля</div>
+          <div className="text-sm font-medium text-ink">{t("picker.blank")}</div>
+          <div className="text-xs text-muted">{t("picker.blankHint")}</div>
         </div>
       </Link>
 
@@ -43,7 +46,7 @@ export function TemplatePicker({
                 className="rounded-lg border border-border bg-surface p-4 hover:border-accent hover:bg-accent-tint"
               >
                 <div className="text-sm font-medium text-ink">{tpl.labelRu}</div>
-                <div className="mt-1 text-xs text-muted">{tpl.blocksRu.length} блоков</div>
+                <div className="mt-1 text-xs text-muted">{tpl.blocksRu.length} {t("picker.blocks")}</div>
               </Link>
             ))}
           </div>

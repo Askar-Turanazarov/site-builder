@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { parseBlocks } from "@/blocks/types";
 import { PostEditor, type PostEditorInitial } from "@/components/admin/editor/PostEditor";
 import { getSiteSettings } from "@/lib/site-settings";
-import { isThemeKey } from "@/blocks/palette";
+import { siteDesignFromSettings } from "@/lib/site-design";
 
 export default async function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -34,13 +34,13 @@ export default async function EditPostPage({ params }: { params: Promise<{ id: s
     status: post.status === "published" ? "published" : "draft",
   };
 
-  const themeKey = isThemeKey(settings.themeKey) ? settings.themeKey : "business";
+  const design = siteDesignFromSettings(settings);
 
   return (
     <PostEditor
       key={post.id}
       initial={initial}
-      themeKey={themeKey}
+      design={design}
       categories={categories.map((c) => ({ id: c.id, nameRu: c.nameRu }))}
     />
   );

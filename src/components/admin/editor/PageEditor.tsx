@@ -4,11 +4,13 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { Block } from "@/blocks/types";
 import type { Locale } from "@/blocks/context";
-import type { ThemeKey } from "@/blocks/palette";
+import type { SiteDesign } from "@/blocks/palette";
 import { useBlockEditor, type LocaleBlocks } from "./useBlockEditor";
 import { BlockEditorBody } from "./BlockEditorBody";
 import { LocalizedTextInput } from "./TitleFields";
 import { createPageAction, updatePageAction, deletePageAction, type PageInput } from "@/lib/actions/pages";
+import { useAdminT } from "@/components/admin/AdminI18nProvider";
+import { adminErrorText } from "@/lib/admin-i18n/errors";
 
 export interface PageEditorInitial {
   id?: string;
@@ -26,7 +28,8 @@ export interface PageEditorInitial {
   status: "draft" | "published";
 }
 
-export function PageEditor({ initial, themeKey }: { initial: PageEditorInitial; themeKey: ThemeKey }) {
+export function PageEditor({ initial, design }: { initial: PageEditorInitial; design: SiteDesign }) {
+  const t = useAdminT();
   const router = useRouter();
   const isNew = !initial.id;
 
@@ -44,7 +47,6 @@ export function PageEditor({ initial, themeKey }: { initial: PageEditorInitial; 
     en: initial.metaDescEn,
   });
   const [showSeo, setShowSeo] = useState(false);
-  const [showAddMenu, setShowAddMenu] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -71,7 +73,7 @@ export function PageEditor({ initial, themeKey }: { initial: PageEditorInitial; 
   function handleSave(nextStatus: "draft" | "published") {
     setError(null);
     if (!slug.trim()) {
-      setError("Укажите слаг страницы");
+      setError(t("pageEditor.errSlug"));
       return;
     }
     startTransition(async () => {
@@ -85,14 +87,14 @@ export function PageEditor({ initial, themeKey }: { initial: PageEditorInitial; 
           router.refresh();
         }
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Не удалось сохранить страницу");
+        setError(adminErrorText(t, e, "pageEditor.errSave"));
       }
     });
   }
 
   function handleDelete() {
     if (!initial.id) return;
-    if (!window.confirm("Удалить страницу без возможности восстановления?")) return;
+    if (!window.confirm(t("pageEditor.confirmDelete"))) return;
     startTransition(async () => {
       await deletePageAction(initial.id!);
     });
@@ -104,7 +106,7 @@ export function PageEditor({ initial, themeKey }: { initial: PageEditorInitial; 
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="flex flex-wrap items-end gap-4">
             <div>
-              <label className="mb-1 block text-xs font-semibold text-muted">Слаг (URL)</label>
+              <label className="mb-1 block text-xs font-semibold text-muted">{t("common.slug")}</label>
               <input
                 type="text"
                 value={slug}
@@ -115,30 +117,40 @@ export function PageEditor({ initial, themeKey }: { initial: PageEditorInitial; 
             </div>
             <label className="flex items-center gap-2 pb-2 text-sm text-ink-soft">
               <input type="checkbox" checked={isHomepage} onChange={(e) => setIsHomepage(e.target.checked)} />
-              Это главная страница
+              {t("pageEditor.isHomepage")}
             </label>
             <div>
-              <label className="mb-1 block text-xs font-semibold text-muted">Статус</label>
+              <label className="mb-1 block text-xs font-semibold text-muted">{t("common.status")}</label>
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as "draft" | "published")}
                 className="rounded-md border border-border bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-accent"
               >
-                <option value="draft">Черновик</option>
-                <option value="published">Опубликовано</option>
+                <option value="draft">{t("common.draft")}</option>
+                <option value="published">{t("common.published")}</option>
               </select>
             </div>
           </div>
           <div className="flex items-center gap-2">
             {!isNew && (
-              <button
-                type="button"
-                onClick={handleDelete}
-                disabled={pending}
-                className="rounded-md border border-border px-3 py-1.5 text-sm text-danger hover:border-danger"
-              >
-                Удалить
-              </button>
+              <>
+                <a
+                  href={`/admin/preview/page/${initial.id}?locale=${editor.activeLocale}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-md border border-border px-3 py-1.5 text-sm text-ink-soft hover:border-accent hover:text-ink"
+                >
+                  {t("common.preview")} ↗
+                </a>
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  disabled={pending}
+                  className="rounded-md border border-border px-3 py-1.5 text-sm text-danger hover:border-danger"
+                >
+                  {t("common.delete")}
+                </button>
+              </>
             )}
             <button
               type="button"
@@ -146,7 +158,7 @@ export function PageEditor({ initial, themeKey }: { initial: PageEditorInitial; 
               onClick={() => handleSave(status)}
               className="rounded-md border border-border bg-paper px-4 py-1.5 text-sm font-medium text-ink hover:border-accent disabled:opacity-60"
             >
-              Сохранить
+              {t("common.save")}
             </button>
             <button
               type="button"
@@ -154,7 +166,7 @@ export function PageEditor({ initial, themeKey }: { initial: PageEditorInitial; 
               onClick={() => handleSave("published")}
               className="rounded-md bg-accent px-4 py-1.5 text-sm font-medium text-surface hover:bg-accent-strong disabled:opacity-60"
             >
-              {pending ? "Сохранение…" : "Опубликовать"}
+              {pending ? t("common.saving") : t("common.publish")}
             </button>
           </div>
         </div>
@@ -162,7 +174,7 @@ export function PageEditor({ initial, themeKey }: { initial: PageEditorInitial; 
         {error && <p className="mt-3 rounded-md bg-danger-tint px-3 py-2 text-sm text-danger">{error}</p>}
 
         <div className="mt-4">
-          <LocalizedTextInput label="Заголовок страницы" values={title} onChange={(l, v) => setTitle((t) => ({ ...t, [l]: v }))} />
+          <LocalizedTextInput label={t("pageEditor.pageTitle")} values={title} onChange={(l, v) => setTitle((t) => ({ ...t, [l]: v }))} />
         </div>
 
         <button
@@ -170,12 +182,12 @@ export function PageEditor({ initial, themeKey }: { initial: PageEditorInitial; 
           onClick={() => setShowSeo((v) => !v)}
           className="mt-3 text-xs font-medium text-muted hover:text-ink"
         >
-          {showSeo ? "− Скрыть SEO-настройки" : "+ SEO-настройки (описание для поисковиков)"}
+          {showSeo ? t("pageEditor.seoHide") : t("pageEditor.seoShow")}
         </button>
         {showSeo && (
           <div className="mt-2">
             <LocalizedTextInput
-              label="Meta-описание"
+              label={t("pageEditor.metaDesc")}
               values={metaDesc}
               onChange={(l, v) => setMetaDesc((m) => ({ ...m, [l]: v }))}
               multiline
@@ -184,13 +196,7 @@ export function PageEditor({ initial, themeKey }: { initial: PageEditorInitial; 
         )}
       </div>
 
-      <BlockEditorBody
-        editor={editor}
-        themeKey={themeKey}
-        showAddMenu={showAddMenu}
-        onOpenAddMenu={() => setShowAddMenu(true)}
-        onCloseAddMenu={() => setShowAddMenu(false)}
-      />
+      <BlockEditorBody editor={editor} design={design} />
     </div>
   );
 }

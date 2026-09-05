@@ -15,7 +15,8 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { Block } from "@/blocks/types";
-import { BLOCK_LABELS } from "@/blocks/types";
+import { blockLabel } from "@/blocks/labels";
+import { useAdminT } from "@/components/admin/AdminI18nProvider";
 
 export function BlockListSidebar({
   blocks,
@@ -25,6 +26,7 @@ export function BlockListSidebar({
   onDuplicate,
   onRemove,
   onAddClick,
+  onCollapse,
 }: {
   blocks: Block[];
   selectedId: string | null;
@@ -33,7 +35,9 @@ export function BlockListSidebar({
   onDuplicate: (id: string) => void;
   onRemove: (id: string) => void;
   onAddClick: () => void;
+  onCollapse: () => void;
 }) {
+  const t = useAdminT();
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
   function handleDragEnd(event: DragEndEvent) {
@@ -47,22 +51,38 @@ export function BlockListSidebar({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="border-b border-border px-4 py-3">
+      <div className="border-b border-border px-3 py-3">
+        <div className="mb-2 flex items-center justify-between px-1">
+          <span className="text-xs font-semibold text-muted">{t("editor.outline")}</span>
+          <button
+            type="button"
+            onClick={onCollapse}
+            title={t("editor.collapse")}
+            className="rounded px-1.5 py-0.5 text-xs text-muted hover:bg-paper hover:text-ink"
+          >
+            ⟨
+          </button>
+        </div>
         <button
           type="button"
           onClick={onAddClick}
           className="w-full rounded-md bg-accent px-3 py-2 text-sm font-medium text-surface hover:bg-accent-strong"
         >
-          + Добавить блок
+          {t("editor.addBlock")}
         </button>
       </div>
       <div className="flex-1 overflow-y-auto p-2">
         {blocks.length === 0 ? (
           <p className="px-2 py-6 text-center text-sm text-muted">
-            Блоков пока нет. Добавьте первый блок, чтобы начать.
+            {t("editor.emptyList")}
           </p>
         ) : (
-          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <DndContext
+            id="block-outline"
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
             <SortableContext items={blocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
               <div className="space-y-1">
                 {blocks.map((block) => (
@@ -97,6 +117,7 @@ function SortableRow({
   onDuplicate: () => void;
   onRemove: () => void;
 }) {
+  const t = useAdminT();
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: block.id,
   });
@@ -114,18 +135,18 @@ function SortableRow({
         {...attributes}
         {...listeners}
         className="cursor-grab touch-none px-1 text-muted active:cursor-grabbing"
-        aria-label="Перетащить"
+        aria-label={t("editor.drag")}
       >
         ⠿
       </button>
       <button type="button" onClick={onSelect} className="min-w-0 flex-1 truncate text-left text-sm text-ink">
-        {BLOCK_LABELS[block.type]}
+        {blockLabel(t, block.type)}
       </button>
       <button
         type="button"
         onClick={onDuplicate}
         className="rounded px-1.5 py-0.5 text-xs text-muted opacity-0 hover:bg-surface hover:text-ink group-hover:opacity-100"
-        title="Дублировать"
+        title={t("editor.duplicate")}
       >
         ⧉
       </button>
@@ -133,7 +154,7 @@ function SortableRow({
         type="button"
         onClick={onRemove}
         className="rounded px-1.5 py-0.5 text-xs text-muted opacity-0 hover:bg-danger-tint hover:text-danger group-hover:opacity-100"
-        title="Удалить"
+        title={t("editor.remove")}
       >
         ✕
       </button>

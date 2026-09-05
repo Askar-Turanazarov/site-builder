@@ -24,14 +24,14 @@ export interface PageInput {
 
 function validateBlocks(blocks: Block[]) {
   const result = blockListSchema.safeParse(blocks);
-  if (!result.success) throw new Error("Некорректные данные блоков");
+  if (!result.success) throw new Error("blocksInvalid");
   return result.data as Block[];
 }
 
 async function ensureUniqueSlug(slug: string, excludeId?: string) {
   const existing = await prisma.page.findUnique({ where: { slug } });
   if (existing && existing.id !== excludeId) {
-    throw new Error(`Страница со слагом "${slug}" уже существует`);
+    throw new Error("slugTaken");
   }
 }
 

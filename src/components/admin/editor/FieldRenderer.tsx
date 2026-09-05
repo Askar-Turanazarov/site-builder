@@ -1,9 +1,11 @@
 "use client";
 
-import type { FieldSpec } from "@/blocks/types";
+import type { BlockType, FieldSpec } from "@/blocks/types";
+import { repeatableItemLabel } from "@/blocks/labels";
 import type { PathSegment } from "./object-path";
 import { MediaPickerField } from "./MediaPickerField";
 import { RichTextField } from "./RichTextField";
+import { useAdminT } from "@/components/admin/AdminI18nProvider";
 
 export function defaultValueForField(spec: FieldSpec): unknown {
   switch (spec.kind) {
@@ -26,6 +28,8 @@ function defaultItem(fields: FieldSpec[]): Record<string, unknown> {
 
 interface FieldRendererProps {
   spec: FieldSpec;
+  /** Нужен для перевода подписей: часть ключей словаря заданы на пару «блок + поле». */
+  blockType: BlockType;
   value: unknown;
   path: PathSegment[];
   onLeafChange: (path: PathSegment[], value: unknown, localized: boolean) => void;
@@ -34,9 +38,12 @@ interface FieldRendererProps {
 const inputClass =
   "w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-ink outline-none focus:border-accent";
 
-export function FieldRenderer({ spec, value, path, onLeafChange }: FieldRendererProps) {
+export function FieldRenderer({ spec, blockType, value, path, onLeafChange }: FieldRendererProps) {
+  const t = useAdminT();
+
   if (spec.kind === "repeatable") {
     const items = Array.isArray(value) ? value : [];
+    const itemLabel = repeatableItemLabel(t, blockType, spec);
     return (
       <div>
         <div className="space-y-3">
@@ -44,20 +51,20 @@ export function FieldRenderer({ spec, value, path, onLeafChange }: FieldRenderer
             <div key={index} className="rounded-md border border-border p-3">
               <div className="mb-2 flex items-center justify-between">
                 <span className="text-xs font-semibold text-muted">
-                  {spec.itemLabel} {index + 1}
+                  {itemLabel} {index + 1}
                 </span>
                 <div className="flex gap-1">
                   {index > 0 && (
-                    <IconButton label="Вверх" onClick={() => onLeafChange(path, moveItem(items, index, index - 1), false)}>
+                    <IconButton label={t("editor.moveUp")} onClick={() => onLeafChange(path, moveItem(items, index, index - 1), false)}>
                       ↑
                     </IconButton>
                   )}
                   {index < items.length - 1 && (
-                    <IconButton label="Вниз" onClick={() => onLeafChange(path, moveItem(items, index, index + 1), false)}>
+                    <IconButton label={t("editor.moveDown")} onClick={() => onLeafChange(path, moveItem(items, index, index + 1), false)}>
                       ↓
                     </IconButton>
                   )}
-                  <IconButton label="Удалить" onClick={() => onLeafChange(path, removeItem(items, index), false)} danger>
+                  <IconButton label={t("editor.remove")} onClick={() => onLeafChange(path, removeItem(items, index), false)} danger>
                     ✕
                   </IconButton>
                 </div>
@@ -67,6 +74,7 @@ export function FieldRenderer({ spec, value, path, onLeafChange }: FieldRenderer
                   <Field key={subSpec.name}>
                     <FieldRenderer
                       spec={subSpec}
+                      blockType={blockType}
                       value={(item as Record<string, unknown>)[subSpec.name]}
                       path={[...path, index, subSpec.name]}
                       onLeafChange={onLeafChange}
@@ -82,7 +90,7 @@ export function FieldRenderer({ spec, value, path, onLeafChange }: FieldRenderer
           onClick={() => onLeafChange(path, [...items, defaultItem(spec.fields)], false)}
           className="mt-2 rounded-md border border-dashed border-border px-3 py-1.5 text-xs font-medium text-ink-soft hover:border-accent hover:text-accent"
         >
-          + Добавить: {spec.itemLabel}
+          {t("field.addItem")}: {itemLabel}
         </button>
       </div>
     );

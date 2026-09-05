@@ -12,7 +12,6 @@ export interface SiteSettingsInput {
   taglineUz: string;
   taglineEn: string;
   defaultLocale: string;
-  themeKey: string;
   logoMediaId: string | null;
   faviconMediaId: string | null;
   contactEmail: string;

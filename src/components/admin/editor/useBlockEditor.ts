@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import { nanoid } from "nanoid";
 import { BLOCK_DATA_SCHEMAS, type Block, type BlockType } from "@/blocks/types";
+import { EMPTY_BLOCK_STYLE, type BlockStyle } from "@/blocks/style";
 import type { Locale } from "@/blocks/context";
 import { setAtPath, type PathSegment } from "./object-path";
 
@@ -72,6 +73,24 @@ export function useBlockEditor(initial: LocaleBlocks) {
     });
   }, []);
 
+  /**
+   * Обновляет настройки внешнего вида блока. Стиль общий для всех языков,
+   * поэтому патч всегда пишется во все три дерева.
+   */
+  const updateBlockStyle = useCallback((blockId: string, patch: Partial<BlockStyle>) => {
+    setBlocks((prev) => {
+      const next: LocaleBlocks = { ...prev };
+      for (const loc of LOCALES) {
+        next[loc] = prev[loc].map((b) =>
+          b.id === blockId
+            ? { ...b, style: { ...EMPTY_BLOCK_STYLE, ...b.style, ...patch } }
+            : b,
+        );
+      }
+      return next;
+    });
+  }, []);
+
   /** Applies a leaf field edit. `localized: true` writes only the active locale's tree; `false` mirrors the write to all three. */
   const updateBlockField = useCallback(
     (blockId: string, path: PathSegment[], value: unknown, localized: boolean) => {
@@ -100,5 +119,6 @@ export function useBlockEditor(initial: LocaleBlocks) {
     duplicateBlock,
     reorderBlocks,
     updateBlockField,
+    updateBlockStyle,
   };
 }

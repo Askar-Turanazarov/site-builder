@@ -86,6 +86,21 @@ export const IconExport = (p: SVGProps<SVGSVGElement>) => (
   </Icon>
 );
 
+export const IconTemplates = (p: SVGProps<SVGSVGElement>) => (
+  <Icon {...p}>
+    <rect x="2.5" y="2.5" width="15" height="15" rx="1.4" />
+    <path d="M2.5 7h15M7.5 7v10.5" />
+  </Icon>
+);
+
+export const IconDesign = (p: SVGProps<SVGSVGElement>) => (
+  <Icon {...p}>
+    <circle cx="10" cy="10" r="7.5" />
+    <path d="M10 2.5v15M2.5 10h15" />
+    <circle cx="10" cy="10" r="2.6" />
+  </Icon>
+);
+
 export const IconLogout = (p: SVGProps<SVGSVGElement>) => (
   <Icon {...p}>
     <path d="M8 17.5H4.7a1.2 1.2 0 0 1-1.2-1.2V3.7a1.2 1.2 0 0 1 1.2-1.2H8" />

@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from "react";
 import type { Locale } from "@/blocks/context";
-import { THEME_KEYS, THEME_LABELS, type ThemeKey } from "@/blocks/palette";
 import { LocalizedTextInput } from "@/components/admin/editor/TitleFields";
+import { useAdminT } from "@/components/admin/AdminI18nProvider";
 import { MediaPickerField } from "@/components/admin/editor/MediaPickerField";
 import { updateSiteSettingsAction, type SiteSettingsInput } from "@/lib/actions/settings";
 
@@ -15,7 +15,6 @@ export interface SettingsInitial {
   taglineUz: string;
   taglineEn: string;
   defaultLocale: string;
-  themeKey: string;
   logoMediaId: string | null;
   faviconMediaId: string | null;
   contactEmail: string;
@@ -35,7 +34,6 @@ export function SettingsForm({ initial }: { initial: SettingsInitial }) {
   const [contactAddress, setContactAddress] = useState<Record<Locale, string>>({ ru: initial.contactAddressRu, uz: initial.contactAddressUz, en: initial.contactAddressEn });
   const [footerNote, setFooterNote] = useState<Record<Locale, string>>({ ru: initial.footerNoteRu, uz: initial.footerNoteUz, en: initial.footerNoteEn });
   const [defaultLocale, setDefaultLocale] = useState(initial.defaultLocale);
-  const [themeKey, setThemeKey] = useState<ThemeKey>((initial.themeKey as ThemeKey) || "business");
   const [logoMediaId, setLogoMediaId] = useState<string | null>(initial.logoMediaId);
   const [faviconMediaId, setFaviconMediaId] = useState<string | null>(initial.faviconMediaId);
   const [contactEmail, setContactEmail] = useState(initial.contactEmail);
@@ -53,7 +51,6 @@ export function SettingsForm({ initial }: { initial: SettingsInitial }) {
       taglineUz: tagline.uz,
       taglineEn: tagline.en,
       defaultLocale,
-      themeKey,
       logoMediaId,
       faviconMediaId,
       contactEmail,
@@ -73,37 +70,29 @@ export function SettingsForm({ initial }: { initial: SettingsInitial }) {
     });
   }
 
+  const t = useAdminT();
+
   return (
     <div className="space-y-6">
-      <Section title="Основное">
-        <LocalizedTextInput label="Название сайта" values={siteName} onChange={(l, v) => setSiteName((s) => ({ ...s, [l]: v }))} />
-        <LocalizedTextInput label="Слоган" values={tagline} onChange={(l, v) => setTagline((s) => ({ ...s, [l]: v }))} />
+      <Section title={t("settings.general")}>
+        <LocalizedTextInput label={t("settings.siteName")} values={siteName} onChange={(l, v) => setSiteName((s) => ({ ...s, [l]: v }))} />
+        <LocalizedTextInput label={t("settings.tagline")} values={tagline} onChange={(l, v) => setTagline((s) => ({ ...s, [l]: v }))} />
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="mb-1.5 block text-xs font-semibold text-muted">Язык по умолчанию</label>
+            <label className="mb-1.5 block text-xs font-semibold text-muted">{t("settings.defaultLocale")}</label>
             <select value={defaultLocale} onChange={(e) => setDefaultLocale(e.target.value)} className="w-full rounded-md border border-border bg-paper px-3 py-2 text-sm outline-none focus:border-accent">
-              <option value="ru">Русский</option>
+              <option value="ru">{t("common.russian")}</option>
               <option value="uz">Oʻzbekcha</option>
               <option value="en">English</option>
-            </select>
-          </div>
-          <div>
-            <label className="mb-1.5 block text-xs font-semibold text-muted">Визуальная тема сайта</label>
-            <select value={themeKey} onChange={(e) => setThemeKey(e.target.value as ThemeKey)} className="w-full rounded-md border border-border bg-paper px-3 py-2 text-sm outline-none focus:border-accent">
-              {THEME_KEYS.map((key) => (
-                <option key={key} value={key}>
-                  {THEME_LABELS[key]}
-                </option>
-              ))}
             </select>
           </div>
         </div>
       </Section>
 
-      <Section title="Логотип и favicon">
+      <Section title={t("settings.logoFavicon")}>
         <div className="grid grid-cols-2 gap-6">
           <div>
-            <label className="mb-1.5 block text-xs font-semibold text-muted">Логотип</label>
+            <label className="mb-1.5 block text-xs font-semibold text-muted">{t("settings.logo")}</label>
             <MediaPickerField value={logoMediaId} onChange={setLogoMediaId} />
           </div>
           <div>
@@ -113,21 +102,21 @@ export function SettingsForm({ initial }: { initial: SettingsInitial }) {
         </div>
       </Section>
 
-      <Section title="Контакты">
+      <Section title={t("settings.contacts")}>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="mb-1.5 block text-xs font-semibold text-muted">Email</label>
             <input value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} className="w-full rounded-md border border-border bg-paper px-3 py-2 text-sm outline-none focus:border-accent" />
           </div>
           <div>
-            <label className="mb-1.5 block text-xs font-semibold text-muted">Телефон</label>
+            <label className="mb-1.5 block text-xs font-semibold text-muted">{t("settings.phone")}</label>
             <input value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} className="w-full rounded-md border border-border bg-paper px-3 py-2 text-sm outline-none focus:border-accent" />
           </div>
         </div>
-        <LocalizedTextInput label="Адрес" values={contactAddress} onChange={(l, v) => setContactAddress((s) => ({ ...s, [l]: v }))} />
+        <LocalizedTextInput label={t("settings.address")} values={contactAddress} onChange={(l, v) => setContactAddress((s) => ({ ...s, [l]: v }))} />
         <div>
           <label className="mb-1.5 block text-xs font-semibold text-muted">
-            Внешний адрес для формы обратной связи (используется только в выгруженной статике)
+            {t("settings.contactFormAction")}
           </label>
           <input
             value={contactFormAction}
@@ -138,8 +127,8 @@ export function SettingsForm({ initial }: { initial: SettingsInitial }) {
         </div>
       </Section>
 
-      <Section title="Подвал сайта">
-        <LocalizedTextInput label="Текст в подвале (копирайт и т.п.)" values={footerNote} onChange={(l, v) => setFooterNote((s) => ({ ...s, [l]: v }))} multiline />
+      <Section title={t("settings.footer")}>
+        <LocalizedTextInput label={t("settings.footerNote")} values={footerNote} onChange={(l, v) => setFooterNote((s) => ({ ...s, [l]: v }))} multiline />
       </Section>
 
       <div className="flex items-center gap-3">
@@ -149,9 +138,9 @@ export function SettingsForm({ initial }: { initial: SettingsInitial }) {
           onClick={handleSave}
           className="rounded-md bg-accent px-5 py-2 text-sm font-medium text-surface hover:bg-accent-strong disabled:opacity-60"
         >
-          {pending ? "Сохранение…" : "Сохранить настройки"}
+          {pending ? t("common.saving") : t("common.save")}
         </button>
-        {saved && <span className="text-sm text-accent-strong">Сохранено ✓</span>}
+        {saved && <span className="text-sm text-accent-strong">{t("common.saved")} ✓</span>}
       </div>
     </div>
   );

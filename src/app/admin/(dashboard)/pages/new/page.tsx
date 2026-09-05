@@ -1,8 +1,9 @@
 import { PageEditor, type PageEditorInitial } from "@/components/admin/editor/PageEditor";
 import { TemplatePicker } from "@/components/admin/TemplatePicker";
 import { getSiteSettings } from "@/lib/site-settings";
-import { isThemeKey } from "@/blocks/palette";
+import { siteDesignFromSettings } from "@/lib/site-design";
 import { HOMEPAGE_TEMPLATES, INNER_PAGE_TEMPLATES, findTemplate } from "@/lib/templates";
+import { getAdminT } from "@/lib/admin-i18n/server";
 
 function blankInitial(): PageEditorInitial {
   return {
@@ -27,18 +28,19 @@ export default async function NewPagePage({
   searchParams: Promise<{ template?: string; blank?: string }>;
 }) {
   const { template: templateKey, blank } = await searchParams;
+  const t = await getAdminT();
   const settings = await getSiteSettings();
-  const themeKey = isThemeKey(settings.themeKey) ? settings.themeKey : "business";
+  const design = siteDesignFromSettings(settings);
 
   if (!templateKey && !blank) {
     return (
       <TemplatePicker
-        title="Выберите шаблон страницы"
-        subtitle="Начните с готовой структуры блоков и замените текст на свой — либо начните с пустой страницы."
+        title={t("picker.pageTitle")}
+        subtitle={t("picker.pageSubtitle")}
         blankHref="/admin/pages/new?blank=1"
         groups={[
-          { heading: "Шаблоны главной страницы", templates: HOMEPAGE_TEMPLATES },
-          { heading: "Внутренние страницы", templates: INNER_PAGE_TEMPLATES },
+          { heading: t("picker.groupHomepage"), templates: HOMEPAGE_TEMPLATES },
+          { heading: t("picker.groupInner"), templates: INNER_PAGE_TEMPLATES },
         ]}
         buildHref={(key) => `/admin/pages/new?template=${key}`}
       />
@@ -58,5 +60,5 @@ export default async function NewPagePage({
     }
   }
 
-  return <PageEditor initial={initial} themeKey={themeKey} />;
+  return <PageEditor initial={initial} design={design} />;
 }

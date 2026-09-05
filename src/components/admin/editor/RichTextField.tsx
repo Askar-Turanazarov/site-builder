@@ -4,6 +4,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import { useEffect } from "react";
+import { useAdminT } from "@/components/admin/AdminI18nProvider";
 
 /**
  * Constrained WYSIWYG (bold/italic/links/lists/headings only, per the
@@ -21,6 +22,7 @@ export function RichTextField({
   onChange: (html: string) => void;
   placeholder?: string;
 }) {
+  const t = useAdminT();
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -60,10 +62,10 @@ export function RichTextField({
     <div className="rounded-md border border-border bg-surface focus-within:border-accent">
       <div className="flex flex-wrap gap-0.5 border-b border-border px-1.5 py-1">
         <button type="button" className={btn(editor.isActive("bold"))} onClick={() => editor.chain().focus().toggleBold().run()}>
-          Ж
+          {t("rt.bold")}
         </button>
         <button type="button" className={btn(editor.isActive("italic"))} onClick={() => editor.chain().focus().toggleItalic().run()}>
-          <span className="italic">К</span>
+          <span className="italic">{t("rt.italic")}</span>
         </button>
         <button type="button" className={btn(editor.isActive("heading", { level: 2 }))} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
           H2
@@ -72,16 +74,16 @@ export function RichTextField({
           H3
         </button>
         <button type="button" className={btn(editor.isActive("bulletList"))} onClick={() => editor.chain().focus().toggleBulletList().run()}>
-          • Список
+          {t("rt.bulletList")}
         </button>
         <button type="button" className={btn(editor.isActive("orderedList"))} onClick={() => editor.chain().focus().toggleOrderedList().run()}>
-          1. Список
+          {t("rt.orderedList")}
         </button>
         <button
           type="button"
           className={btn(editor.isActive("link"))}
           onClick={() => {
-            const url = window.prompt("Ссылка (URL):", editor.getAttributes("link").href ?? "https://");
+            const url = window.prompt(t("field.linkPrompt"), editor.getAttributes("link").href ?? "https://");
             if (url === null) return;
             if (url === "") {
               editor.chain().focus().unsetLink().run();
@@ -90,7 +92,7 @@ export function RichTextField({
             }
           }}
         >
-          Ссылка
+          {t("rt.link")}
         </button>
       </div>
       <EditorContent editor={editor} placeholder={placeholder} />

@@ -18,8 +18,11 @@ export async function listMediaAction() {
   return prisma.media.findMany({ orderBy: { createdAt: "desc" }, take: 200 });
 }
 
+/** Ошибка возвращается ключом словаря админки, а не готовым текстом. */
+export type UploadMediaError = "media.errNoFile" | "media.errNotImage" | "media.errTooBig";
+
 export interface UploadMediaState {
-  error?: string;
+  error?: UploadMediaError;
   mediaId?: string;
 }
 
@@ -31,13 +34,13 @@ export async function uploadMediaAction(
 
   const file = formData.get("file");
   if (!(file instanceof File) || file.size === 0) {
-    return { error: "Выберите файл" };
+    return { error: "media.errNoFile" };
   }
   if (!file.type.startsWith("image/")) {
-    return { error: "Можно загружать только изображения" };
+    return { error: "media.errNotImage" };
   }
   if (file.size > 8 * 1024 * 1024) {
-    return { error: "Файл больше 8 МБ" };
+    return { error: "media.errTooBig" };
   }
 
   await mkdir(UPLOAD_DIR, { recursive: true });

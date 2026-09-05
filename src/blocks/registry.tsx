@@ -1,6 +1,8 @@
 import { createElement, Fragment, type ReactElement } from "react";
 import type { Block, BlockType, BlockDataOf } from "./types";
 import type { RenderContext } from "./context";
+import { blockStyleAttrsHtml, blockStyleDataAttrs, blockStyleVars } from "./style";
+import { escapeAttr } from "./static/escape";
 
 import { HeroBlock } from "./components/Hero";
 import { heroToHtml } from "./static/hero";
@@ -57,14 +59,34 @@ export const BLOCK_REGISTRY: Registry = {
 
 /**
  * Renders a single Block via its registered live component.
+ *
  * Uses createElement (not a direct function call) so each block mounts as
  * its own Fiber — required for blocks like ContactForm that call hooks
  * internally; calling `Component(props)` directly would attribute those
  * hooks to the caller's fiber instead and break the rules of hooks.
+ *
+ * The block is wrapped in a `div` carrying the per-block style overrides.
+ * The wrapper lives here (and in `blockListToHtml` below) rather than inside
+ * each of the 14 block components, so live rendering and static export emit
+ * identical markup from one place.
  */
 export function renderBlock(block: Block, ctx: RenderContext): ReactElement | null {
+  if (block.style?.hidden) return null;
   const entry = BLOCK_REGISTRY[block.type] as RegistryEntry<BlockType>;
-  return createElement(entry.Component, { data: block.data, ctx });
+  const inner = createElement(entry.Component, { data: block.data, ctx });
+  return createElement(
+    "div",
+    {
+      "data-block-id": block.id,
+      // Тип блока нужен оформлению сайта: скины из src/styles/skins.css
+      // трактуют отдельные типы по-своему (тёмная плашка статистики,
+      // строки вместо карточек в features и т.п.).
+      "data-blk-type": block.type,
+      ...blockStyleDataAttrs(block.style),
+      style: blockStyleVars(block.style),
+    },
+    inner,
+  );
 }
 
 /** Renders an ordered block list as React (used by the live Next.js site and the editor preview). */
@@ -82,8 +104,14 @@ export function BlockList({ blocks, ctx }: { blocks: Block[]; ctx: RenderContext
 export function blockListToHtml(blocks: Block[], ctx: RenderContext): string {
   return blocks
     .map((block) => {
+      if (block.style?.hidden) return "";
       const entry = BLOCK_REGISTRY[block.type] as RegistryEntry<BlockType>;
-      return entry.toHtml(block.data, ctx);
+      const html = entry.toHtml(block.data, ctx);
+      if (!html.trim()) return "";
+      // Same wrapper as renderBlock above — keeps exported markup identical
+      // to the live site, including per-block style overrides.
+      return `<div data-block-id="${escapeAttr(block.id)}" data-blk-type="${block.type}"${blockStyleAttrsHtml(block.style)}>${html}</div>`;
     })
+    .filter(Boolean)
     .join("\n");
 }

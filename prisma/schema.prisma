@@ -33,6 +33,17 @@ model SiteSettings {
   taglineEn        String?
   defaultLocale    String   @default("ru")
   themeKey         String   @default("business")
+  // Стиль оформления (ритм секций, карточки, типографика) — независим от
+  // темы: одну палитру можно подать «газетой» или «плакатом».
+  skinKey          String?
+  // Переопределения поверх выбранной темы (экран «Дизайн сайта»).
+  // null — использовать значение темы.
+  fontDisplay      String?
+  fontBody         String?
+  accentColor      String?
+  paperColor       String?
+  inkColor         String?
+  radiusScale      String?
   logoMediaId      String?
   faviconMediaId   String?
   contactEmail     String?

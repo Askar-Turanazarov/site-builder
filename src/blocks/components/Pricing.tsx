@@ -17,7 +17,7 @@ export function PricingBlock({ data, ctx }: { data: BlockDataOf<"pricing">; ctx:
               className={cx(
                 CX.card,
                 "flex flex-col",
-                plan.highlighted && "border-2 border-[var(--tpl-accent)] shadow-lg",
+                plan.highlighted && "sb-card-featured border-2 border-[var(--tpl-accent)] shadow-lg",
               )}
             >
               {plan.highlighted && (

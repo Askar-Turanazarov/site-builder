@@ -10,12 +10,16 @@ export function heroToHtml(data: BlockDataOf<"hero">, ctx: RenderContext): strin
   const isFullBleed = data.variant === "fullBleed";
   const isCentered = data.variant === "centered";
   const isSplit = data.variant === "split";
+  // Белый текст оправдан только поверх картинки с затемнением. Без картинки
+  // фон секции — обычная бумага темы, и белые буквы на ней не читались бы
+  // (в шаблонах медиа нет вовсе, а на живом сайте её может не быть ещё).
+  const onImage = isFullBleed && !!media;
 
   const heading = data.heading
-    ? `<h1 class="${cx(CX.h1, isFullBleed && "text-white")}">${escapeHtml(data.heading)}</h1>`
+    ? `<h1 class="${cx(CX.h1, onImage && "text-white")}">${escapeHtml(data.heading)}</h1>`
     : "";
   const subheading = data.subheading
-    ? `<p class="${cx(CX.lead, "mt-5", isFullBleed && "text-white/85", isCentered && "mx-auto")}">${escapeHtml(data.subheading)}</p>`
+    ? `<p class="${cx(CX.lead, "mt-5", onImage && "text-white/85", isCentered && "mx-auto")}">${escapeHtml(data.subheading)}</p>`
     : "";
   const cta = data.ctaLabel
     ? `<div class="${cx("mt-8", isCentered && "flex justify-center")}"><a href="${escapeAttr(resolveHref(data.ctaLink, ctx.locale))}" class="${cx(CX.button, CX.buttonSolid)}">${escapeHtml(data.ctaLabel)}</a></div>`

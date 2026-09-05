@@ -1,6 +1,6 @@
 import type { Locale } from "@/blocks/context";
 import type { ResolvedMenuItem } from "@/lib/menu";
-import { themeStyleCss, type ThemeKey } from "@/blocks/palette";
+import { googleFontsHref, themeStyleCss, type SiteDesign } from "@/blocks/palette";
 import { escapeHtml, escapeAttr } from "@/blocks/static/escape";
 
 /**
@@ -50,7 +50,7 @@ function headerHtml(data: ShellData, pathAfterLocale: string): string {
     : `<span class="[font-family:var(--tpl-font-display)] text-lg font-bold text-[var(--tpl-ink)]">${escapeHtml(data.siteName)}</span>`;
 
   return `
-<header class="border-b border-[var(--tpl-ink)]/10 bg-[var(--tpl-surface)]">
+<header class="sb-header border-b border-[var(--tpl-ink)]/10 bg-[var(--tpl-surface)]">
   <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
     <a href="${escapeAttr(data.homeHref)}" class="flex items-center gap-2.5">${logo}</a>
     <nav class="hidden items-center gap-7 md:flex">
@@ -73,7 +73,7 @@ function headerHtml(data: ShellData, pathAfterLocale: string): string {
 function footerHtml(data: ShellData): string {
   const contact = [data.contactAddress, data.contactPhone, data.contactEmail].filter(Boolean);
   return `
-<footer class="border-t border-[var(--tpl-ink)]/10 bg-[var(--tpl-surface)]">
+<footer class="sb-footer border-t border-[var(--tpl-ink)]/10 bg-[var(--tpl-surface)]">
   <div class="mx-auto max-w-6xl px-6 py-12">
     <div class="grid gap-8 sm:grid-cols-3">
       <div>
@@ -90,14 +90,14 @@ function footerHtml(data: ShellData): string {
 
 export function renderDocument({
   shell,
-  themeKey,
+  design,
   title,
   description,
   pathAfterLocale,
   bodyHtml,
 }: {
   shell: ShellData;
-  themeKey: ThemeKey;
+  design: SiteDesign;
   title: string;
   description: string | null;
   pathAfterLocale: string;
@@ -111,8 +111,11 @@ export function renderDocument({
 <title>${escapeHtml(title)}${title ? " — " : ""}${escapeHtml(shell.siteName)}</title>
 ${description ? `<meta name="description" content="${escapeAttr(description)}" />` : ""}
 <link rel="stylesheet" href="/assets/styles.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="${googleFontsHref(design, { always: true })}" />
 </head>
-<body style="${themeStyleCss(themeKey)}">
+<body style="${themeStyleCss(design)}"${design.skinKey ? ` data-skin="${escapeAttr(design.skinKey)}"` : ""}>
 <div class="flex min-h-screen flex-col bg-[var(--tpl-paper)]">
 ${headerHtml(shell, pathAfterLocale)}
 <main class="flex-1">

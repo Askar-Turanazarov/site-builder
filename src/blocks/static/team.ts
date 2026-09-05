@@ -17,7 +17,7 @@ export function teamToHtml(data: BlockDataOf<"team">, ctx: RenderContext): strin
         : "";
       return `
       <div>
-        <div class="aspect-square overflow-hidden rounded-[var(--tpl-radius)] bg-[var(--tpl-surface)]">${photoHtml}</div>
+        <div class="sb-team-photo aspect-square overflow-hidden rounded-[var(--tpl-radius)] bg-[var(--tpl-surface)]">${photoHtml}</div>
         ${member.name ? `<div class="mt-3 text-sm font-semibold text-[var(--tpl-ink)]">${escapeHtml(member.name)}</div>` : ""}
         ${member.role ? `<div class="text-xs text-[var(--tpl-ink-soft)]">${escapeHtml(member.role)}</div>` : ""}
         ${member.bio ? `<p class="mt-2 text-sm text-[var(--tpl-ink-soft)]">${escapeHtml(member.bio)}</p>` : ""}

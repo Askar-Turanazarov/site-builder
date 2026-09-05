@@ -1,23 +1,8 @@
 "use client";
 
-import { BLOCK_TYPES, BLOCK_LABELS, type BlockType } from "@/blocks/types";
-
-const DESCRIPTIONS: Record<BlockType, string> = {
-  hero: "Крупная обложка с заголовком и кнопкой",
-  richText: "Свободный текст с форматированием",
-  imageText: "Изображение рядом с текстом",
-  gallery: "Сетка фотографий",
-  featuresGrid: "Карточки с иконкой, заголовком и текстом",
-  cta: "Акцентная плашка с призывом к действию",
-  testimonials: "Отзывы клиентов",
-  pricing: "Карточки тарифов/цен",
-  team: "Карточки участников команды",
-  stats: "Крупные цифры-показатели",
-  faq: "Раскрывающиеся вопросы и ответы",
-  contactForm: "Форма для заявок/обращений",
-  logosStrip: "Ряд логотипов партнёров/клиентов",
-  videoEmbed: "Видео с YouTube или Vimeo",
-};
+import { BLOCK_TYPES, type BlockType } from "@/blocks/types";
+import { blockLabel, blockDescription } from "@/blocks/labels";
+import { useAdminT } from "@/components/admin/AdminI18nProvider";
 
 export function AddBlockMenu({
   onPick,
@@ -26,6 +11,8 @@ export function AddBlockMenu({
   onPick: (type: BlockType) => void;
   onClose: () => void;
 }) {
+  const t = useAdminT();
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-6" onClick={onClose}>
       <div
@@ -33,7 +20,7 @@ export function AddBlockMenu({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-display text-lg font-semibold text-ink">Добавить блок</h2>
+          <h2 className="font-display text-lg font-semibold text-ink">{t("editor.addBlockTitle")}</h2>
           <button type="button" onClick={onClose} className="rounded-md p-1.5 text-muted hover:bg-paper">
             ✕
           </button>
@@ -46,8 +33,8 @@ export function AddBlockMenu({
               onClick={() => onPick(type)}
               className="rounded-md border border-border p-3 text-left transition hover:border-accent hover:bg-accent-tint"
             >
-              <div className="text-sm font-medium text-ink">{BLOCK_LABELS[type]}</div>
-              <div className="mt-1 text-xs text-muted">{DESCRIPTIONS[type]}</div>
+              <div className="text-sm font-medium text-ink">{blockLabel(t, type)}</div>
+              <div className="mt-1 text-xs text-muted">{blockDescription(t, type)}</div>
             </button>
           ))}
         </div>

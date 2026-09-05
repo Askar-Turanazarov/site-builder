@@ -3,8 +3,11 @@
 import { redirect } from "next/navigation";
 import { verifyCredentials, createSessionCookie } from "@/lib/auth";
 
+/** Коды ошибок, а не готовый текст: перевод подставляет форма входа. */
+export type LoginError = "errorEmpty" | "errorInvalid";
+
 export interface LoginFormState {
-  error?: string;
+  error?: LoginError;
 }
 
 export async function loginAction(
@@ -15,12 +18,12 @@ export async function loginAction(
   const password = String(formData.get("password") ?? "");
 
   if (!email || !password) {
-    return { error: "Введите email и пароль" };
+    return { error: "errorEmpty" };
   }
 
   const user = await verifyCredentials(email, password);
   if (!user) {
-    return { error: "Неверный email или пароль" };
+    return { error: "errorInvalid" };
   }
 
   await createSessionCookie({ sub: user.id, email: user.email });

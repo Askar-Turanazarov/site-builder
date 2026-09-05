@@ -29,7 +29,7 @@ export function pricingToHtml(data: BlockDataOf<"pricing">, ctx: RenderContext):
         : "";
 
       return `
-      <div class="${cx(CX.card, "flex flex-col", plan.highlighted && "border-2 border-[var(--tpl-accent)] shadow-lg")}">
+      <div class="${cx(CX.card, "flex flex-col", plan.highlighted && "sb-card-featured border-2 border-[var(--tpl-accent)] shadow-lg")}">
         ${badge}
         ${plan.name ? `<h3 class="${CX.h3}">${escapeHtml(plan.name)}</h3>` : ""}
         <div class="mt-3 flex items-baseline gap-1">

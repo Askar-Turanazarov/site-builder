@@ -11,12 +11,12 @@ export function StatsBlock({ data }: { data: BlockDataOf<"stats"> }) {
           {data.items.map((stat, i) => (
             <div key={i} className="text-center sm:text-left">
               {stat.value && (
-                <div className="text-4xl font-extrabold tabular-nums text-[var(--tpl-accent)] [font-family:var(--tpl-font-display)] md:text-5xl">
+                <div className="sb-stat-value text-4xl font-extrabold tabular-nums text-[var(--tpl-accent)] [font-family:var(--tpl-font-display)] md:text-5xl">
                   {stat.value}
                 </div>
               )}
               {stat.label && (
-                <div className="mt-2 text-sm text-[var(--tpl-ink-soft)]">{stat.label}</div>
+                <div className="sb-stat-label mt-2 text-sm text-[var(--tpl-ink-soft)]">{stat.label}</div>
               )}
             </div>
           ))}

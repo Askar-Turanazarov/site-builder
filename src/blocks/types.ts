@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { blockStyleSchema, type BlockStyle } from "./style";
 
 /**
  * The 14 user-addable block types available in the page/article editor.
@@ -231,11 +232,21 @@ export interface Block<T extends BlockType = BlockType> {
   id: string;
   type: T;
   data: BlockDataOf<T>;
+  /** Настройки внешнего вида блока (см. src/blocks/style.ts). Общие для всех трёх языков. */
+  style?: BlockStyle;
 }
 
 export const blockSchema = z.union(
   BLOCK_TYPES.map((type) =>
-    z.object({ id: z.string(), type: z.literal(type), data: BLOCK_DATA_SCHEMAS[type] }),
+    z.object({
+      id: z.string(),
+      type: z.literal(type),
+      data: BLOCK_DATA_SCHEMAS[type],
+      // Обязательно optional: блоки, сохранённые до появления стилей, должны
+      // продолжать проходить валидацию — иначе parseBlocks вернёт пустой
+      // массив и страница откроется без содержимого.
+      style: blockStyleSchema.optional(),
+    }),
   ) as unknown as [z.ZodTypeAny, ...z.ZodTypeAny[]],
 );
 

@@ -12,7 +12,7 @@ export function CtaBlock({ data, ctx }: { data: BlockDataOf<"cta">; ctx: RenderC
       <div className={CX.container}>
         <div
           className={cx(
-            "flex flex-col items-start gap-6 rounded-[var(--tpl-radius)] px-8 py-12 sm:flex-row sm:items-center sm:justify-between",
+            "sb-cta flex flex-col items-start gap-6 rounded-[var(--tpl-radius)] px-8 py-12 sm:flex-row sm:items-center sm:justify-between",
             solid ? "bg-[var(--tpl-accent)]" : "border border-[var(--tpl-ink)]/15",
           )}
         >

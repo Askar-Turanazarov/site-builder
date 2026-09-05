@@ -9,6 +9,10 @@ export function HeroBlock({ data, ctx }: { data: BlockDataOf<"hero">; ctx: Rende
   const isFullBleed = data.variant === "fullBleed";
   const isCentered = data.variant === "centered";
   const isSplit = data.variant === "split";
+  // Белый текст оправдан только поверх картинки с затемнением. Без картинки
+  // фон секции — обычная бумага темы, и белые буквы на ней не читались бы
+  // (в шаблонах медиа нет вовсе, а на живом сайте её может не быть ещё).
+  const onImage = isFullBleed && !!media;
 
   return (
     <section
@@ -40,14 +44,14 @@ export function HeroBlock({ data, ctx }: { data: BlockDataOf<"hero">; ctx: Rende
         >
           <div>
             {data.heading && (
-              <h1 className={cx(CX.h1, isFullBleed && "text-white")}>{data.heading}</h1>
+              <h1 className={cx(CX.h1, onImage && "text-white")}>{data.heading}</h1>
             )}
             {data.subheading && (
               <p
                 className={cx(
                   CX.lead,
                   "mt-5",
-                  isFullBleed && "text-white/85",
+                  onImage && "text-white/85",
                   isCentered && "mx-auto",
                 )}
               >

@@ -1,5 +1,7 @@
 "use client";
 
+import { useAdminT } from "@/components/admin/AdminI18nProvider";
+
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createMenuItemAction, updateMenuItemAction, deleteMenuItemAction, type MenuItemInput } from "@/lib/actions/menu";
@@ -26,6 +28,7 @@ export function MenuEditor({
   pages: { id: string; titleRu: string; slug: string }[];
   categories: { id: string; nameRu: string; slug: string }[];
 }) {
+  const t = useAdminT();
   const [location, setLocation] = useState<"header" | "footer">("header");
   const filtered = items.filter((i) => i.location === location).sort((a, b) => a.order - b.order);
 
@@ -41,7 +44,7 @@ export function MenuEditor({
               location === loc ? "bg-accent-tint text-accent-strong" : "text-muted hover:text-ink"
             }`}
           >
-            {loc === "header" ? "Шапка сайта" : "Подвал сайта"}
+            {loc === "header" ? t("menu.header") : t("menu.footer")}
           </button>
         ))}
       </div>
@@ -52,7 +55,7 @@ export function MenuEditor({
         ))}
         {filtered.length === 0 && (
           <p className="rounded-md border border-dashed border-border px-4 py-6 text-center text-sm text-muted">
-            Пунктов пока нет
+            {t("menu.empty")}
           </p>
         )}
       </div>
@@ -84,6 +87,7 @@ function ItemRow({
   categories: { id: string; nameRu: string; slug: string }[];
 }) {
   const router = useRouter();
+  const t = useAdminT();
   const [labelRu, setLabelRu] = useState(item.labelRu);
   const [linkType, setLinkType] = useState(item.linkType as "page" | "category" | "custom");
   const [target, setTarget] = useState(item.pageId ?? item.categoryId ?? "");
@@ -110,7 +114,7 @@ function ItemRow({
   }
 
   function remove() {
-    if (!window.confirm("Удалить пункт меню?")) return;
+    if (!window.confirm(t("menu.confirmDelete"))) return;
     startTransition(async () => {
       await deleteMenuItemAction(item.id);
       router.refresh();
@@ -128,7 +132,7 @@ function ItemRow({
       <input
         value={labelRu}
         onChange={(e) => setLabelRu(e.target.value)}
-        placeholder="Название (RU)"
+        placeholder={t("menu.labelRu")}
         className="w-40 rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent"
       />
       <select
@@ -139,9 +143,9 @@ function ItemRow({
         }}
         className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent"
       >
-        <option value="page">Страница</option>
-        <option value="category">Рубрика</option>
-        <option value="custom">Произвольная ссылка</option>
+        <option value="page">{t("menu.linkPage")}</option>
+        <option value="category">{t("menu.linkCategory")}</option>
+        <option value="custom">{t("menu.linkCustom")}</option>
       </select>
       {linkType === "custom" ? (
         <input
@@ -156,7 +160,7 @@ function ItemRow({
           onChange={(e) => setTarget(e.target.value)}
           className="w-48 rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent"
         >
-          <option value="">— выбрать —</option>
+          <option value="">{t("menu.choose")}</option>
           {targetOptions(linkType, pages, categories).map((opt) => (
             <option key={opt.value} value={opt.value}>
               {opt.label}
@@ -170,7 +174,7 @@ function ItemRow({
         disabled={pending}
         className="rounded-md border border-border px-3 py-1.5 text-xs font-medium text-ink hover:border-accent"
       >
-        Сохранить
+        {t("common.save")}
       </button>
       <button type="button" onClick={remove} className="rounded-md px-2 py-1.5 text-xs text-muted hover:text-danger">
         ✕
@@ -191,6 +195,7 @@ function NewItemForm({
   nextOrder: number;
 }) {
   const router = useRouter();
+  const t = useAdminT();
   const [labelRu, setLabelRu] = useState("");
   const [labelUz, setLabelUz] = useState("");
   const [labelEn, setLabelEn] = useState("");
@@ -224,21 +229,21 @@ function NewItemForm({
 
   return (
     <div className="rounded-lg border border-dashed border-border p-4">
-      <h2 className="mb-3 text-sm font-semibold text-ink-soft">Добавить пункт меню</h2>
+      <h2 className="mb-3 text-sm font-semibold text-ink-soft">{t("menu.addItem")}</h2>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-        <input value={labelRu} onChange={(e) => setLabelRu(e.target.value)} placeholder="Название RU" className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
-        <input value={labelUz} onChange={(e) => setLabelUz(e.target.value)} placeholder="Название UZ" className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
-        <input value={labelEn} onChange={(e) => setLabelEn(e.target.value)} placeholder="Название EN" className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
+        <input value={labelRu} onChange={(e) => setLabelRu(e.target.value)} placeholder={t("menu.labelRu")} className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
+        <input value={labelUz} onChange={(e) => setLabelUz(e.target.value)} placeholder={t("menu.labelUz")} className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
+        <input value={labelEn} onChange={(e) => setLabelEn(e.target.value)} placeholder={t("menu.labelEn")} className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
         <select value={linkType} onChange={(e) => { setLinkType(e.target.value as "page" | "category" | "custom"); setTarget(""); }} className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent">
-          <option value="page">Страница</option>
-          <option value="category">Рубрика</option>
-          <option value="custom">Произвольная ссылка</option>
+          <option value="page">{t("menu.linkPage")}</option>
+          <option value="category">{t("menu.linkCategory")}</option>
+          <option value="custom">{t("menu.linkCustom")}</option>
         </select>
         {linkType === "custom" ? (
           <input value={customUrl} onChange={(e) => setCustomUrl(e.target.value)} placeholder="/about" className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
         ) : (
           <select value={target} onChange={(e) => setTarget(e.target.value)} className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent">
-            <option value="">— выбрать —</option>
+            <option value="">{t("menu.choose")}</option>
             {targetOptions(linkType, pages, categories).map((opt) => (
               <option key={opt.value} value={opt.value}>
                 {opt.label}
@@ -253,7 +258,7 @@ function NewItemForm({
         disabled={pending}
         className="mt-3 rounded-md bg-accent px-4 py-1.5 text-sm font-medium text-surface hover:bg-accent-strong disabled:opacity-60"
       >
-        Добавить
+        {t("common.add")}
       </button>
     </div>
   );

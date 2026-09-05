@@ -4,12 +4,14 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { Block } from "@/blocks/types";
 import type { Locale } from "@/blocks/context";
-import type { ThemeKey } from "@/blocks/palette";
+import type { SiteDesign } from "@/blocks/palette";
 import { useBlockEditor, type LocaleBlocks } from "./useBlockEditor";
 import { BlockEditorBody } from "./BlockEditorBody";
 import { LocalizedTextInput } from "./TitleFields";
 import { MediaPickerField } from "./MediaPickerField";
 import { createPostAction, updatePostAction, deletePostAction, type PostInput } from "@/lib/actions/posts";
+import { useAdminT } from "@/components/admin/AdminI18nProvider";
+import { adminErrorText } from "@/lib/admin-i18n/errors";
 
 export interface PostEditorInitial {
   id?: string;
@@ -33,13 +35,14 @@ export interface PostEditorInitial {
 
 export function PostEditor({
   initial,
-  themeKey,
+  design,
   categories,
 }: {
   initial: PostEditorInitial;
-  themeKey: ThemeKey;
+  design: SiteDesign;
   categories: { id: string; nameRu: string }[];
 }) {
+  const t = useAdminT();
   const router = useRouter();
   const isNew = !initial.id;
 
@@ -51,7 +54,6 @@ export function PostEditor({
   const [excerpt, setExcerpt] = useState<Record<Locale, string>>({ ru: initial.excerptRu, uz: initial.excerptUz, en: initial.excerptEn });
   const [metaDesc, setMetaDesc] = useState<Record<Locale, string>>({ ru: initial.metaDescRu, uz: initial.metaDescUz, en: initial.metaDescEn });
   const [showSeo, setShowSeo] = useState(false);
-  const [showAddMenu, setShowAddMenu] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -82,11 +84,11 @@ export function PostEditor({
   function handleSave(nextStatus: "draft" | "published") {
     setError(null);
     if (!slug.trim()) {
-      setError("Укажите слаг статьи");
+      setError(t("postEditor.errSlug"));
       return;
     }
     if (!categoryId) {
-      setError("Выберите рубрику");
+      setError(t("postEditor.errCategory"));
       return;
     }
     startTransition(async () => {
@@ -100,14 +102,14 @@ export function PostEditor({
           router.refresh();
         }
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Не удалось сохранить статью");
+        setError(adminErrorText(t, e, "postEditor.errSave"));
       }
     });
   }
 
   function handleDelete() {
     if (!initial.id) return;
-    if (!window.confirm("Удалить статью без возможности восстановления?")) return;
+    if (!window.confirm(t("postEditor.confirmDelete"))) return;
     startTransition(async () => {
       await deletePostAction(initial.id!);
     });
@@ -119,7 +121,7 @@ export function PostEditor({
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="flex flex-wrap items-end gap-4">
             <div>
-              <label className="mb-1 block text-xs font-semibold text-muted">Слаг (URL)</label>
+              <label className="mb-1 block text-xs font-semibold text-muted">{t("common.slug")}</label>
               <input
                 type="text"
                 value={slug}
@@ -129,7 +131,7 @@ export function PostEditor({
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-semibold text-muted">Рубрика</label>
+              <label className="mb-1 block text-xs font-semibold text-muted">{t("postEditor.category")}</label>
               <select
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
@@ -143,27 +145,37 @@ export function PostEditor({
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-xs font-semibold text-muted">Статус</label>
+              <label className="mb-1 block text-xs font-semibold text-muted">{t("common.status")}</label>
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as "draft" | "published")}
                 className="rounded-md border border-border bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-accent"
               >
-                <option value="draft">Черновик</option>
-                <option value="published">Опубликовано</option>
+                <option value="draft">{t("common.draft")}</option>
+                <option value="published">{t("common.published")}</option>
               </select>
             </div>
           </div>
           <div className="flex items-center gap-2">
             {!isNew && (
-              <button
-                type="button"
-                onClick={handleDelete}
-                disabled={pending}
-                className="rounded-md border border-border px-3 py-1.5 text-sm text-danger hover:border-danger"
-              >
-                Удалить
-              </button>
+              <>
+                <a
+                  href={`/admin/preview/post/${initial.id}?locale=${editor.activeLocale}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-md border border-border px-3 py-1.5 text-sm text-ink-soft hover:border-accent hover:text-ink"
+                >
+                  {t("common.preview")} ↗
+                </a>
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  disabled={pending}
+                  className="rounded-md border border-border px-3 py-1.5 text-sm text-danger hover:border-danger"
+                >
+                  {t("common.delete")}
+                </button>
+              </>
             )}
             <button
               type="button"
@@ -171,7 +183,7 @@ export function PostEditor({
               onClick={() => handleSave(status)}
               className="rounded-md border border-border bg-paper px-4 py-1.5 text-sm font-medium text-ink hover:border-accent disabled:opacity-60"
             >
-              Сохранить
+              {t("common.save")}
             </button>
             <button
               type="button"
@@ -179,7 +191,7 @@ export function PostEditor({
               onClick={() => handleSave("published")}
               className="rounded-md bg-accent px-4 py-1.5 text-sm font-medium text-surface hover:bg-accent-strong disabled:opacity-60"
             >
-              {pending ? "Сохранение…" : "Опубликовать"}
+              {pending ? t("common.saving") : t("common.publish")}
             </button>
           </div>
         </div>
@@ -187,15 +199,15 @@ export function PostEditor({
         {error && <p className="mt-3 rounded-md bg-danger-tint px-3 py-2 text-sm text-danger">{error}</p>}
 
         <div className="mt-4 grid gap-4 sm:grid-cols-[1fr_auto]">
-          <LocalizedTextInput label="Заголовок статьи" values={title} onChange={(l, v) => setTitle((t) => ({ ...t, [l]: v }))} />
+          <LocalizedTextInput label={t("postEditor.articleTitle")} values={title} onChange={(l, v) => setTitle((t) => ({ ...t, [l]: v }))} />
           <div>
-            <div className="mb-1.5 text-xs font-semibold text-muted">Обложка</div>
+            <div className="mb-1.5 text-xs font-semibold text-muted">{t("postEditor.cover")}</div>
             <MediaPickerField value={coverMediaId} onChange={setCoverMediaId} />
           </div>
         </div>
 
         <div className="mt-4">
-          <LocalizedTextInput label="Краткое описание (анонс)" values={excerpt} onChange={(l, v) => setExcerpt((x) => ({ ...x, [l]: v }))} multiline />
+          <LocalizedTextInput label={t("postEditor.excerpt")} values={excerpt} onChange={(l, v) => setExcerpt((x) => ({ ...x, [l]: v }))} multiline />
         </div>
 
         <button
@@ -203,22 +215,16 @@ export function PostEditor({
           onClick={() => setShowSeo((v) => !v)}
           className="mt-3 text-xs font-medium text-muted hover:text-ink"
         >
-          {showSeo ? "− Скрыть SEO-настройки" : "+ SEO-настройки (описание для поисковиков)"}
+          {showSeo ? t("pageEditor.seoHide") : t("pageEditor.seoShow")}
         </button>
         {showSeo && (
           <div className="mt-2">
-            <LocalizedTextInput label="Meta-описание" values={metaDesc} onChange={(l, v) => setMetaDesc((m) => ({ ...m, [l]: v }))} multiline />
+            <LocalizedTextInput label={t("pageEditor.metaDesc")} values={metaDesc} onChange={(l, v) => setMetaDesc((m) => ({ ...m, [l]: v }))} multiline />
           </div>
         )}
       </div>
 
-      <BlockEditorBody
-        editor={editor}
-        themeKey={themeKey}
-        showAddMenu={showAddMenu}
-        onOpenAddMenu={() => setShowAddMenu(true)}
-        onCloseAddMenu={() => setShowAddMenu(false)}
-      />
+      <BlockEditorBody editor={editor} design={design} />
     </div>
   );
 }

@@ -19,7 +19,7 @@ export interface CategoryInput {
 async function ensureUniqueSlug(slug: string, excludeId?: string) {
   const existing = await prisma.category.findUnique({ where: { slug } });
   if (existing && existing.id !== excludeId) {
-    throw new Error(`Рубрика со слагом "${slug}" уже существует`);
+    throw new Error("slugTaken");
   }
 }
 
@@ -42,7 +42,7 @@ export async function deleteCategoryAction(id: string) {
   await requireAdmin();
   const postCount = await prisma.post.count({ where: { categoryId: id } });
   if (postCount > 0) {
-    throw new Error("Нельзя удалить рубрику, в которой есть статьи");
+    throw new Error("categoryNotEmpty");
   }
   await prisma.category.delete({ where: { id } });
   revalidatePath("/admin/categories");

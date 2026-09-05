@@ -15,7 +15,7 @@ export function FeaturesGridBlock({ data }: { data: BlockDataOf<"featuresGrid"> 
           {data.items.map((feature, i) => (
             <div key={i}>
               <span
-                className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-[var(--tpl-radius)]"
+                className="sb-icon mb-4 inline-flex h-11 w-11 items-center justify-center rounded-[var(--tpl-radius)]"
                 style={{ background: "var(--tpl-accent)", color: "var(--tpl-on-accent)" }}
               >
                 <svg

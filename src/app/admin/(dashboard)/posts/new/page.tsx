@@ -2,9 +2,10 @@ import Link from "next/link";
 import { PostEditor, type PostEditorInitial } from "@/components/admin/editor/PostEditor";
 import { TemplatePicker } from "@/components/admin/TemplatePicker";
 import { getSiteSettings } from "@/lib/site-settings";
-import { isThemeKey } from "@/blocks/palette";
+import { siteDesignFromSettings } from "@/lib/site-design";
 import { ARTICLE_TEMPLATES, findTemplate } from "@/lib/templates";
 import { prisma } from "@/lib/prisma";
+import { getAdminT } from "@/lib/admin-i18n/server";
 
 function blankInitial(): PostEditorInitial {
   return {
@@ -33,6 +34,7 @@ export default async function NewPostPage({
   searchParams: Promise<{ template?: string; blank?: string }>;
 }) {
   const { template: templateKey, blank } = await searchParams;
+  const t = await getAdminT();
   const [settings, categories] = await Promise.all([
     getSiteSettings(),
     prisma.category.findMany({ orderBy: { order: "asc" } }),
@@ -41,29 +43,27 @@ export default async function NewPostPage({
   if (categories.length === 0) {
     return (
       <div className="mx-auto max-w-lg px-8 py-16 text-center">
-        <h1 className="font-display text-xl font-semibold text-ink">Сначала создайте рубрику</h1>
-        <p className="mt-2 text-sm text-muted">
-          Каждая статья должна принадлежать рубрике. Создайте хотя бы одну, прежде чем писать статью.
-        </p>
+        <h1 className="font-display text-xl font-semibold text-ink">{t("postEditor.needCategoryTitle")}</h1>
+        <p className="mt-2 text-sm text-muted">{t("postEditor.needCategoryBody")}</p>
         <Link
           href="/admin/categories/new"
           className="mt-5 inline-block rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-strong"
         >
-          + Создать рубрику
+          {t("postEditor.createCategory")}
         </Link>
       </div>
     );
   }
 
-  const themeKey = isThemeKey(settings.themeKey) ? settings.themeKey : "business";
+  const design = siteDesignFromSettings(settings);
 
   if (!templateKey && !blank) {
     return (
       <TemplatePicker
-        title="Выберите шаблон статьи"
-        subtitle="Начните с готовой структуры блоков и замените текст на свой — либо начните с пустой статьи."
+        title={t("picker.postTitle")}
+        subtitle={t("picker.postSubtitle")}
         blankHref="/admin/posts/new?blank=1"
-        groups={[{ heading: "Шаблоны статей", templates: ARTICLE_TEMPLATES }]}
+        groups={[{ heading: t("picker.groupArticle"), templates: ARTICLE_TEMPLATES }]}
         buildHref={(key) => `/admin/posts/new?template=${key}`}
       />
     );
@@ -82,7 +82,7 @@ export default async function NewPostPage({
   return (
     <PostEditor
       initial={initial}
-      themeKey={themeKey}
+      design={design}
       categories={categories.map((c) => ({ id: c.id, nameRu: c.nameRu }))}
     />
   );

@@ -1,0 +1,78 @@
+/*
+ * Пер-блочные настройки раскладки (отступы, ширина контента, размер заголовка,
+ * выравнивание). Значения приходят из data-атрибутов, которые ставит обёртка
+ * блока в src/blocks/registry.tsx.
+ *
+ * Файл намеренно НЕ обёрнут в @layer: неслоёные правила в каскаде сильнее любых
+ * правил внутри @layer, поэтому они перебивают утилиты Tailwind (`py-16 md:py-24`,
+ * `max-w-6xl`, `text-4xl md:text-6xl`) независимо от специфичности селектора.
+ * Цвета и скругления сюда не входят — они задаются переопределением переменных
+ * --tpl-* прямо на обёртке (см. src/blocks/style.ts).
+ */
+
+/* Вертикальные отступы секции блока */
+[data-blk-py="none"] > * {
+  padding-block: 0;
+}
+[data-blk-py="sm"] > * {
+  padding-block: 2rem;
+}
+[data-blk-py="md"] > * {
+  padding-block: 3.5rem;
+}
+[data-blk-py="lg"] > * {
+  padding-block: 6rem;
+}
+[data-blk-py="xl"] > * {
+  padding-block: 8.5rem;
+}
+
+/* Ширина контентного контейнера. Целимся в класс-хук .sb-container из
+   blocks/classes.ts, а не в «первый div внутри секции»: у Hero во всю ширину
+   прямыми детьми секции являются ещё и фоновая картинка с оверлеем. */
+[data-blk-width="narrow"] .sb-container {
+  max-width: 44rem;
+}
+[data-blk-width="normal"] .sb-container {
+  max-width: 72rem;
+}
+[data-blk-width="wide"] .sb-container {
+  max-width: 88rem;
+}
+[data-blk-width="full"] .sb-container {
+  max-width: none;
+}
+
+/* Размер заголовков внутри блока */
+[data-blk-h="sm"] h1 {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+}
+[data-blk-h="sm"] h2 {
+  font-size: clamp(1.35rem, 2.2vw, 1.6rem);
+}
+[data-blk-h="md"] h1 {
+  font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+}
+[data-blk-h="md"] h2 {
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+}
+[data-blk-h="lg"] h1 {
+  font-size: clamp(2.75rem, 6vw, 4.5rem);
+}
+[data-blk-h="lg"] h2 {
+  font-size: clamp(2rem, 3.6vw, 2.75rem);
+}
+[data-blk-h="xl"] h1 {
+  font-size: clamp(3rem, 7.5vw, 5.5rem);
+}
+[data-blk-h="xl"] h2 {
+  font-size: clamp(2.25rem, 4.4vw, 3.25rem);
+}
+
+/* Выравнивание текста */
+[data-blk-align="left"] {
+  text-align: left;
+}
+[data-blk-align="center"] {
+  text-align: center;
+}

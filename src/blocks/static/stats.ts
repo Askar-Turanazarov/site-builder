@@ -9,8 +9,8 @@ export function statsToHtml(data: BlockDataOf<"stats">): string {
     .map(
       (stat) => `
       <div class="text-center sm:text-left">
-        ${stat.value ? `<div class="text-4xl font-extrabold tabular-nums text-[var(--tpl-accent)] [font-family:var(--tpl-font-display)] md:text-5xl">${escapeHtml(stat.value)}</div>` : ""}
-        ${stat.label ? `<div class="mt-2 text-sm text-[var(--tpl-ink-soft)]">${escapeHtml(stat.label)}</div>` : ""}
+        ${stat.value ? `<div class="sb-stat-value text-4xl font-extrabold tabular-nums text-[var(--tpl-accent)] [font-family:var(--tpl-font-display)] md:text-5xl">${escapeHtml(stat.value)}</div>` : ""}
+        ${stat.label ? `<div class="sb-stat-label mt-2 text-sm text-[var(--tpl-ink-soft)]">${escapeHtml(stat.label)}</div>` : ""}
       </div>`,
     )
     .join("\n");
