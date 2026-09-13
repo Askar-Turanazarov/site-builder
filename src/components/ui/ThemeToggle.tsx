@@ -1,8 +1,9 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { setThemeAction } from "@/lib/actions/theme";
 import { THEME_MODES, type ThemeMode } from "@/lib/theme";
+import { useSlidingIndicator } from "./useSlidingIndicator";
 
 /**
  * Переключатель темы интерфейса: светлая / тёмная / системная.
@@ -10,7 +11,7 @@ import { THEME_MODES, type ThemeMode } from "@/lib/theme";
  * Тема применяется сразу на клиенте, не дожидаясь ответа сервера: смена
  * оформления обязана быть мгновенной, иначе переключатель кажется сломанным.
  * Серверное действие следом запоминает выбор в cookie, чтобы он пережил
- * перезагрузку.
+ * перезагрузку. Подсветка выбранной кнопки переезжает к нажатой в тот же миг.
  *
  * Режим «Системная» снимает атрибут и вычисляет вариант через matchMedia —
  * без этого возврат к системной настройке оставлял бы светлую тему на
@@ -55,29 +56,40 @@ export function ThemeToggle({
   className?: string;
 }) {
   const [, startTransition] = useTransition();
+  // Выбор до ответа сервера. Когда сервер пришлёт новый `mode`, отметка
+  // перестанет совпадать по `from` и уступит ему место.
+  const [pending, setPending] = useState<{ from: ThemeMode; to: ThemeMode } | null>(null);
+  const current = pending && pending.from === mode ? pending.to : mode;
+  const { containerRef, indicatorRef, itemRef } = useSlidingIndicator(current);
 
   return (
     <div
+      ref={containerRef}
       role="group"
       aria-label={labels.system}
-      className={`inline-flex items-center gap-0.5 rounded-full border border-border bg-surface p-0.5 ${className}`}
+      className={`relative inline-flex items-center gap-0.5 rounded-full border border-border bg-surface p-0.5 ${className}`}
     >
+      <span
+        ref={indicatorRef}
+        aria-hidden="true"
+        className="sg-indicator pointer-events-none absolute top-0 left-0 rounded-full bg-accent opacity-0"
+      />
       {THEME_MODES.map((value) => {
-        const active = value === mode;
+        const active = value === current;
         return (
           <button
             key={value}
+            ref={itemRef(value)}
             type="button"
             aria-pressed={active}
             title={labels[value]}
             onClick={() => {
               applyTheme(value);
+              setPending({ from: mode, to: value });
               startTransition(() => void setThemeAction(value));
             }}
-            className={`focus-visible:focus-ring inline-flex h-7 w-7 items-center justify-center rounded-full transition-colors duration-150 ${
-              active
-                ? "bg-accent text-accent-foreground"
-                : "text-muted hover:bg-default hover:text-ink"
+            className={`focus-visible:focus-ring relative z-10 inline-flex h-7 w-7 items-center justify-center rounded-full transition-colors duration-200 ${
+              active ? "text-accent-foreground" : "text-muted hover:text-ink"
             }`}
           >
             <svg

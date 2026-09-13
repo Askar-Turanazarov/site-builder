@@ -40,7 +40,7 @@ function BentoCard({
   children: React.ReactNode;
 }) {
   return (
-    <article data-bento className={`sg-bento-card flex flex-col ${className}`}>
+    <article data-bento data-spotlight className={`sg-bento-card sg-glass sg-spot flex flex-col ${className}`}>
       <div className={`sg-bento-visual relative overflow-hidden ${tall ? "flex-1" : ""}`}>
         <div aria-hidden="true" className="sg-bento-dots pointer-events-none absolute inset-0" />
         <div aria-hidden="true" className="sg-bento-stage relative h-full">
@@ -74,7 +74,7 @@ export function FeaturesSection({ t, locale }: { t: PortalT; locale: Locale }) {
       <div className={`${PORTAL_CONTAINER} py-20 lg:py-28`}>
         <div className="grid items-end gap-6 lg:grid-cols-2 lg:gap-16">
           <div>
-            <span className="inline-flex items-center rounded-full border border-border bg-surface px-3 py-1 text-xs font-semibold text-accent shadow-surface">
+            <span className="sg-glass inline-flex items-center rounded-full border border-border px-3 py-1 text-xs font-semibold text-accent shadow-surface">
               {t("features.eyebrow")}
             </span>
             <h2 className="mt-5 font-display text-4xl leading-[1.05] font-extrabold tracking-[-0.03em] text-balance text-ink sm:text-5xl">

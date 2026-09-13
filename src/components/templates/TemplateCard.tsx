@@ -11,6 +11,13 @@ import { TemplatePreview } from "./TemplatePreview";
  * Превью — настоящий уменьшенный макет шаблона (см. TemplatePreview). Поэтому
  * его можно развернуть в сам сайт: тот же `name` стоит на странице
  * демонстрации, и браузер анимирует переход между ними.
+ *
+ * Подложка полупрозрачная (`sg-glass`), за курсором идёт пятно света
+ * (`sg-spot` + `data-spotlight`, координаты ставит SpotlightTracker).
+ *
+ * Подъём при наведении: утилита Tailwind v4 `-translate-y-1` меняет отдельное
+ * CSS-свойство `translate`, а не `transform`. Поэтому в transition перечислен
+ * именно `translate` — с `transform` подъём происходил скачком.
  */
 export function TemplateCard({
   template,
@@ -30,7 +37,10 @@ export function TemplateCard({
   applySlot?: React.ReactNode;
 }) {
   return (
-    <article className="group/card flex flex-col overflow-hidden rounded-3xl border border-border bg-surface shadow-surface transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-overlay motion-reduce:transform-none">
+    <article
+      data-spotlight
+      className="sg-glass sg-spot group/card flex flex-col overflow-hidden rounded-3xl border border-border shadow-surface transition-[translate,box-shadow,border-color] duration-[400ms] ease-[var(--ease-out-fluid)] hover:-translate-y-1 hover:border-accent/40 hover:shadow-overlay motion-reduce:translate-none motion-reduce:transition-none"
+    >
       <Link
         href={demoHref}
         transitionTypes={[NAV_FORWARD]}

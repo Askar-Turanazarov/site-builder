@@ -12,16 +12,6 @@
  */
 
 /* ===========================================================================
-   Шапка: подложка под активным пунктом меню
-   =========================================================================== */
-.sg-nav-pill {
-  transition:
-    transform 350ms var(--ease-out-fluid),
-    width 350ms var(--ease-out-fluid),
-    opacity 200ms ease;
-}
-
-/* ===========================================================================
    Шапка страницы: фон
    =========================================================================== */
 
@@ -262,39 +252,19 @@ a:hover > .sg-arrow {
   overflow: hidden;
   border-radius: 24px;
   border: 1px solid var(--border);
-  background: var(--surface);
   box-shadow: var(--surface-shadow);
   transition:
     border-color 300ms ease,
     box-shadow 300ms ease;
 }
 
-/* Пятно света за курсором; `--mx/--my` ставит FeatureGrid. */
-.sg-bento-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 300ms ease;
-  background: radial-gradient(
-    380px circle at var(--mx, 50%) var(--my, 50%),
-    color-mix(in oklab, var(--accent) 13%, transparent),
-    transparent 70%
-  );
-}
-.sg-bento-card:hover::after {
-  opacity: 1;
-}
 .sg-bento-card:hover {
   border-color: color-mix(in oklab, var(--accent) 45%, var(--border));
   box-shadow: var(--overlay-shadow);
 }
 
 .sg-bento-visual {
-  background: color-mix(in oklab, var(--background) 55%, var(--surface));
+  background: color-mix(in oklab, var(--background) 38%, transparent);
 }
 .sg-bento-stage {
   transition: transform 600ms var(--ease-out-fluid);
@@ -579,11 +549,104 @@ a:hover > .sg-arrow {
 }
 
 /* ===========================================================================
+   Стекло и пятно света — общие для карточек портала
+   =========================================================================== */
+
+/* Полупрозрачная подложка: сквозь неё виден фон страницы с точками и пятнами.
+   Размытие не даёт фону спорить с текстом. */
+.sg-glass {
+  background: color-mix(in oklab, var(--surface) 72%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+}
+
+/* Пятно света за курсором. Координаты ставит SpotlightTracker элементу с
+   `data-spotlight`, над которым курсор. Слой лежит поверх содержимого (и поверх
+   превью шаблона), но клики пропускает. */
+.sg-spot {
+  position: relative;
+  isolation: isolate;
+}
+.sg-spot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  background: radial-gradient(
+    380px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--accent) 14%, transparent),
+    transparent 70%
+  );
+}
+.sg-spot:hover::after {
+  opacity: 1;
+}
+
+/* ===========================================================================
+   Фон страницы с параллаксом (PortalBackdrop)
+   =========================================================================== */
+
+/* Подкраска основы: убирает «голый белый лист» в светлой теме,
+   в тёмной почти незаметна. */
+.sg-backdrop-wash {
+  background:
+    radial-gradient(
+      120% 70% at 50% -10%,
+      color-mix(in oklab, var(--accent) 8%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      var(--background),
+      color-mix(in oklab, var(--background) 92%, var(--accent))
+    );
+}
+
+/* Точечная сетка — плывёт на четверть скорости прокрутки. Слой на клетку
+   выше экрана: сдвиг берётся по модулю клетки, и край не открывается. */
+.sg-backdrop-dots {
+  position: absolute;
+  inset: -24px 0 0 0;
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--foreground) 14%, transparent) 1px,
+    transparent 1.3px
+  );
+  background-size: 24px 24px;
+  transform: translate3d(0, var(--sg-dots-y, 0px), 0);
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 45%, #000 25%, transparent 85%);
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 45%, #000 25%, transparent 85%);
+  will-change: transform;
+}
+
+/* Пятна: внешний слой — параллакс, внутренний — медленный дрейф.
+   Разделены, потому что оба двигаются через transform. */
+.sg-orb {
+  position: absolute;
+  width: 44vmax;
+  height: 44vmax;
+  transform: translate3d(0, calc(var(--sg-scroll, 0) * var(--sg-speed, 0.2) * -1px), 0);
+  will-change: transform;
+}
+.sg-orb-drift {
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  filter: blur(110px);
+  opacity: 0.26;
+  animation: sg-drift 24s ease-in-out infinite alternate;
+}
+
+/* ===========================================================================
    «Меньше движения»: гасим всё, что двигается само, оставляя содержимое
    на местах. Смена шаблонов в сцене не запускается вовсе (HeroStageMotion).
    =========================================================================== */
 @media (prefers-reduced-motion: reduce) {
   .sg-aura,
+  .sg-orb-drift,
   .sg-float,
   .sg-float-b,
   .sg-float-c,
@@ -608,7 +671,6 @@ a:hover > .sg-arrow {
     transform: none;
   }
 
-  .sg-nav-pill,
   .sg-slide,
   .sg-bento-stage,
   .sg-fan,

@@ -99,7 +99,7 @@ export function HeroStage({ locale, t }: { locale: Locale; t: PortalT }) {
 
       {/* ------------------------------------------------- спутник: блоки */}
       <div className="sg-float pointer-events-none absolute -top-1 -left-3 hidden w-56 lg:block xl:-left-6">
-        <div className="rounded-2xl border border-border bg-surface/90 p-3 shadow-overlay backdrop-blur-md">
+        <div className="rounded-2xl border border-border sg-glass p-3 shadow-overlay">
           <div className="mb-2.5 flex items-center justify-between px-0.5">
             <span className="text-[10px] font-semibold tracking-[0.12em] text-muted uppercase">
               {t("stage.blocks")}
@@ -127,7 +127,7 @@ export function HeroStage({ locale, t }: { locale: Locale; t: PortalT }) {
 
       {/* ------------------------------------------------ спутник: стили */}
       <div className="sg-float-b pointer-events-none absolute -bottom-2 left-4 hidden lg:block xl:-left-2">
-        <div className="flex items-center gap-3 rounded-full border border-border bg-surface/90 py-2 pr-4 pl-3 shadow-overlay backdrop-blur-md">
+        <div className="flex items-center gap-3 rounded-full border border-border sg-glass py-2 pr-4 pl-3 shadow-overlay">
           <span className="flex items-center gap-1.5">
             {dots.map((dot) => (
               <span
@@ -144,7 +144,7 @@ export function HeroStage({ locale, t }: { locale: Locale; t: PortalT }) {
 
       {/* --------------------------------------------- спутник: выгрузка */}
       <div className="sg-float-c pointer-events-none absolute right-0 bottom-24 hidden w-60 lg:block xl:-right-5">
-        <div className="rounded-2xl border border-border bg-surface/90 p-3 shadow-overlay backdrop-blur-md">
+        <div className="rounded-2xl border border-border sg-glass p-3 shadow-overlay">
           <div className="flex items-center gap-3">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-success/15 text-success">
               <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2.2}>

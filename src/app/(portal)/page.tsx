@@ -66,7 +66,6 @@ export default async function PortalHomePage() {
         className="relative isolate overflow-hidden"
       >
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-          <div className="sg-hero-dots absolute inset-0" />
           <div
             className="sg-aura top-[-18%] left-[-8%] h-[520px] w-[520px]"
             style={{ background: "color-mix(in oklab, var(--accent) 65%, transparent)" }}
@@ -76,14 +75,13 @@ export default async function PortalHomePage() {
             style={{ background: "color-mix(in oklab, var(--accent) 45%, #22d3ee)" }}
           />
           <div className="sg-spotlight absolute inset-0" />
-          <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-b from-transparent to-background" />
         </div>
 
         <div
           className={`${PORTAL_CONTAINER} grid items-center gap-14 pt-12 pb-20 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:pt-16 lg:pb-24 xl:gap-20`}
         >
           <div>
-            <span className="sg-enter sg-d1 inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-3 py-1 text-xs font-medium text-ink-soft shadow-surface backdrop-blur">
+            <span className="sg-enter sg-d1 sg-glass inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs font-medium text-ink-soft shadow-surface">
               <span className="sg-pulse h-2 w-2 rounded-full bg-success" />
               {t("hero.badge")}
             </span>
@@ -178,7 +176,7 @@ export default async function PortalHomePage() {
       {/* --------------------------------------------------------------- */}
       <section className="border-t border-separator">
         <div className={`${PORTAL_CONTAINER} py-20 lg:py-24`}>
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-surface p-8 shadow-surface sm:p-12 lg:p-16">
+          <div data-spotlight className="sg-glass sg-spot overflow-hidden rounded-3xl border border-border p-8 shadow-surface sm:p-12 lg:p-16">
             <div
               aria-hidden="true"
               className="pointer-events-none absolute -top-32 -right-24 h-80 w-80 rounded-full opacity-[0.16] blur-3xl"

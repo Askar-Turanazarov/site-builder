@@ -15,7 +15,7 @@ export function PortalFooter({ t, siteHref }: { t: PortalT; siteHref: string }) 
   const copyright = `© ${new Date().getFullYear()} SiteGo — Askar Turanazarov`;
 
   return (
-    <footer className="mt-20 border-t border-separator bg-surface">
+    <footer className="sg-glass mt-20 border-t border-separator">
       <div className={`${PORTAL_CONTAINER} flex flex-col gap-8 py-12 sm:flex-row sm:items-start sm:justify-between`}>
         <div className="max-w-sm">
           <Logo textClassName="text-base" />

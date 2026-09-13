@@ -9,6 +9,7 @@ import { demoHref, demoMenuItems } from "@/lib/site-templates/demo";
 import type { SiteTemplate } from "@/lib/site-templates";
 import type { PortalT } from "@/lib/portal-i18n";
 import { Transition, NAV_BACK } from "@/components/ui/Transition";
+import { SegmentedLinks } from "@/components/ui/SegmentedLinks";
 import { templateMorphName } from "@/lib/site-templates/demo";
 
 /**
@@ -62,22 +63,17 @@ export function TemplateDemo({
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 text-sm">
-              {LOCALES.map((code) => (
-                <Link
-                  key={code}
-                  href={demoHref(template.key, code, path)}
-                  className={`rounded px-2 py-1 font-medium ${
-                    code === locale ? "bg-accent-tint text-accent-strong" : "text-muted hover:text-ink"
-                  }`}
-                >
-                  {code.toUpperCase()}
-                </Link>
-              ))}
-            </div>
+            <SegmentedLinks
+              active={locale}
+              items={LOCALES.map((code) => ({
+                key: code,
+                href: demoHref(template.key, code, path),
+                label: code.toUpperCase(),
+              }))}
+            />
             <Link
               href={applyHref}
-              className="rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-strong"
+              className="button button--sm bg-accent text-accent-foreground hover:bg-accent-hover"
             >
               {t("demo.apply")}
             </Link>

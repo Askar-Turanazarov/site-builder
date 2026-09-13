@@ -2,6 +2,7 @@ import { requireAdmin } from "@/lib/auth";
 import { getAdminDict, getAdminLocale } from "@/lib/admin-i18n/server";
 import { AdminI18nProvider } from "@/components/admin/AdminI18nProvider";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { SpotlightTracker } from "@/components/ui/SpotlightTracker";
 import { getThemeMode } from "@/lib/theme-server";
 
 export default async function AdminDashboardLayout({
@@ -18,6 +19,8 @@ export default async function AdminDashboardLayout({
 
   return (
     <AdminI18nProvider locale={locale} dict={dict}>
+      {/* Пятно света за курсором на карточках шаблонов в разделе «Шаблоны». */}
+      <SpotlightTracker />
       {/* h-screen + overflow-hidden: прокручивается только область контента,
           сайдбар всегда на месте. С min-h-screen прокручивался весь документ,
           и на длинных экранах сайдбар уезжал вверх. */}

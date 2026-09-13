@@ -10,6 +10,7 @@ import { SiteFrame } from "@/components/site/SiteFrame";
 import { buildRenderContext } from "@/lib/render-context";
 import { localeField } from "@/lib/locale-field";
 import { getAdminT } from "@/lib/admin-i18n/server";
+import { SegmentedLinks } from "@/components/ui/SegmentedLinks";
 
 /**
  * Предпросмотр страницы или статьи в окружении настоящего сайта — включая
@@ -128,19 +129,14 @@ async function PreviewShell({
           </span>
         </div>
 
-        <div className="flex items-center gap-1 text-sm">
-          {LOCALES.map((l) => (
-            <Link
-              key={l}
-              href={`/admin/preview/${type}/${id}?locale=${l}`}
-              className={`rounded px-2 py-1 font-medium ${
-                l === locale ? "bg-accent-tint text-accent-strong" : "text-muted hover:text-ink"
-              }`}
-            >
-              {l.toUpperCase()}
-            </Link>
-          ))}
-        </div>
+        <SegmentedLinks
+          active={locale}
+          items={LOCALES.map((l) => ({
+            key: l,
+            href: `/admin/preview/${type}/${id}?locale=${l}`,
+            label: l.toUpperCase(),
+          }))}
+        />
       </div>
 
       <SiteFrame locale={locale}>{children}</SiteFrame>

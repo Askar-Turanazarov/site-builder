@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Locale } from "@/blocks/context";
@@ -9,6 +9,7 @@ import { PORTAL_LOCALE_LABELS } from "@/lib/portal-i18n";
 import { setPortalLocaleAction } from "@/lib/actions/portal-locale";
 import { Logo } from "@/components/brand/Logo";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { useSlidingIndicator } from "@/components/ui/useSlidingIndicator";
 import type { ThemeMode } from "@/lib/theme";
 import { PORTAL_CONTAINER } from "./container";
 
@@ -47,9 +48,14 @@ function resolveActive(items: PortalNavItem[], pathname: string, section: string
  * Шапка портала.
  *
  * Полупрозрачная с размытием — приём HeroUI. Рамка и тень появляются только
- * после прокрутки. Под активным пунктом едет подложка-пилюля, как у вкладок
- * HeroUI: переход между «Шаблонами» и «Возможностями» виден глазом, а не только
- * сменой содержимого страницы.
+ * после прокрутки. Подсветка активного пункта меню и выбранного языка
+ * переезжает от прежнего пункта к новому (useSlidingIndicator) — как у
+ * вкладок HeroUI.
+ *
+ * Отметка клика. Подсветка едет в момент нажатия, не дожидаясь загрузки
+ * страницы или конца прокрутки. Отметка помнит, от какого состояния сделана:
+ * как только настоящее состояние сменится, в силу снова вступает оно — без
+ * эффектов и без рассинхронизации при переходе кнопкой «назад».
  *
  * `viewTransitionName` закрепляет шапку при переходах между страницами.
  */
@@ -70,15 +76,17 @@ export function PortalHeader({
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [section, setSection] = useState<string | null>(null);
-
-  const listRef = useRef<HTMLDivElement>(null);
-  const pillRef = useRef<HTMLSpanElement>(null);
-  const linkRefs = useRef(new Map<string, HTMLAnchorElement>());
-  const pillShown = useRef(false);
+  const [pendingNav, setPendingNav] = useState<{ from: string | null; to: string } | null>(null);
 
   const navItems = items.filter((item) => !item.emphasis);
   const cta = items.find((item) => item.emphasis);
-  const active = resolveActive(navItems, pathname, section);
+  const resolved = resolveActive(navItems, pathname, section);
+  const active = pendingNav && pendingNav.from === resolved ? pendingNav.to : resolved;
+  const {
+    containerRef: navContainerRef,
+    indicatorRef: navIndicatorRef,
+    itemRef: navItemRef,
+  } = useSlidingIndicator(active);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -112,48 +120,14 @@ export function PortalHeader({
     return () => observer.disconnect();
   }, [pathname, items]);
 
-  // Подложка-пилюля. Положение меняем прямо в DOM, без состояния React: это
-  // синхронизация с разметкой, и лишний проход рендера здесь не нужен. При
-  // первом появлении подложка встаёт на место без анимации — иначе она
-  // выезжала бы из левого края.
-  useLayoutEffect(() => {
-    const list = listRef.current;
-    const pill = pillRef.current;
-    if (!list || !pill) return;
-
-    const place = () => {
-      const link = active ? linkRefs.current.get(active) : undefined;
-      if (!link) {
-        pill.style.opacity = "0";
-        pillShown.current = false;
-        return;
-      }
-      const first = !pillShown.current;
-      if (first) pill.style.transition = "none";
-      pill.style.width = `${link.offsetWidth}px`;
-      pill.style.transform = `translateX(${link.offsetLeft}px)`;
-      pill.style.opacity = "1";
-      if (first) {
-        void pill.offsetWidth;
-        pill.style.transition = "";
-        pillShown.current = true;
-      }
-    };
-
-    place();
-    const resize = new ResizeObserver(place);
-    resize.observe(list);
-    return () => resize.disconnect();
-  }, [active]);
-
   /**
-   * Переход к разделу на той же странице: плавная прокрутка с поправкой на
-   * липкую шапку (её даёт `scroll-margin-top` у раздела) и мгновенная отметка
-   * пункта — посетитель видит отклик сразу после клика, а не по окончании
-   * прокрутки.
+   * Клик по пункту меню: подсветка сразу едет к нему. Для раздела на той же
+   * странице — плавная прокрутка с поправкой на липкую шапку (её даёт
+   * `scroll-margin-top` у раздела).
    */
   const onNavClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     setOpen(false);
+    setPendingNav({ from: resolved, to: href });
     const id = sectionId(href);
     if (!id || pathname !== "/") return;
     const target = document.getElementById(id);
@@ -178,26 +152,23 @@ export function PortalHeader({
         </Link>
 
         <nav className="hidden items-center gap-2 lg:flex">
-          <div ref={listRef} className="relative flex items-center">
+          <div ref={navContainerRef} className="relative flex items-center">
             <span
-              ref={pillRef}
+              ref={navIndicatorRef}
               aria-hidden="true"
-              className="sg-nav-pill pointer-events-none absolute top-0 left-0 h-full rounded-full bg-accent-soft opacity-0"
+              className="sg-indicator pointer-events-none absolute top-0 left-0 rounded-full bg-accent-soft opacity-0"
             />
             {navItems.map((item) => {
-              const isActive = item.href === active;
+              const isCurrent = item.href === resolved;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  ref={(el) => {
-                    if (el) linkRefs.current.set(item.href, el);
-                    else linkRefs.current.delete(item.href);
-                  }}
+                  ref={navItemRef(item.href)}
                   onClick={(event) => onNavClick(event, item.href)}
-                  aria-current={isActive ? (sectionId(item.href) ? "location" : "page") : undefined}
+                  aria-current={isCurrent ? (sectionId(item.href) ? "location" : "page") : undefined}
                   className={`focus-visible:focus-ring relative z-10 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
-                    isActive ? "text-accent" : "text-ink-soft hover:text-ink"
+                    item.href === active ? "text-accent" : "text-ink-soft hover:text-ink"
                   }`}
                 >
                   {item.label}
@@ -242,7 +213,9 @@ export function PortalHeader({
                   key={item.href}
                   href={item.href}
                   onClick={(event) => onNavClick(event, item.href)}
-                  aria-current={isActive ? (sectionId(item.href) ? "location" : "page") : undefined}
+                  aria-current={
+                    item.href === resolved ? (sectionId(item.href) ? "location" : "page") : undefined
+                  }
                   className={`flex items-center justify-between rounded-2xl px-3.5 py-2.5 text-sm font-medium transition-colors ${
                     isActive ? "bg-accent-soft text-accent" : "text-ink-soft hover:bg-default hover:text-ink"
                   }`}
@@ -272,23 +245,38 @@ export function PortalHeader({
   );
 }
 
+/**
+ * Переключатель языка портала. Форма работает и без JavaScript; с ним
+ * подсветка переезжает к нажатому языку ещё до ответа сервера.
+ */
 function LocaleSwitcher({ locale, pathname }: { locale: Locale; pathname: string }) {
+  const [pending, setPending] = useState<{ from: Locale; to: Locale } | null>(null);
+  const current = pending && pending.from === locale ? pending.to : locale;
+  const { containerRef, indicatorRef, itemRef } = useSlidingIndicator<HTMLFormElement>(current);
+
   return (
     <form
+      ref={containerRef}
       action={setPortalLocaleAction}
-      className="inline-flex rounded-full border border-border bg-surface p-0.5"
+      className="relative inline-flex rounded-full border border-border bg-surface p-0.5"
     >
       <input type="hidden" name="back" value={pathname} />
+      <span
+        ref={indicatorRef}
+        aria-hidden="true"
+        className="sg-indicator pointer-events-none absolute top-0 left-0 rounded-full bg-accent opacity-0"
+      />
       {LOCALES.map((code) => (
         <button
           key={code}
+          ref={itemRef(code)}
           type="submit"
           name="locale"
           value={code}
-          className={`focus-visible:focus-ring rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors duration-150 ${
-            code === locale
-              ? "bg-accent text-accent-foreground"
-              : "text-muted hover:bg-default hover:text-ink"
+          onClick={() => setPending({ from: locale, to: code })}
+          aria-pressed={code === locale}
+          className={`focus-visible:focus-ring relative z-10 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors duration-200 ${
+            code === current ? "text-accent-foreground" : "text-muted hover:text-ink"
           }`}
         >
           {PORTAL_LOCALE_LABELS[code]}

@@ -4,10 +4,15 @@ import { getSession } from "@/lib/auth";
 import { getThemeMode } from "@/lib/theme-server";
 import { PortalHeader, type PortalNavItem } from "@/components/portal/PortalHeader";
 import { PortalFooter } from "@/components/portal/PortalFooter";
+import { PortalBackdrop } from "@/components/portal/PortalBackdrop";
+import { SpotlightTracker } from "@/components/ui/SpotlightTracker";
 
 /**
  * Каркас портала — публичного лица конструктора. Живёт отдельно от собранного
  * сайта: у сайта своя тема и свои скины, у портала — оформление продукта.
+ *
+ * Своего фона у каркаса нет намеренно: за всем порталом лежит PortalBackdrop
+ * (точки и пятна с параллаксом), и сплошная заливка здесь закрыла бы его.
  */
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
   const [t, locale, settings, session, theme] = await Promise.all([
@@ -29,7 +34,9 @@ export default async function PortalLayout({ children }: { children: React.React
   ];
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="relative flex min-h-screen flex-col">
+      <PortalBackdrop />
+      <SpotlightTracker />
       <PortalHeader
         items={items}
         locale={locale}
