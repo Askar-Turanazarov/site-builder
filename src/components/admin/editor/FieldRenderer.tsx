@@ -36,7 +36,7 @@ interface FieldRendererProps {
 }
 
 const inputClass =
-  "w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-ink outline-none focus:border-accent";
+  "w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm text-ink outline-none focus:border-accent";
 
 export function FieldRenderer({ spec, blockType, value, path, onLeafChange }: FieldRendererProps) {
   const t = useAdminT();
@@ -48,7 +48,7 @@ export function FieldRenderer({ spec, blockType, value, path, onLeafChange }: Fi
       <div>
         <div className="space-y-3">
           {items.map((item, index) => (
-            <div key={index} className="rounded-md border border-border p-3">
+            <div key={index} className="rounded-xl border border-border p-3">
               <div className="mb-2 flex items-center justify-between">
                 <span className="text-xs font-semibold text-muted">
                   {itemLabel} {index + 1}
@@ -88,7 +88,7 @@ export function FieldRenderer({ spec, blockType, value, path, onLeafChange }: Fi
         <button
           type="button"
           onClick={() => onLeafChange(path, [...items, defaultItem(spec.fields)], false)}
-          className="mt-2 rounded-md border border-dashed border-border px-3 py-1.5 text-xs font-medium text-ink-soft hover:border-accent hover:text-accent"
+          className="mt-2 rounded-xl border border-dashed border-border px-3 py-1.5 text-xs font-medium text-ink-soft hover:border-accent hover:text-accent"
         >
           {t("field.addItem")}: {itemLabel}
         </button>
@@ -203,7 +203,7 @@ function IconButton({
       aria-label={label}
       title={label}
       className={`flex h-6 w-6 items-center justify-center rounded text-xs ${
-        danger ? "text-muted hover:bg-danger-tint hover:text-danger" : "text-muted hover:bg-paper hover:text-ink"
+        danger ? "text-muted hover:bg-danger-tint hover:text-danger" : "text-muted hover:bg-default hover:text-ink"
       }`}
     >
       {children}

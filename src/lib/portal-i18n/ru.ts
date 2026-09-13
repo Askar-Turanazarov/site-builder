@@ -24,6 +24,11 @@ export const ru = {
   "hero.ctaAdmin": "Войти в панель",
   "hero.ctaSite": "Открыть мой сайт",
 
+  "stats.templates": "шаблонов сайтов",
+  "stats.locales": "языка в одном контенте",
+  "stats.blocks": "типов блоков",
+  "stats.export": "выгрузка без бэкенда",
+
   "templates.title": "12 готовых сайтов",
   "templates.lead":
     "Каждый — со своей структурой, палитрой, шрифтами и стилем вёрстки. Откройте демо и походите по нему как по настоящему сайту.",
@@ -65,7 +70,11 @@ export const ru = {
   "demo.notFound": "В этом шаблоне такой страницы нет",
   "demo.toPortal": "К конструктору",
 
-  "footer.made": "Сделано на Site Builder",
+  "theme.light": "Светлая тема",
+  "theme.dark": "Тёмная тема",
+  "theme.system": "Как в системе",
+
+  "footer.made": "Сделано на SiteGo",
   "footer.docs": "Документация",
   "footer.tagline": "Конструктор многоязычных сайтов с экспортом в статику.",
 

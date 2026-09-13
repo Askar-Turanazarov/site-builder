@@ -16,12 +16,12 @@ export function AddBlockMenu({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-6" onClick={onClose}>
       <div
-        className="max-h-[80vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-surface p-5 shadow-lg"
+        className="max-h-[80vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-surface p-5 shadow-lg"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-display text-lg font-semibold text-ink">{t("editor.addBlockTitle")}</h2>
-          <button type="button" onClick={onClose} className="rounded-md p-1.5 text-muted hover:bg-paper">
+          <button type="button" onClick={onClose} className="rounded-xl p-1.5 text-muted hover:bg-default">
             ✕
           </button>
         </div>
@@ -31,7 +31,7 @@ export function AddBlockMenu({
               key={type}
               type="button"
               onClick={() => onPick(type)}
-              className="rounded-md border border-border p-3 text-left transition hover:border-accent hover:bg-accent-tint"
+              className="rounded-xl border border-border p-3 text-left transition hover:border-accent hover:bg-accent-tint"
             >
               <div className="text-sm font-medium text-ink">{blockLabel(t, type)}</div>
               <div className="mt-1 text-xs text-muted">{blockDescription(t, type)}</div>

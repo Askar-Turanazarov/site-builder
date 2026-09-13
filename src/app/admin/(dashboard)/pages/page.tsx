@@ -17,13 +17,13 @@ export default async function PagesListPage() {
         </div>
         <Link
           href="/admin/pages/new"
-          className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-strong"
+          className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-strong"
         >
           {t("pages.new")}
         </Link>
       </div>
 
-      <div className="mt-6 divide-y divide-border rounded-lg border border-border bg-surface">
+      <div className="mt-6 divide-y divide-border rounded-2xl border border-border bg-surface">
         {pages.length === 0 && (
           <p className="px-5 py-8 text-center text-sm text-muted">{t("pages.empty")}</p>
         )}
@@ -31,7 +31,7 @@ export default async function PagesListPage() {
           <Link
             key={page.id}
             href={`/admin/pages/${page.id}`}
-            className="flex items-center justify-between px-5 py-4 hover:bg-paper"
+            className="flex items-center justify-between px-5 py-4 hover:bg-default"
           >
             <div>
               <div className="flex items-center gap-2">

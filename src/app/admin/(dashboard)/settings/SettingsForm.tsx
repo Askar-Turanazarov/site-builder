@@ -80,7 +80,7 @@ export function SettingsForm({ initial }: { initial: SettingsInitial }) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="mb-1.5 block text-xs font-semibold text-muted">{t("settings.defaultLocale")}</label>
-            <select value={defaultLocale} onChange={(e) => setDefaultLocale(e.target.value)} className="w-full rounded-md border border-border bg-paper px-3 py-2 text-sm outline-none focus:border-accent">
+            <select value={defaultLocale} onChange={(e) => setDefaultLocale(e.target.value)} className="w-full rounded-xl border border-border bg-paper px-3 py-2 text-sm outline-none focus:border-accent">
               <option value="ru">{t("common.russian")}</option>
               <option value="uz">Oʻzbekcha</option>
               <option value="en">English</option>
@@ -106,11 +106,11 @@ export function SettingsForm({ initial }: { initial: SettingsInitial }) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="mb-1.5 block text-xs font-semibold text-muted">Email</label>
-            <input value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} className="w-full rounded-md border border-border bg-paper px-3 py-2 text-sm outline-none focus:border-accent" />
+            <input value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} className="w-full rounded-xl border border-border bg-paper px-3 py-2 text-sm outline-none focus:border-accent" />
           </div>
           <div>
             <label className="mb-1.5 block text-xs font-semibold text-muted">{t("settings.phone")}</label>
-            <input value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} className="w-full rounded-md border border-border bg-paper px-3 py-2 text-sm outline-none focus:border-accent" />
+            <input value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} className="w-full rounded-xl border border-border bg-paper px-3 py-2 text-sm outline-none focus:border-accent" />
           </div>
         </div>
         <LocalizedTextInput label={t("settings.address")} values={contactAddress} onChange={(l, v) => setContactAddress((s) => ({ ...s, [l]: v }))} />
@@ -122,7 +122,7 @@ export function SettingsForm({ initial }: { initial: SettingsInitial }) {
             value={contactFormAction}
             onChange={(e) => setContactFormAction(e.target.value)}
             placeholder="https://formspree.io/f/xxxxxx"
-            className="w-full rounded-md border border-border bg-paper px-3 py-2 text-sm outline-none focus:border-accent"
+            className="w-full rounded-xl border border-border bg-paper px-3 py-2 text-sm outline-none focus:border-accent"
           />
         </div>
       </Section>
@@ -136,7 +136,7 @@ export function SettingsForm({ initial }: { initial: SettingsInitial }) {
           type="button"
           disabled={pending}
           onClick={handleSave}
-          className="rounded-md bg-accent px-5 py-2 text-sm font-medium text-surface hover:bg-accent-strong disabled:opacity-60"
+          className="rounded-xl bg-accent px-5 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-strong disabled:opacity-60"
         >
           {pending ? t("common.saving") : t("common.save")}
         </button>
@@ -148,7 +148,7 @@ export function SettingsForm({ initial }: { initial: SettingsInitial }) {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-lg border border-border bg-surface p-6">
+    <div className="rounded-2xl border border-border bg-surface p-6">
       <h2 className="mb-4 font-display text-base font-semibold text-ink">{title}</h2>
       <div className="space-y-4">{children}</div>
     </div>

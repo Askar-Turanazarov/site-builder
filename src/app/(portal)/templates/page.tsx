@@ -6,7 +6,7 @@ import { demoHref } from "@/lib/site-templates/demo";
 import { TemplateCard } from "@/components/templates/TemplateCard";
 
 export const metadata: Metadata = {
-  title: "Шаблоны сайтов — Site Builder",
+  title: "Шаблоны сайтов",
 };
 
 export default async function PortalTemplatesPage() {

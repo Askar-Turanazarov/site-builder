@@ -96,7 +96,7 @@ export function DesignForm({ initial }: { initial: SiteDesign }) {
                 key={key}
                 type="button"
                 onClick={() => setThemeKey(key)}
-                className={`rounded-lg border-2 p-3 text-left transition ${
+                className={`rounded-2xl border-2 p-3 text-left transition ${
                   active ? "border-accent bg-accent-tint" : "border-border bg-surface hover:border-accent/50"
                 }`}
               >
@@ -125,7 +125,7 @@ export function DesignForm({ initial }: { initial: SiteDesign }) {
                 key={key || "none"}
                 type="button"
                 onClick={() => setSkinKey(key)}
-                className={`rounded-lg border-2 p-2 text-left transition ${
+                className={`rounded-2xl border-2 p-2 text-left transition ${
                   active ? "border-accent bg-accent-tint" : "border-border bg-surface hover:border-accent/50"
                 }`}
               >
@@ -182,7 +182,7 @@ export function DesignForm({ initial }: { initial: SiteDesign }) {
           <select
             value={radiusScale}
             onChange={(e) => setRadiusScale(e.target.value)}
-            className="w-full rounded-md border border-border bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-accent"
+            className="w-full rounded-xl border border-border bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-accent"
           >
             {RADIUS_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
@@ -197,7 +197,7 @@ export function DesignForm({ initial }: { initial: SiteDesign }) {
         <div
           style={themeStyleVars(design)}
           data-skin={skinKey || undefined}
-          className="rounded-lg border border-border bg-[var(--tpl-paper)] p-8"
+          className="rounded-2xl border border-border bg-[var(--tpl-paper)] p-8"
         >
           <p className="text-sm font-semibold tracking-wide text-[var(--tpl-accent)] uppercase">
             {t("design.sampleEyebrow")}
@@ -227,14 +227,14 @@ export function DesignForm({ initial }: { initial: SiteDesign }) {
           type="button"
           disabled={pending}
           onClick={handleSave}
-          className="rounded-md bg-accent px-5 py-2 text-sm font-medium text-surface hover:bg-accent-strong disabled:opacity-60"
+          className="rounded-xl bg-accent px-5 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-strong disabled:opacity-60"
         >
           {pending ? t("common.saving") : t("design.save")}
         </button>
         <button
           type="button"
           onClick={handleReset}
-          className="rounded-md border border-border px-4 py-2 text-sm text-ink-soft hover:border-accent hover:text-ink"
+          className="rounded-xl border border-border px-4 py-2 text-sm text-ink-soft hover:border-accent hover:text-ink"
         >
           {t("design.reset")}
         </button>
@@ -254,7 +254,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-surface p-6">
+    <div className="rounded-2xl border border-border bg-surface p-6">
       <h2 className="font-display text-base font-semibold text-ink">{title}</h2>
       {hint && <p className="mt-1 mb-4 text-xs text-muted">{hint}</p>}
       {children}
@@ -281,7 +281,7 @@ function FontSelect({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-md border border-border bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-accent"
+        className="w-full rounded-xl border border-border bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-accent"
       >
         <option value="">{t("design.asTheme")}</option>
         {options.map((font) => (
@@ -321,7 +321,7 @@ function ColorField({
           value={value}
           placeholder={t("design.asTheme")}
           onChange={(e) => onChange(e.target.value.trim())}
-          className="w-full rounded-md border border-border bg-paper px-2.5 py-2 font-mono text-xs text-ink outline-none focus:border-accent"
+          className="w-full rounded-xl border border-border bg-paper px-2.5 py-2 font-mono text-xs text-ink outline-none focus:border-accent"
         />
         {value && (
           <button

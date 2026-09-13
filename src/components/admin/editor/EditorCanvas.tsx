@@ -94,7 +94,7 @@ export function EditorCanvas({
             <button
               type="button"
               onClick={() => onInsertAt(0)}
-              className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-strong"
+              className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-strong"
             >
               {t("editor.addBlock")}
             </button>
@@ -143,7 +143,7 @@ function InsertZone({ onClick, label }: { onClick: () => void; label: string }) 
         <button
           type="button"
           onClick={onClick}
-          className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-sm leading-none text-surface opacity-0 shadow transition group-hover/insert:opacity-100 focus:opacity-100"
+          className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-sm leading-none text-accent-foreground opacity-0 shadow transition group-hover/insert:opacity-100 focus:opacity-100"
           title={label}
         >
           +

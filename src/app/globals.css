@@ -1,103 +1,93 @@
+/*
+ * SiteGo — таблица стилей интерфейса конструктора.
+ *
+ * ОСНОВАНИЕ: HeroUI v3 (пакет @heroui/styles — только CSS, без React).
+ * Взят именно CSS-пакет, а не компонентная библиотека, по одной причине:
+ * блоки сайта рендерятся дважды — React-компонентами и генераторами
+ * HTML-строк для выгрузки в статику. React-компонент в строковый рендер не
+ * вставить, а класс — вставить можно. Поэтому оформление у живого сайта и у
+ * выгруженного ZIP-а одно и то же.
+ *
+ * ПОРЯДОК ИМПОРТОВ — НЕСУЩАЯ КОНСТРУКЦИЯ, НЕ МЕНЯТЬ МЕСТАМИ:
+ *   1. tailwindcss          — требование HeroUI: строго первым.
+ *   2. @heroui/styles       — токены, база, утилиты, CSS компонентов.
+ *   3. prose.css            — оформление текста статей.
+ *   4. blocks-base.css      — базовая полировка блоков сайта (неслоёный).
+ *   5. skins.css            — 12 стилей оформления сайта (неслоёный).
+ *   6. blocks.css           — пер-блочные настройки администратора (неслоёный).
+ *
+ * Пункты 4-6 намеренно вне @layer: неслоёные правила в каскаде сильнее любого
+ * слоя, поэтому они перебивают и утилиты Tailwind, и компоненты HeroUI
+ * независимо от специфичности. Между собой они спорят порядком: при равной
+ * специфичности побеждает поздний. Отсюда и очередь — база блоков слабее
+ * скина, скин слабее настроек администратора.
+ *
+ * ИМЕННО ЭТО СОХРАНЯЕТ НЕПОХОЖЕСТЬ 12 ШАБЛОНОВ: единый стиль HeroUI лежит в
+ * слоях и не может перебить скин ниши. Переставите skins.css выше — все
+ * шаблоны станут одинаковыми.
+ */
+
+@layer theme, base, components, utilities;
+
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@import "@heroui/styles/base/base.css" layer(base);
+@import "@heroui/styles/components/button.css" layer(components);
+@import "@heroui/styles/components/card.css" layer(components);
+@import "@heroui/styles/components/input.css" layer(components);
+@import "@heroui/styles/themes/default" layer(theme);
+@import "@heroui/styles/utilities";
+
+@import "../styles/motion.css";
 @import "../styles/prose.css";
+@import "../styles/blocks-base.css";
 @import "../styles/skins.css";
 @import "../styles/blocks.css";
 
 /*
- * Design tokens.
- * "Ink/paper/accent" naming keeps every surface (admin UI today, public
- * templates later) reskinnable by swapping a handful of variables instead
- * of rewriting layout. Admin uses a restrained teal-ink identity; each
- * public template gets its own palette on top of the same structure.
- * Font families are injected as CSS variables by next/font in layout.tsx.
+ * Псевдонимы под исторический словарь проекта.
+ *
+ * В коде интерфейса ~185 мест пользуются утилитами `bg-paper`, `text-ink`,
+ * `text-ink-soft`, `bg-accent-tint`. Вместо правки 41 файла переводим сами
+ * псевдонимы на переменные HeroUI — и светлая, и тёмная тема приезжают
+ * бесплатно, вместе со всей шкалой скруглений, теней и таймингов.
+ *
+ * Шесть имён (--surface, --border, --muted, --accent, --danger, --warning)
+ * у нас и у HeroUI совпадали. Свои объявления удалены: значения берём у
+ * HeroUI, иначе одно молча затирало бы другое.
  */
 :root {
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  --ink: var(--foreground);
+  --paper: var(--background);
 
-  --ink: #14181c;
-  --ink-soft: #3c444b;
-  --paper: #f7f7f5;
-  --surface: #ffffff;
-  --border: #e4e3df;
-  --muted: #6b7280;
+  /* Промежуточный тон: у HeroUI между --foreground и --muted ничего нет,
+     а основной текст интерфейса набран именно им. */
+  --ink-soft: color-mix(in oklab, var(--foreground) 72%, var(--muted) 28%);
 
-  --accent: #2f6f5e;
-  --accent-strong: #1f4f42;
-  --accent-tint: #e8f2ef;
-
-  --danger: #b3432b;
-  --danger-tint: #fbeae5;
-  --warning: #a5720f;
-  --warning-tint: #fbf1de;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --ink: #f2f1ee;
-    --ink-soft: #c7cbcf;
-    --paper: #14181c;
-    --surface: #1b2126;
-    --border: #2b323a;
-    --muted: #8a9198;
-
-    --accent: #5fa590;
-    --accent-strong: #7fc0ac;
-    --accent-tint: #1e2e2a;
-
-    --danger: #e18066;
-    --danger-tint: #3a231e;
-    --warning: #d7ab5c;
-    --warning-tint: #3a2f1a;
-  }
-}
-
-:root[data-theme="dark"] {
-  --ink: #f2f1ee;
-  --ink-soft: #c7cbcf;
-  --paper: #14181c;
-  --surface: #1b2126;
-  --border: #2b323a;
-  --muted: #8a9198;
-
-  --accent: #5fa590;
-  --accent-strong: #7fc0ac;
-  --accent-tint: #1e2e2a;
-
-  --danger: #e18066;
-  --danger-tint: #3a231e;
-  --warning: #d7ab5c;
-  --warning-tint: #3a2f1a;
+  --accent-strong: var(--accent-hover);
+  --accent-tint: var(--accent-soft);
+  --danger-tint: var(--danger-soft);
+  --warning-tint: var(--warning-soft);
 }
 
 @theme inline {
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-paper: var(--paper);
-  --color-surface: var(--surface);
-  --color-border: var(--border);
-  --color-muted: var(--muted);
-  --color-accent: var(--accent);
   --color-accent-strong: var(--accent-strong);
   --color-accent-tint: var(--accent-tint);
-  --color-danger: var(--danger);
   --color-danger-tint: var(--danger-tint);
-  --color-warning: var(--warning);
   --color-warning-tint: var(--warning-tint);
 
   --font-sans: var(--font-body);
-  --font-heading: var(--font-display);
+  --font-display: var(--font-display);
   --font-mono: var(--font-mono);
-
-  --radius-sm: var(--radius-sm);
-  --radius-md: var(--radius-md);
-  --radius-lg: var(--radius-lg);
 }
 
 body {
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--background);
+  color: var(--foreground);
   font-family: var(--font-body);
 }
 
@@ -106,7 +96,7 @@ h2,
 h3,
 h4 {
   /* Внутри публичного сайта заголовки берут шрифт темы (--tpl-font-display),
-     в админке — шрифт интерфейса. Правило неслоёное, поэтому оно сильнее
+     в интерфейсе — шрифт продукта. Правило неслоёное, поэтому оно сильнее
      утилит Tailwind: без переменной темы в фоллбэке шрифт сайта, выбранный
      администратором, не применялся бы к заголовкам блоков вовсе. */
   font-family: var(--tpl-font-display, var(--font-display));

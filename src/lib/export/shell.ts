@@ -116,7 +116,7 @@ ${description ? `<meta name="description" content="${escapeAttr(description)}" /
 <link rel="stylesheet" href="${googleFontsHref(design, { always: true })}" />
 </head>
 <body style="${themeStyleCss(design)}"${design.skinKey ? ` data-skin="${escapeAttr(design.skinKey)}"` : ""}>
-<div class="flex min-h-screen flex-col bg-[var(--tpl-paper)]">
+<div class="sb-animate flex min-h-screen flex-col bg-[var(--tpl-paper)]">
 ${headerHtml(shell, pathAfterLocale)}
 <main class="flex-1">
 ${bodyHtml}

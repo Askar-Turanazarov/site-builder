@@ -126,7 +126,7 @@ export function PostEditor({
                 type="text"
                 value={slug}
                 onChange={(e) => setSlug(e.target.value.trim().toLowerCase().replace(/\s+/g, "-"))}
-                className="w-48 rounded-md border border-border bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-accent"
+                className="w-48 rounded-xl border border-border bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-accent"
                 placeholder="pervaya-statya"
               />
             </div>
@@ -135,7 +135,7 @@ export function PostEditor({
               <select
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
-                className="rounded-md border border-border bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-accent"
+                className="rounded-xl border border-border bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-accent"
               >
                 {categories.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -149,7 +149,7 @@ export function PostEditor({
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as "draft" | "published")}
-                className="rounded-md border border-border bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-accent"
+                className="rounded-xl border border-border bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-accent"
               >
                 <option value="draft">{t("common.draft")}</option>
                 <option value="published">{t("common.published")}</option>
@@ -163,7 +163,7 @@ export function PostEditor({
                   href={`/admin/preview/post/${initial.id}?locale=${editor.activeLocale}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-md border border-border px-3 py-1.5 text-sm text-ink-soft hover:border-accent hover:text-ink"
+                  className="rounded-xl border border-border px-3 py-1.5 text-sm text-ink-soft hover:border-accent hover:text-ink"
                 >
                   {t("common.preview")} ↗
                 </a>
@@ -171,7 +171,7 @@ export function PostEditor({
                   type="button"
                   onClick={handleDelete}
                   disabled={pending}
-                  className="rounded-md border border-border px-3 py-1.5 text-sm text-danger hover:border-danger"
+                  className="rounded-xl border border-border px-3 py-1.5 text-sm text-danger hover:border-danger"
                 >
                   {t("common.delete")}
                 </button>
@@ -181,7 +181,7 @@ export function PostEditor({
               type="button"
               disabled={pending}
               onClick={() => handleSave(status)}
-              className="rounded-md border border-border bg-paper px-4 py-1.5 text-sm font-medium text-ink hover:border-accent disabled:opacity-60"
+              className="rounded-xl border border-border bg-paper px-4 py-1.5 text-sm font-medium text-ink hover:border-accent disabled:opacity-60"
             >
               {t("common.save")}
             </button>
@@ -189,14 +189,14 @@ export function PostEditor({
               type="button"
               disabled={pending}
               onClick={() => handleSave("published")}
-              className="rounded-md bg-accent px-4 py-1.5 text-sm font-medium text-surface hover:bg-accent-strong disabled:opacity-60"
+              className="rounded-xl bg-accent px-4 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-strong disabled:opacity-60"
             >
               {pending ? t("common.saving") : t("common.publish")}
             </button>
           </div>
         </div>
 
-        {error && <p className="mt-3 rounded-md bg-danger-tint px-3 py-2 text-sm text-danger">{error}</p>}
+        {error && <p className="mt-3 rounded-xl bg-danger-tint px-3 py-2 text-sm text-danger">{error}</p>}
 
         <div className="mt-4 grid gap-4 sm:grid-cols-[1fr_auto]">
           <LocalizedTextInput label={t("postEditor.articleTitle")} values={title} onChange={(l, v) => setTitle((t) => ({ ...t, [l]: v }))} />

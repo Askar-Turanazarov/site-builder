@@ -1,4 +1,4 @@
-// Prisma schema for the site-builder CMS.
+// Prisma schema for the SiteGo CMS.
 // Fixed 3-locale model: every translatable field has Ru/Uz/En columns
 // instead of a generic join-table translation system.
 

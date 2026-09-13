@@ -22,10 +22,10 @@ export default async function ExportPage() {
         <Stat label={t("export.locales")} value={3} />
       </div>
 
-      <div className="mt-6 rounded-lg border border-border bg-surface p-6">
+      <div className="mt-6 rounded-2xl border border-border bg-surface p-6">
         <Link
           href="/admin/export/download"
-          className="inline-block rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-surface hover:bg-accent-strong"
+          className="inline-block rounded-xl bg-accent px-5 py-2.5 text-sm font-medium text-accent-foreground hover:bg-accent-strong"
         >
           {t("export.download")}
         </Link>
@@ -59,7 +59,7 @@ export default async function ExportPage() {
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-lg border border-border bg-surface p-4">
+    <div className="rounded-2xl border border-border bg-surface p-4">
       <div className="font-display text-2xl font-bold tabular-nums text-ink">{value}</div>
       <div className="mt-0.5 text-xs text-muted">{label}</div>
     </div>

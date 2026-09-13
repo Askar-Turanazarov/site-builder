@@ -22,7 +22,7 @@ export function MessageList({
 
   if (messages.length === 0) {
     return (
-      <p className="rounded-lg border border-border bg-surface px-5 py-8 text-center text-sm text-muted">
+      <p className="rounded-2xl border border-border bg-surface px-5 py-8 text-center text-sm text-muted">
         {labels.empty}
       </p>
     );
@@ -32,7 +32,7 @@ export function MessageList({
     <>
       <div className="space-y-3">
         {messages.map((message) => (
-          <article key={message.id} className="rounded-lg border border-border bg-surface p-5">
+          <article key={message.id} className="rounded-2xl border border-border bg-surface p-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
                 <time dateTime={message.createdAt}>
@@ -79,7 +79,7 @@ export function MessageList({
             await clearContactMessagesAction();
           })
         }
-        className="mt-5 rounded-md border border-border px-4 py-2 text-sm text-ink-soft hover:border-danger hover:text-danger disabled:opacity-60"
+        className="mt-5 rounded-xl border border-border px-4 py-2 text-sm text-ink-soft hover:border-danger hover:text-danger disabled:opacity-60"
       >
         {labels.clear}
       </button>

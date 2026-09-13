@@ -46,7 +46,7 @@ export function BlockEditForm({
         <button
           type="button"
           onClick={onClose}
-          className="rounded-md p-1.5 text-muted hover:bg-paper hover:text-ink"
+          className="rounded-xl p-1.5 text-muted hover:bg-default hover:text-ink"
           aria-label={t("common.close")}
         >
           ✕

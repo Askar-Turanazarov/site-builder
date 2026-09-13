@@ -61,7 +61,7 @@ export function MediaLibrary({ initialMedia }: { initialMedia: MediaRow[] }) {
           <h1 className="font-display text-2xl font-semibold text-ink">{t("media.title")}</h1>
           <p className="mt-1 text-sm text-muted">{t("media.subtitle")}</p>
         </div>
-        <label className="cursor-pointer rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-strong">
+        <label className="cursor-pointer rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-strong">
           {uploading ? t("media.uploading") : t("media.upload")}
           <input type="file" accept="image/*" className="hidden" onChange={handleUpload} disabled={uploading} />
         </label>
@@ -76,7 +76,7 @@ export function MediaLibrary({ initialMedia }: { initialMedia: MediaRow[] }) {
             onClick={() => setActiveId(m.id)}
             className="text-left"
           >
-            <div className="aspect-square overflow-hidden rounded-md border border-border bg-surface">
+            <div className="aspect-square overflow-hidden rounded-xl border border-border bg-surface">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={`/uploads/${m.path}`} alt="" className="h-full w-full object-cover" />
             </div>
@@ -90,21 +90,21 @@ export function MediaLibrary({ initialMedia }: { initialMedia: MediaRow[] }) {
 
       {active && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-6" onClick={() => setActiveId(null)}>
-          <div className="w-full max-w-lg rounded-lg bg-surface p-5 shadow-lg" onClick={(e) => e.stopPropagation()}>
+          <div className="w-full max-w-lg rounded-2xl bg-surface p-5 shadow-lg" onClick={(e) => e.stopPropagation()}>
             <div className="mb-4 flex items-center justify-between">
               <h2 className="font-display text-base font-semibold text-ink">{active.filename}</h2>
-              <button type="button" onClick={() => setActiveId(null)} className="rounded-md p-1.5 text-muted hover:bg-paper">
+              <button type="button" onClick={() => setActiveId(null)} className="rounded-xl p-1.5 text-muted hover:bg-default">
                 ✕
               </button>
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`/uploads/${active.path}`} alt="" className="max-h-64 w-full rounded-md object-contain" />
+            <img src={`/uploads/${active.path}`} alt="" className="max-h-64 w-full rounded-xl object-contain" />
             <AltForm media={active} onSave={handleSaveAlt} />
             <button
               type="button"
               disabled={pending}
               onClick={() => handleDelete(active.id)}
-              className="mt-4 rounded-md border border-border px-3 py-1.5 text-sm text-danger hover:border-danger"
+              className="mt-4 rounded-xl border border-border px-3 py-1.5 text-sm text-danger hover:border-danger"
             >
               {t("media.deleteFile")}
             </button>
@@ -130,13 +130,13 @@ function AltForm({
   return (
     <div className="mt-4 space-y-2">
       <p className="text-xs font-semibold text-muted">{t("media.altTitle")}</p>
-      <input value={altRu} onChange={(e) => setAltRu(e.target.value)} placeholder="RU" className="w-full rounded-md border border-border bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-accent" />
-      <input value={altUz} onChange={(e) => setAltUz(e.target.value)} placeholder="UZ" className="w-full rounded-md border border-border bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-accent" />
-      <input value={altEn} onChange={(e) => setAltEn(e.target.value)} placeholder="EN" className="w-full rounded-md border border-border bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-accent" />
+      <input value={altRu} onChange={(e) => setAltRu(e.target.value)} placeholder="RU" className="w-full rounded-xl border border-border bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-accent" />
+      <input value={altUz} onChange={(e) => setAltUz(e.target.value)} placeholder="UZ" className="w-full rounded-xl border border-border bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-accent" />
+      <input value={altEn} onChange={(e) => setAltEn(e.target.value)} placeholder="EN" className="w-full rounded-xl border border-border bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-accent" />
       <button
         type="button"
         onClick={() => onSave(media.id, { altRu, altUz, altEn })}
-        className="rounded-md border border-border px-3 py-1.5 text-xs font-medium text-ink hover:border-accent"
+        className="rounded-xl border border-border px-3 py-1.5 text-xs font-medium text-ink hover:border-accent"
       >
         {t("media.saveAlt")}
       </button>

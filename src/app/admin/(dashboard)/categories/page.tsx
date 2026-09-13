@@ -20,13 +20,13 @@ export default async function CategoriesListPage() {
         </div>
         <Link
           href="/admin/categories/new"
-          className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-strong"
+          className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-strong"
         >
           {t("categories.new")}
         </Link>
       </div>
 
-      <div className="mt-6 divide-y divide-border rounded-lg border border-border bg-surface">
+      <div className="mt-6 divide-y divide-border rounded-2xl border border-border bg-surface">
         {categories.length === 0 && (
           <p className="px-5 py-8 text-center text-sm text-muted">{t("categories.empty")}</p>
         )}
@@ -34,7 +34,7 @@ export default async function CategoriesListPage() {
           <Link
             key={cat.id}
             href={`/admin/categories/${cat.id}`}
-            className="flex items-center justify-between px-5 py-4 hover:bg-paper"
+            className="flex items-center justify-between px-5 py-4 hover:bg-default"
           >
             <div>
               <span className="font-medium text-ink">{cat.nameRu}</span>

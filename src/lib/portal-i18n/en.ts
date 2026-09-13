@@ -17,6 +17,11 @@ export const en: PortalDict = {
   "hero.ctaAdmin": "Open the panel",
   "hero.ctaSite": "Open my site",
 
+  "stats.templates": "site templates",
+  "stats.locales": "languages in one content",
+  "stats.blocks": "block types",
+  "stats.export": "export with no backend",
+
   "templates.title": "Twelve ready-made sites",
   "templates.lead":
     "Each has its own structure, palette, typefaces and layout language. Open a demo and walk through it like a real site.",
@@ -58,7 +63,11 @@ export const en: PortalDict = {
   "demo.notFound": "This template has no such page",
   "demo.toPortal": "Back to the builder",
 
-  "footer.made": "Made with Site Builder",
+  "theme.light": "Light theme",
+  "theme.dark": "Dark theme",
+  "theme.system": "Match system",
+
+  "footer.made": "Made with SiteGo",
   "footer.docs": "Documentation",
   "footer.tagline": "A multilingual site builder with static export.",
 

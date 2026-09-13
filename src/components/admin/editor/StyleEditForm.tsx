@@ -160,7 +160,7 @@ export function StyleEditForm({
       <button
         type="button"
         onClick={() => onChange(EMPTY_BLOCK_STYLE)}
-        className="w-full rounded-md border border-border px-3 py-2 text-xs font-medium text-ink-soft hover:border-accent hover:text-accent"
+        className="w-full rounded-xl border border-border px-3 py-2 text-xs font-medium text-ink-soft hover:border-accent hover:text-accent"
       >
         {t("style.reset")}
       </button>
@@ -199,7 +199,7 @@ function SwatchRow({
             type="button"
             title={t(swatch.labelKey)}
             onClick={() => onPick(swatch.value)}
-            className={`h-8 w-8 rounded-md border-2 ${
+            className={`h-8 w-8 rounded-xl border-2 ${
               value === swatch.value && !customValue ? "border-accent" : "border-border"
             }`}
             style={{
@@ -246,7 +246,7 @@ function ColorInput({
         // Принимаем любой ввод, чтобы можно было допечатать код цвета;
         // некорректное значение просто игнорируется при рендере блока.
         onChange={(e) => onChange(e.target.value.trim())}
-        className="w-28 rounded-md border border-border bg-surface px-2.5 py-1.5 font-mono text-xs text-ink outline-none focus:border-accent"
+        className="w-28 rounded-xl border border-border bg-surface px-2.5 py-1.5 font-mono text-xs text-ink outline-none focus:border-accent"
       />
       {value && (
         <button
@@ -281,7 +281,7 @@ function Select({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-ink outline-none focus:border-accent"
+        className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm text-ink outline-none focus:border-accent"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>

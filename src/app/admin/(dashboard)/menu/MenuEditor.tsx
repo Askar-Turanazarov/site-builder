@@ -34,7 +34,7 @@ export function MenuEditor({
 
   return (
     <div>
-      <div className="mb-4 inline-flex rounded-md border border-border bg-surface p-0.5">
+      <div className="mb-4 inline-flex rounded-xl border border-border bg-surface p-0.5">
         {(["header", "footer"] as const).map((loc) => (
           <button
             key={loc}
@@ -54,7 +54,7 @@ export function MenuEditor({
           <ItemRow key={item.id} item={item} pages={pages} categories={categories} />
         ))}
         {filtered.length === 0 && (
-          <p className="rounded-md border border-dashed border-border px-4 py-6 text-center text-sm text-muted">
+          <p className="rounded-xl border border-dashed border-border px-4 py-6 text-center text-sm text-muted">
             {t("menu.empty")}
           </p>
         )}
@@ -122,18 +122,18 @@ function ItemRow({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-md border border-border bg-surface p-2.5">
+    <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border bg-surface p-2.5">
       <input
         type="number"
         value={order}
         onChange={(e) => setOrder(Number(e.target.value))}
-        className="w-14 rounded-md border border-border bg-paper px-2 py-1.5 text-sm outline-none focus:border-accent"
+        className="w-14 rounded-xl border border-border bg-paper px-2 py-1.5 text-sm outline-none focus:border-accent"
       />
       <input
         value={labelRu}
         onChange={(e) => setLabelRu(e.target.value)}
         placeholder={t("menu.labelRu")}
-        className="w-40 rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent"
+        className="w-40 rounded-xl border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent"
       />
       <select
         value={linkType}
@@ -141,7 +141,7 @@ function ItemRow({
           setLinkType(e.target.value as "page" | "category" | "custom");
           setTarget("");
         }}
-        className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent"
+        className="rounded-xl border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent"
       >
         <option value="page">{t("menu.linkPage")}</option>
         <option value="category">{t("menu.linkCategory")}</option>
@@ -152,13 +152,13 @@ function ItemRow({
           value={customUrl}
           onChange={(e) => setCustomUrl(e.target.value)}
           placeholder="/about или https://…"
-          className="w-48 rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent"
+          className="w-48 rounded-xl border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent"
         />
       ) : (
         <select
           value={target}
           onChange={(e) => setTarget(e.target.value)}
-          className="w-48 rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent"
+          className="w-48 rounded-xl border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent"
         >
           <option value="">{t("menu.choose")}</option>
           {targetOptions(linkType, pages, categories).map((opt) => (
@@ -172,11 +172,11 @@ function ItemRow({
         type="button"
         onClick={save}
         disabled={pending}
-        className="rounded-md border border-border px-3 py-1.5 text-xs font-medium text-ink hover:border-accent"
+        className="rounded-xl border border-border px-3 py-1.5 text-xs font-medium text-ink hover:border-accent"
       >
         {t("common.save")}
       </button>
-      <button type="button" onClick={remove} className="rounded-md px-2 py-1.5 text-xs text-muted hover:text-danger">
+      <button type="button" onClick={remove} className="rounded-xl px-2 py-1.5 text-xs text-muted hover:text-danger">
         ✕
       </button>
     </div>
@@ -228,21 +228,21 @@ function NewItemForm({
   }
 
   return (
-    <div className="rounded-lg border border-dashed border-border p-4">
+    <div className="rounded-2xl border border-dashed border-border p-4">
       <h2 className="mb-3 text-sm font-semibold text-ink-soft">{t("menu.addItem")}</h2>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-        <input value={labelRu} onChange={(e) => setLabelRu(e.target.value)} placeholder={t("menu.labelRu")} className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
-        <input value={labelUz} onChange={(e) => setLabelUz(e.target.value)} placeholder={t("menu.labelUz")} className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
-        <input value={labelEn} onChange={(e) => setLabelEn(e.target.value)} placeholder={t("menu.labelEn")} className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
-        <select value={linkType} onChange={(e) => { setLinkType(e.target.value as "page" | "category" | "custom"); setTarget(""); }} className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent">
+        <input value={labelRu} onChange={(e) => setLabelRu(e.target.value)} placeholder={t("menu.labelRu")} className="rounded-xl border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
+        <input value={labelUz} onChange={(e) => setLabelUz(e.target.value)} placeholder={t("menu.labelUz")} className="rounded-xl border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
+        <input value={labelEn} onChange={(e) => setLabelEn(e.target.value)} placeholder={t("menu.labelEn")} className="rounded-xl border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
+        <select value={linkType} onChange={(e) => { setLinkType(e.target.value as "page" | "category" | "custom"); setTarget(""); }} className="rounded-xl border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent">
           <option value="page">{t("menu.linkPage")}</option>
           <option value="category">{t("menu.linkCategory")}</option>
           <option value="custom">{t("menu.linkCustom")}</option>
         </select>
         {linkType === "custom" ? (
-          <input value={customUrl} onChange={(e) => setCustomUrl(e.target.value)} placeholder="/about" className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
+          <input value={customUrl} onChange={(e) => setCustomUrl(e.target.value)} placeholder="/about" className="rounded-xl border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent" />
         ) : (
-          <select value={target} onChange={(e) => setTarget(e.target.value)} className="rounded-md border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent">
+          <select value={target} onChange={(e) => setTarget(e.target.value)} className="rounded-xl border border-border bg-paper px-2.5 py-1.5 text-sm outline-none focus:border-accent">
             <option value="">{t("menu.choose")}</option>
             {targetOptions(linkType, pages, categories).map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -256,7 +256,7 @@ function NewItemForm({
         type="button"
         onClick={submit}
         disabled={pending}
-        className="mt-3 rounded-md bg-accent px-4 py-1.5 text-sm font-medium text-surface hover:bg-accent-strong disabled:opacity-60"
+        className="mt-3 rounded-xl bg-accent px-4 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-strong disabled:opacity-60"
       >
         {t("common.add")}
       </button>

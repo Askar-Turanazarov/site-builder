@@ -47,14 +47,14 @@ export function CanvasBlock({
       } ${isDragging ? "z-10 opacity-60" : ""}`}
     >
       {(selected || block.style?.hidden) && (
-        <span className="pointer-events-none absolute top-2 left-2 z-20 rounded bg-accent px-2 py-0.5 text-[11px] font-medium text-surface">
+        <span className="pointer-events-none absolute top-2 left-2 z-20 rounded bg-accent px-2 py-0.5 text-[11px] font-medium text-accent-foreground">
           {blockLabel(t, block.type)}
           {block.style?.hidden ? ` · ${t("editor.hiddenBadge")}` : ""}
         </span>
       )}
 
       <div
-        className="pointer-events-auto absolute top-2 right-2 z-20 flex items-center gap-0.5 rounded-md border border-border bg-surface p-0.5 opacity-0 shadow-sm transition group-hover:opacity-100 focus-within:opacity-100"
+        className="pointer-events-auto absolute top-2 right-2 z-20 flex items-center gap-0.5 rounded-xl border border-border bg-surface p-0.5 opacity-0 shadow-surface transition group-hover:opacity-100 focus-within:opacity-100"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -107,7 +107,7 @@ function ToolbarButton({
       disabled={disabled}
       onClick={onClick}
       className={`rounded px-1.5 py-1 text-xs transition disabled:opacity-30 ${
-        danger ? "text-muted hover:bg-danger-tint hover:text-danger" : "text-muted hover:bg-paper hover:text-ink"
+        danger ? "text-muted hover:bg-danger-tint hover:text-danger" : "text-muted hover:bg-default hover:text-ink"
       }`}
     >
       {children}

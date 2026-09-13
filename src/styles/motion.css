@@ -1,0 +1,143 @@
+/*
+ * Движение в интерфейсе SiteGo: появление при загрузке и переходы между
+ * страницами.
+ *
+ * Относится ТОЛЬКО к оформлению продукта — порталу, админке, витрине. Блоки
+ * собранного сайта живут по своим правилам (src/styles/blocks-base.css) и
+ * анимируются исключительно средствами CSS, потому что в выгруженной статике
+ * никакого React нет.
+ *
+ * Все кривые и длительности взяты из набора HeroUI (--ease-out-fluid и
+ * родственные), чтобы движение совпадало с тем, как ведут себя его компоненты.
+ */
+
+/* ---------------------------------------------------------------------------
+   Появление при загрузке.
+
+   Анимация идёт от невидимого состояния, но запускается самим фактом
+   отрисовки — без наблюдателей и без JavaScript. Это важно: содержимое,
+   которое ждёт сигнала от скрипта, при отключённом JS остаётся пустым.
+   --------------------------------------------------------------------------- */
+@keyframes sg-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sg-enter {
+  animation: sg-rise 680ms var(--ease-out-fluid, cubic-bezier(0.32, 0.72, 0, 1)) both;
+}
+
+/* Ступени выхода: надзаголовок → заголовок → лид → кнопки → карточки. */
+.sg-d1 { animation-delay: 60ms; }
+.sg-d2 { animation-delay: 140ms; }
+.sg-d3 { animation-delay: 220ms; }
+.sg-d4 { animation-delay: 300ms; }
+.sg-d5 { animation-delay: 380ms; }
+
+/* ---------------------------------------------------------------------------
+   Переходы между страницами (React <ViewTransition>).
+
+   Асимметричная раскладка по времени: старое уходит быстро, чтобы не спорить
+   за внимание, новое приходит мягче и с задержкой — ровно на длину ухода.
+   --------------------------------------------------------------------------- */
+:root {
+  --sg-exit: 150ms;
+  --sg-enter: 220ms;
+  --sg-move: 400ms;
+}
+
+@keyframes sg-fade {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes sg-slide {
+  from {
+    translate: var(--sg-offset, 0);
+  }
+  to {
+    translate: 0;
+  }
+}
+
+::view-transition-old(.sg-forward) {
+  --sg-offset: -60px;
+  animation:
+    var(--sg-exit) ease-in both sg-fade reverse,
+    var(--sg-move) var(--ease-in-out-quad, ease-in-out) both sg-slide reverse;
+}
+::view-transition-new(.sg-forward) {
+  --sg-offset: 60px;
+  animation:
+    var(--sg-enter) ease-out var(--sg-exit) both sg-fade,
+    var(--sg-move) var(--ease-in-out-quad, ease-in-out) both sg-slide;
+}
+
+::view-transition-old(.sg-back) {
+  --sg-offset: 60px;
+  animation:
+    var(--sg-exit) ease-in both sg-fade reverse,
+    var(--sg-move) var(--ease-in-out-quad, ease-in-out) both sg-slide reverse;
+}
+::view-transition-new(.sg-back) {
+  --sg-offset: -60px;
+  animation:
+    var(--sg-enter) ease-out var(--sg-exit) both sg-fade,
+    var(--sg-move) var(--ease-in-out-quad, ease-in-out) both sg-slide;
+}
+
+/* Превращение карточки шаблона в сам шаблон. Размытие на лету прячет
+   artefacts интерполяции: у старого и нового кадра разный внутренний масштаб. */
+::view-transition-group(.sg-morph) {
+  animation-duration: 420ms;
+  animation-timing-function: var(--ease-out-fluid, cubic-bezier(0.32, 0.72, 0, 1));
+}
+::view-transition-image-pair(.sg-morph) {
+  animation-name: sg-morph-blur;
+}
+@keyframes sg-morph-blur {
+  30% {
+    filter: blur(4px);
+  }
+}
+
+/* Шапка — точка опоры: при направленных переходах едет содержимое, а она
+   стоит на месте. Старый снимок прячем, иначе на миг видно две шапки. */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+/* ---------------------------------------------------------------------------
+   «Меньше движения»: гасим перемещения, содержимое остаётся на местах.
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .sg-enter {
+    animation: none;
+  }
+
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}

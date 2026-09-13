@@ -1,6 +1,7 @@
 import { getSiteSettings } from "@/lib/site-settings";
 import { getPortalLocale, getPortalT } from "@/lib/portal-i18n/server";
 import { getSession } from "@/lib/auth";
+import { getThemeMode } from "@/lib/theme-server";
 import { PortalHeader, type PortalNavItem } from "@/components/portal/PortalHeader";
 import { PortalFooter } from "@/components/portal/PortalFooter";
 
@@ -9,11 +10,12 @@ import { PortalFooter } from "@/components/portal/PortalFooter";
  * сайта: у сайта своя тема и свои скины, у портала — оформление продукта.
  */
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
-  const [t, locale, settings, session] = await Promise.all([
+  const [t, locale, settings, session, theme] = await Promise.all([
     getPortalT(),
     getPortalLocale(),
     getSiteSettings(),
     getSession(),
+    getThemeMode(),
   ]);
 
   const siteHref = `/${settings.defaultLocale}`;
@@ -27,8 +29,14 @@ export default async function PortalLayout({ children }: { children: React.React
   ];
 
   return (
-    <div className="flex min-h-screen flex-col bg-paper">
-      <PortalHeader items={items} locale={locale} menuLabel={t("nav.menu")} />
+    <div className="flex min-h-screen flex-col bg-background">
+      <PortalHeader
+        items={items}
+        locale={locale}
+        menuLabel={t("nav.menu")}
+        theme={theme}
+        themeLabels={{ light: t("theme.light"), dark: t("theme.dark"), system: t("theme.system") }}
+      />
       <main className="flex-1">{children}</main>
       <PortalFooter t={t} siteHref={siteHref} />
     </div>

@@ -55,7 +55,7 @@ export function BlockEditorBody({
               type="button"
               onClick={() => setOutlineOpen(true)}
               title={t("editor.expand")}
-              className="h-full w-full text-muted hover:bg-paper hover:text-ink"
+              className="h-full w-full text-muted hover:bg-default hover:text-ink"
             >
               ☰
             </button>

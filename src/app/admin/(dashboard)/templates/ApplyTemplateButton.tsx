@@ -41,7 +41,7 @@ export function ApplyTemplateButton({
       <button
         type="button"
         onClick={() => setAsking(true)}
-        className="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-surface hover:bg-accent-strong"
+        className="rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-strong"
       >
         {t("templates.apply")}
       </button>
@@ -82,13 +82,13 @@ export function ApplyTemplateButton({
           <div className="mt-5 flex flex-col gap-2">
             <Link
               href={siteHref}
-              className="rounded-md bg-accent px-4 py-2 text-center text-sm font-medium text-surface hover:bg-accent-strong"
+              className="rounded-xl bg-accent px-4 py-2 text-center text-sm font-medium text-accent-foreground hover:bg-accent-strong"
             >
               {t("templates.openSite")}
             </Link>
             <Link
               href="/admin/pages"
-              className="rounded-md border border-border px-4 py-2 text-center text-sm font-medium text-ink hover:bg-paper"
+              className="rounded-xl border border-border px-4 py-2 text-center text-sm font-medium text-ink hover:bg-default"
             >
               {t("templates.editPages")}
             </Link>
@@ -120,7 +120,7 @@ function Dialog({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4">
       <button type="button" aria-hidden className="absolute inset-0 cursor-default" onClick={onClose} />
-      <div className="relative w-full max-w-md rounded-lg border border-border bg-surface p-6">
+      <div className="relative w-full max-w-md rounded-2xl border border-border bg-surface p-6">
         <h3 className="font-display text-lg font-semibold text-ink">{title}</h3>
         <p className="mt-1 mb-5 text-sm text-muted">{subtitle}</p>
         {children}
@@ -145,7 +145,7 @@ function ModeButton({
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className="w-full rounded-md border border-border p-4 text-left hover:border-accent disabled:opacity-60"
+      className="w-full rounded-xl border border-border p-4 text-left hover:border-accent disabled:opacity-60"
     >
       <span className="block text-sm font-medium text-ink">{title}</span>
       <span className="mt-1 block text-xs text-muted">{hint}</span>

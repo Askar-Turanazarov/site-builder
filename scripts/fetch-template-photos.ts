@@ -22,7 +22,7 @@ import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const API = "https://commons.wikimedia.org/w/api.php";
-const UA = "site-builder/1.0 (educational course project; bundles CC media into site templates)";
+const UA = "sitego/1.0 (educational course project; bundles CC media into site templates)";
 
 interface TemplateQueries {
   hero: string[];

@@ -10,14 +10,14 @@ export function LocaleTabs({
   onChange: (locale: Locale) => void;
 }) {
   return (
-    <div className="inline-flex rounded-md border border-border bg-paper p-0.5">
+    <div className="inline-flex rounded-xl border border-border bg-paper p-0.5">
       {(Object.keys(LABELS) as Locale[]).map((locale) => (
         <button
           key={locale}
           type="button"
           onClick={() => onChange(locale)}
           className={`rounded px-3 py-1 text-xs font-semibold transition ${
-            value === locale ? "bg-surface text-ink shadow-sm" : "text-muted hover:text-ink"
+            value === locale ? "bg-surface text-ink shadow-surface" : "text-muted hover:text-ink"
           }`}
         >
           {LABELS[locale]}

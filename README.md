@@ -1,8 +1,8 @@
-# Site Builder
+# SiteGo
 
 **[English](#english) · [Oʻzbekcha](#ozbekcha) · [Русский](#русский)**
 
-A self-contained CMS and site builder: a visual block editor, content in three languages, news with
+SiteGo is a self-contained CMS and site builder: a visual block editor, content in three languages, news with
 categories, a media library, twelve ready-made site templates and an export to static HTML/CSS/JS.
 
 ---
@@ -11,7 +11,7 @@ categories, a media library, twelve ready-made site templates and an export to s
 
 ### What this is
 
-Site Builder is a small CMS in the spirit of WordPress or Tilda. You assemble pages from blocks,
+SiteGo is a small CMS in the spirit of WordPress or Tilda. You assemble pages from blocks,
 translate them into Russian, Uzbek and English, and either serve the result from the app or export
 it as a folder of static files that needs no backend at all.
 
@@ -33,11 +33,42 @@ the editor, i18n, the export and the templates — is written here.
 | Layer | Technology |
 |---|---|
 | Framework | Next.js 16 (App Router), React 19, TypeScript |
-| Styling | Tailwind CSS v4 plus theme CSS variables (`--tpl-*`) and visual styles (`--sk-*`) |
+| Styling | Tailwind CSS v4 |
+| Design system | HeroUI v3 (`@heroui/styles` — the CSS package, no React components) |
+| Site theming | theme CSS variables (`--tpl-*`) and visual styles (`--sk-*`) |
 | Database | SQLite through Prisma 7 (the `better-sqlite3` adapter) |
 | Rich text | TipTap, deliberately limited to bold/italic/links/lists/H2–H3 |
 | Drag and drop | dnd-kit |
 | Export | a hand-written static generator plus `archiver` for the ZIP |
+| Motion | React `<ViewTransition>` (no dependency) and CSS |
+| 3D | three.js — the hero scene on `/`, loaded lazily on that page only |
+
+### Design and theme
+
+The interface is built on **HeroUI v3**, taken as the CSS package `@heroui/styles` rather than the
+React component library. The reason is the dual renderer: every block exists twice — as a React
+component and as a plain HTML-string generator for the static export. A React component cannot go
+into a string renderer, but a class name can, so the live site and the exported ZIP look identical.
+
+Light and dark themes come from HeroUI and are switched by the control in the header. The choice is
+kept in a cookie and read on the server, so the right theme arrives in the first HTML — no flash of
+the wrong colours, and no `localStorage`. The "System" mode is resolved by a tiny inline script,
+because the server cannot know the OS setting.
+
+**The theme switch changes the builder's interface only.** A site you assemble keeps the palette its
+owner picked under "Site design" — a visitor's preference must not override it.
+
+Two CSS entry points, deliberately:
+
+| File | Goes into |
+|---|---|
+| `src/app/globals.css` | the app: HeroUI, the admin panel, the portal |
+| `src/styles/export.css` | the ZIP: only what an exported site actually uses |
+
+Cascade order is load-bearing and is documented at the top of `globals.css`. `skins.css` and
+`blocks.css` sit deliberately outside `@layer`, so they beat both Tailwind utilities and HeroUI.
+**This is what keeps the twelve templates from looking alike**: one HeroUI style lies in layers and
+cannot override a niche skin.
 
 ### Quick start
 
@@ -169,7 +200,7 @@ the site settings, the form posts there; otherwise it opens the visitor's mail c
 
 ### Bu nima
 
-Site Builder — WordPress yoki Tilda ruhidagi kichik CMS. Sahifalarni bloklardan yig'asiz, ularni rus,
+SiteGo — WordPress yoki Tilda ruhidagi kichik CMS. Sahifalarni bloklardan yig'asiz, ularni rus,
 o'zbek va ingliz tillariga tarjima qilasiz, natijani esa ilovadan ko'rsatasiz yoki backendsiz ishlaydigan
 statik fayllar papkasi sifatida yuklab olasiz.
 
@@ -191,11 +222,42 @@ eksport va shablonlar — shu loyihada yozilgan.
 | Qatlam | Texnologiya |
 |---|---|
 | Freymvork | Next.js 16 (App Router), React 19, TypeScript |
-| Uslublar | Tailwind CSS v4, mavzu o'zgaruvchilari (`--tpl-*`) va bezak uslublari (`--sk-*`) |
+| Uslublar | Tailwind CSS v4 |
+| Dizayn tizimi | HeroUI v3 (`@heroui/styles` — CSS paketi, React komponentlarisiz) |
+| Sayt mavzusi | mavzu o'zgaruvchilari (`--tpl-*`) va bezak uslublari (`--sk-*`) |
 | Ma'lumotlar bazasi | Prisma 7 orqali SQLite (`better-sqlite3` adapteri) |
 | Matn muharriri | TipTap, ataylab cheklangan: qalin/kursiv/havola/ro'yxat/H2–H3 |
 | Surib olib qo'yish | dnd-kit |
 | Eksport | o'z statik generatori va ZIP uchun `archiver` |
+| Animatsiya | React `<ViewTransition>` (qo'shimcha paketsiz) va CSS |
+| 3D | three.js — faqat `/` sahifasidagi sahna, o'sha yerda kechiktirib yuklanadi |
+
+### Dizayn va mavzu
+
+Interfeys **HeroUI v3** asosida qurilgan — React komponentlar kutubxonasi emas, `@heroui/styles` CSS
+paketi olingan. Sababi ikkilangan render: har bir blok ikki marta mavjud — React komponenti va statik
+eksport uchun oddiy HTML-satr generatori. React komponentini satrli renderga qo'yib bo'lmaydi, klass
+nomini esa qo'yish mumkin, shuning uchun jonli sayt va yuklab olingan ZIP bir xil ko'rinadi.
+
+Yorug' va qorong'i mavzular HeroUI'dan keladi va sarlavhadagi tugma bilan almashadi. Tanlov cookie'da
+saqlanadi va serverda o'qiladi, shuning uchun kerakli mavzu birinchi HTML bilan keladi — noto'g'ri
+ranglar chaqnamaydi va `localStorage` ishlatilmaydi. "Tizim bo'yicha" rejimini kichik inline skript
+hal qiladi, chunki server OS sozlamasini bilmaydi.
+
+**Mavzu almashtirgichi faqat konstruktor interfeysini o'zgartiradi.** Siz yig'gan sayt egasi "Sayt
+dizayni" bo'limida tanlagan palitrani saqlaydi — tashrifchining xohishi uni bekor qilmasligi kerak.
+
+Ataylab ikkita CSS kirish nuqtasi:
+
+| Fayl | Qayerga boradi |
+|---|---|
+| `src/app/globals.css` | ilova: HeroUI, boshqaruv paneli, portal |
+| `src/styles/export.css` | ZIP: faqat eksport qilingan sayt ishlatadigan narsalar |
+
+Kaskad tartibi muhim va `globals.css` boshida hujjatlashtirilgan. `skins.css` va `blocks.css` ataylab
+`@layer` tashqarisida, shuning uchun ular Tailwind utilitalarini ham, HeroUI'ni ham yengadi.
+**Aynan shu narsa 12 shablonni bir-biriga o'xshab qolishdan saqlaydi**: yagona HeroUI uslubi
+qatlamlarda yotadi va nishaning skinini bekor qila olmaydi.
 
 ### Tez boshlash
 
@@ -324,7 +386,7 @@ Formspree), shakl o'sha yerga yuboradi, aks holda tashrifchining pochta mijozini
 
 ### Что это
 
-Site Builder — небольшая CMS в духе WordPress и Tilda. Страницы собираются из блоков, переводятся на
+SiteGo — небольшая CMS в духе WordPress и Tilda. Страницы собираются из блоков, переводятся на
 русский, узбекский и английский, а результат либо отдаётся приложением, либо выгружается папкой
 статических файлов, которой вообще не нужен бэкенд.
 
@@ -346,11 +408,41 @@ Site Builder — небольшая CMS в духе WordPress и Tilda. Стра
 | Слой | Технология |
 |---|---|
 | Фреймворк | Next.js 16 (App Router), React 19, TypeScript |
-| Стили | Tailwind CSS v4, переменные тем (`--tpl-*`) и стилей оформления (`--sk-*`) |
+| Стили | Tailwind CSS v4 |
+| Дизайн-система | HeroUI v3 (`@heroui/styles` — CSS-пакет, без React-компонентов) |
+| Оформление сайта | переменные тем (`--tpl-*`) и стилей оформления (`--sk-*`) |
 | База данных | SQLite через Prisma 7 (адаптер `better-sqlite3`) |
 | Редактор текста | TipTap, намеренно ограниченный: жирный/курсив/ссылки/списки/H2–H3 |
 | Drag-and-drop | dnd-kit |
 | Экспорт | собственный генератор статики и `archiver` для ZIP |
+| Анимация | React `<ViewTransition>` (без зависимостей) и CSS |
+| 3D | three.js — сцена на `/`, грузится лениво и только там |
+
+### Дизайн и тема
+
+Интерфейс построен на **HeroUI v3**, взятом в виде CSS-пакета `@heroui/styles`, а не библиотеки
+React-компонентов. Причина — двойной рендер: каждый блок существует дважды, React-компонентом и
+генератором HTML-строк для выгрузки в статику. React-компонент в строковый рендер не вставить, а
+класс — вставить можно, поэтому живой сайт и выгруженный ZIP выглядят одинаково.
+
+Светлая и тёмная темы приходят из HeroUI и переключаются кнопкой в шапке. Выбор хранится в cookie и
+читается на сервере, поэтому нужная тема приезжает уже в первом HTML — без мигания чужими цветами и
+без `localStorage`. Режим «Как в системе» разрешает крошечный встроенный скрипт: настройку
+операционной системы сервер знать не может.
+
+**Переключатель темы меняет только интерфейс конструктора.** Собранный сайт сохраняет палитру,
+которую выбрал его владелец на экране «Дизайн сайта», — предпочтение гостя не вправе её ломать.
+
+Две точки сборки CSS, намеренно:
+
+| Файл | Куда едет |
+|---|---|
+| `src/app/globals.css` | приложение: HeroUI, админка, портал |
+| `src/styles/export.css` | ZIP: только то, чем действительно пользуется выгруженный сайт |
+
+Порядок каскада — несущая конструкция, он описан вверху `globals.css`. `skins.css` и `blocks.css`
+намеренно вне `@layer`, поэтому бьют и утилиты Tailwind, и HeroUI. **Именно это не даёт 12 шаблонам
+стать одинаковыми**: единый стиль HeroUI лежит в слоях и не может перебить скин ниши.
 
 ### Быстрый старт
 

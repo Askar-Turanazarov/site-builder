@@ -103,3 +103,14 @@ export function resolveDemoTarget(template: SiteTemplate, path: string[]): DemoT
 
   return { kind: "missing" };
 }
+
+/**
+ * Имя пары для перехода «карточка витрины → демонстрация шаблона».
+ *
+ * Одна функция на оба конца: превью в TemplateCard и сам сайт в TemplateDemo
+ * обязаны получить ровно одну строку, иначе браузер не найдёт пару и вместо
+ * разворачивания карточки покажет обычную смену страницы.
+ */
+export function templateMorphName(key: string): string {
+  return `tpl-${key}`;
+}

@@ -47,7 +47,7 @@ export async function SiteFrame({
     <div
       style={themeStyleVars(design)}
       data-skin={design.skinKey || undefined}
-      className="flex min-h-screen flex-col bg-[var(--tpl-paper)]"
+      className="sb-animate flex min-h-screen flex-col bg-[var(--tpl-paper)]"
     >
       {fontsHref && <link rel="stylesheet" href={fontsHref} />}
       <AdminBar />

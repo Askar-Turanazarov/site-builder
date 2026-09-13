@@ -18,7 +18,7 @@ export function Footer({
   contactEmail: string | null;
   contactPhone: string | null;
   contactAddress: string | null;
-  /** Подпись «Сделано на Site Builder». Есть на живом сайте, нет в экспорте. */
+  /** Подпись «Сделано на SiteGo». Есть на живом сайте, нет в экспорте. */
   builderLabel?: string | null;
 }) {
   return (

@@ -17,6 +17,11 @@ export const uz: PortalDict = {
   "hero.ctaAdmin": "Panelga kirish",
   "hero.ctaSite": "Saytimni ochish",
 
+  "stats.templates": "sayt shabloni",
+  "stats.locales": "til bitta kontentda",
+  "stats.blocks": "blok turi",
+  "stats.export": "backendsiz yuklab olish",
+
   "templates.title": "12 ta tayyor sayt",
   "templates.lead":
     "Har birining o'z tuzilishi, palitrasi, shriftlari va qurilish uslubi bor. Demoni oching va uni haqiqiy saytdek aylanib chiqing.",
@@ -58,7 +63,11 @@ export const uz: PortalDict = {
   "demo.notFound": "Bu shablonda bunday sahifa yo'q",
   "demo.toPortal": "Konstruktorga",
 
-  "footer.made": "Site Builder'da yaratilgan",
+  "theme.light": "Yorug' mavzu",
+  "theme.dark": "Qorong'i mavzu",
+  "theme.system": "Tizim bo'yicha",
+
+  "footer.made": "SiteGo'da yaratilgan",
   "footer.docs": "Hujjatlar",
   "footer.tagline": "Statikaga eksport qiladigan ko'p tilli sayt konstruktori.",
 

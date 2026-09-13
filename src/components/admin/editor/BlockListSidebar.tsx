@@ -58,7 +58,7 @@ export function BlockListSidebar({
             type="button"
             onClick={onCollapse}
             title={t("editor.collapse")}
-            className="rounded px-1.5 py-0.5 text-xs text-muted hover:bg-paper hover:text-ink"
+            className="rounded px-1.5 py-0.5 text-xs text-muted hover:bg-default hover:text-ink"
           >
             ⟨
           </button>
@@ -66,7 +66,7 @@ export function BlockListSidebar({
         <button
           type="button"
           onClick={onAddClick}
-          className="w-full rounded-md bg-accent px-3 py-2 text-sm font-medium text-surface hover:bg-accent-strong"
+          className="w-full rounded-xl bg-accent px-3 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-strong"
         >
           {t("editor.addBlock")}
         </button>
@@ -126,8 +126,8 @@ function SortableRow({
     <div
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={`group flex items-center gap-1.5 rounded-md border px-2 py-2 ${
-        selected ? "border-accent bg-accent-tint" : "border-transparent hover:bg-paper"
+      className={`group flex items-center gap-1.5 rounded-xl border px-2 py-2 ${
+        selected ? "border-accent bg-accent-tint" : "border-transparent hover:bg-default"
       } ${isDragging ? "opacity-50" : ""}`}
     >
       <button

@@ -34,7 +34,7 @@ export default async function AdminDashboardPage() {
           <Link
             key={stat.label}
             href={stat.href}
-            className="rounded-lg border border-border bg-surface p-5 transition hover:border-accent"
+            className="rounded-2xl border border-border bg-surface p-5 transition hover:border-accent"
           >
             <div className="font-display text-3xl font-bold tabular-nums text-ink">{stat.value}</div>
             <div className="mt-1 text-sm text-ink-soft">{stat.label}</div>
@@ -43,24 +43,24 @@ export default async function AdminDashboardPage() {
         ))}
       </div>
 
-      <div className="mt-10 rounded-lg border border-border bg-surface p-6">
+      <div className="mt-10 rounded-2xl border border-border bg-surface p-6">
         <h2 className="font-display text-base font-semibold text-ink">{t("dashboard.quickActions")}</h2>
         <div className="mt-4 flex flex-wrap gap-3">
           <Link
             href="/admin/pages/new"
-            className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface transition hover:bg-accent-strong"
+            className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition hover:bg-accent-strong"
           >
             {t("dashboard.createPage")}
           </Link>
           <Link
             href="/admin/posts/new"
-            className="rounded-md border border-border bg-paper px-4 py-2 text-sm font-medium text-ink transition hover:border-accent"
+            className="rounded-xl border border-border bg-paper px-4 py-2 text-sm font-medium text-ink transition hover:border-accent"
           >
             {t("dashboard.writePost")}
           </Link>
           <Link
             href="/admin/export"
-            className="rounded-md border border-border bg-paper px-4 py-2 text-sm font-medium text-ink transition hover:border-accent"
+            className="rounded-xl border border-border bg-paper px-4 py-2 text-sm font-medium text-ink transition hover:border-accent"
           >
             {t("dashboard.exportSite")}
           </Link>

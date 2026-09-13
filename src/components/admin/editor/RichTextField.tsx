@@ -56,10 +56,10 @@ export function RichTextField({
   if (!editor) return null;
 
   const btn = (active: boolean) =>
-    `rounded px-2 py-1 text-xs font-semibold ${active ? "bg-accent-tint text-accent-strong" : "text-ink-soft hover:bg-paper"}`;
+    `rounded px-2 py-1 text-xs font-semibold ${active ? "bg-accent-tint text-accent-strong" : "text-ink-soft hover:bg-default"}`;
 
   return (
-    <div className="rounded-md border border-border bg-surface focus-within:border-accent">
+    <div className="rounded-xl border border-border bg-surface focus-within:border-accent">
       <div className="flex flex-wrap gap-0.5 border-b border-border px-1.5 py-1">
         <button type="button" className={btn(editor.isActive("bold"))} onClick={() => editor.chain().focus().toggleBold().run()}>
           {t("rt.bold")}

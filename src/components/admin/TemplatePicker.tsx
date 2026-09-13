@@ -24,9 +24,9 @@ export async function TemplatePicker({
 
       <Link
         href={blankHref}
-        className="mt-6 flex items-center gap-3 rounded-lg border border-dashed border-border bg-surface p-4 hover:border-accent"
+        className="mt-6 flex items-center gap-3 rounded-2xl border border-dashed border-border bg-surface p-4 hover:border-accent"
       >
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-paper text-lg text-muted">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-paper text-lg text-muted">
           +
         </span>
         <div>
@@ -43,7 +43,7 @@ export async function TemplatePicker({
               <Link
                 key={tpl.key}
                 href={buildHref(tpl.key)}
-                className="rounded-lg border border-border bg-surface p-4 hover:border-accent hover:bg-accent-tint"
+                className="rounded-2xl border border-border bg-surface p-4 hover:border-accent hover:bg-accent-tint"
               >
                 <div className="text-sm font-medium text-ink">{tpl.labelRu}</div>
                 <div className="mt-1 text-xs text-muted">{tpl.blocksRu.length} {t("picker.blocks")}</div>

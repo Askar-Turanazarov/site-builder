@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { loginAction, type LoginFormState } from "./actions";
+import { LogoMark } from "@/components/brand/Logo";
 
 const initialState: LoginFormState = {};
 
@@ -24,17 +25,17 @@ export function LoginForm({ labels, next }: { labels: LoginLabels; next?: string
   const [state, formAction, pending] = useActionState(loginAction, initialState);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-paper px-6">
+    <div className="flex min-h-screen items-center justify-center bg-background px-6">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-md bg-accent text-surface font-display font-bold">
-            S
-          </div>
-          <h1 className="font-display text-xl font-semibold text-ink">Site Builder</h1>
-          <p className="mt-1 text-sm text-muted">{labels.subtitle}</p>
+          <LogoMark className="mx-auto mb-4 h-11 w-11" />
+          <h1 className="font-display text-2xl font-bold tracking-tight text-ink">
+            Site<span className="text-accent">Go</span>
+          </h1>
+          <p className="mt-1.5 text-sm text-muted">{labels.subtitle}</p>
         </div>
 
-        <form action={formAction} className="rounded-lg border border-border bg-surface p-6 shadow-sm">
+        <form action={formAction} className="card rounded-3xl bg-surface p-6 shadow-surface">
           {next && <input type="hidden" name="next" value={next} />}
           <div className="space-y-4">
             <div>
@@ -47,7 +48,7 @@ export function LoginForm({ labels, next }: { labels: LoginLabels; next?: string
                 type="email"
                 autoComplete="username"
                 required
-                className="w-full rounded-md border border-border bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                className="input w-full"
                 placeholder="admin@example.com"
               />
             </div>
@@ -61,14 +62,14 @@ export function LoginForm({ labels, next }: { labels: LoginLabels; next?: string
                 type="password"
                 autoComplete="current-password"
                 required
-                className="w-full rounded-md border border-border bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                className="input w-full"
                 placeholder="••••••••"
               />
             </div>
           </div>
 
           {state.error && (
-            <p className="mt-4 rounded-md bg-danger-tint px-3 py-2 text-sm text-danger">
+            <p className="mt-4 rounded-2xl bg-danger-soft px-3.5 py-2.5 text-sm text-danger-soft-foreground">
               {labels[state.error]}
             </p>
           )}
@@ -76,7 +77,7 @@ export function LoginForm({ labels, next }: { labels: LoginLabels; next?: string
           <button
             type="submit"
             disabled={pending}
-            className="mt-6 w-full rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface transition hover:bg-accent-strong disabled:opacity-60"
+            className="button button--primary mt-6 w-full bg-accent text-accent-foreground hover:bg-accent-hover"
           >
             {pending ? labels.submitting : labels.submit}
           </button>

@@ -58,7 +58,7 @@ export function MediaPickerField({
   return (
     <div>
       <div className="flex items-center gap-3">
-        <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-paper">
+        <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-paper">
           {selected ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={`/uploads/${selected.path}`} alt="" className="h-full w-full object-cover" />
@@ -70,7 +70,7 @@ export function MediaPickerField({
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="rounded-md border border-border bg-surface px-3 py-1.5 text-xs font-medium text-ink hover:border-accent"
+            className="rounded-xl border border-border bg-surface px-3 py-1.5 text-xs font-medium text-ink hover:border-accent"
           >
             {t("field.chooseImage")}
           </button>
@@ -87,10 +87,10 @@ export function MediaPickerField({
       </div>
 
       {open && (
-        <div className="mt-3 rounded-md border border-border bg-surface p-3">
+        <div className="mt-3 rounded-xl border border-border bg-surface p-3">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-xs font-medium text-ink-soft">{t("field.mediaLibrary")}</span>
-            <label className="cursor-pointer rounded-md bg-accent px-2.5 py-1 text-xs font-medium text-surface hover:bg-accent-strong">
+            <label className="cursor-pointer rounded-xl bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground hover:bg-accent-strong">
               {uploading ? t("media.uploading") : t("media.upload")}
               <input
                 ref={fileInputRef}
@@ -113,7 +113,7 @@ export function MediaPickerField({
                   onChange(m.id);
                   setOpen(false);
                 }}
-                className={`aspect-square overflow-hidden rounded-md border-2 ${
+                className={`aspect-square overflow-hidden rounded-xl border-2 ${
                   m.id === value ? "border-accent" : "border-transparent"
                 }`}
                 title={m.filename}

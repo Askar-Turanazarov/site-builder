@@ -18,19 +18,19 @@ export async function AdminBar() {
   const t = await getPortalT();
 
   return (
-    <div className="border-b border-border bg-ink text-surface">
+    <div className="border-b border-separator bg-background-inverse text-background">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-5 gap-y-2 px-5 py-2 text-xs">
-        <span className="font-medium text-surface/70">{t("adminbar.badge")}</span>
-        <Link href="/admin" className="text-surface hover:text-accent-tint">
+        <span className="font-medium text-background/70">{t("adminbar.badge")}</span>
+        <Link href="/admin" className="focus-visible:focus-ring rounded text-background/90 transition-colors hover:text-background">
           {t("adminbar.dashboard")}
         </Link>
-        <Link href="/admin/pages" className="text-surface hover:text-accent-tint">
+        <Link href="/admin/pages" className="focus-visible:focus-ring rounded text-background/90 transition-colors hover:text-background">
           {t("adminbar.editPage")}
         </Link>
-        <Link href="/admin/templates" className="text-surface hover:text-accent-tint">
+        <Link href="/admin/templates" className="focus-visible:focus-ring rounded text-background/90 transition-colors hover:text-background">
           {t("adminbar.templates")}
         </Link>
-        <Link href="/" className="ml-auto text-surface hover:text-accent-tint">
+        <Link href="/" className="focus-visible:focus-ring ml-auto rounded text-background/90 transition-colors hover:text-background">
           {t("adminbar.portal")} →
         </Link>
       </div>

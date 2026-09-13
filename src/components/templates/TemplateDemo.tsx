@@ -7,6 +7,8 @@ import { Footer } from "@/components/site/Footer";
 import { demoHref, demoMenuItems } from "@/lib/site-templates/demo";
 import type { SiteTemplate } from "@/lib/site-templates";
 import type { PortalT } from "@/lib/portal-i18n";
+import { Transition, NAV_BACK } from "@/components/ui/Transition";
+import { templateMorphName } from "@/lib/site-templates/demo";
 
 /**
  * Каркас демонстрации шаблона: сверху — тонкая полоса с выходом обратно на
@@ -44,7 +46,11 @@ export function TemplateDemo({
       <div className="sticky top-0 z-50 border-b border-border bg-surface">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-2.5">
           <div className="flex flex-wrap items-center gap-3">
-            <Link href="/templates" className="text-sm font-medium text-accent hover:text-accent-strong">
+            <Link
+              href="/templates"
+              transitionTypes={[NAV_BACK]}
+              className="focus-visible:focus-ring rounded text-sm font-medium text-accent transition-colors hover:text-accent-hover"
+            >
               {t("demo.back")}
             </Link>
             <span className="text-sm font-semibold text-ink">{template.label[locale]}</span>
@@ -70,7 +76,7 @@ export function TemplateDemo({
             </div>
             <Link
               href={applyHref}
-              className="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-surface hover:bg-accent-strong"
+              className="rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-strong"
             >
               {t("demo.apply")}
             </Link>
@@ -78,10 +84,14 @@ export function TemplateDemo({
         </div>
       </div>
 
+      {/* Тот же `name`, что у превью на витрине: браузер связывает две
+          картинки в одну и разворачивает карточку в полноразмерный сайт.
+          `default="none"` не даёт узлу дёргаться на посторонних переходах. */}
+      <Transition name={templateMorphName(template.key)} share="sg-morph" default="none">
       <div
         style={themeStyleVars(design)}
         data-skin={design.skinKey || undefined}
-        className="flex flex-1 flex-col bg-[var(--tpl-paper)]"
+        className="sb-animate flex flex-1 flex-col bg-[var(--tpl-paper)]"
       >
         {fontsHref && <link rel="stylesheet" href={fontsHref} />}
         <Header
@@ -102,6 +112,7 @@ export function TemplateDemo({
           contactAddress={template.settings.contactAddress[locale]}
         />
       </div>
+      </Transition>
     </div>
   );
 }

@@ -84,9 +84,9 @@ export function CategoryForm({ initial }: { initial: CategoryFormInitial }) {
         {isNew ? t("categoryForm.newTitle") : t("categoryForm.editTitle")}
       </h1>
 
-      {error && <p className="mt-4 rounded-md bg-danger-tint px-3 py-2 text-sm text-danger">{error}</p>}
+      {error && <p className="mt-4 rounded-xl bg-danger-tint px-3 py-2 text-sm text-danger">{error}</p>}
 
-      <div className="mt-6 space-y-5 rounded-lg border border-border bg-surface p-6">
+      <div className="mt-6 space-y-5 rounded-2xl border border-border bg-surface p-6">
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="mb-1.5 block text-xs font-semibold text-muted">{t("common.slug")}</label>
@@ -94,7 +94,7 @@ export function CategoryForm({ initial }: { initial: CategoryFormInitial }) {
               type="text"
               value={slug}
               onChange={(e) => setSlug(e.target.value.trim().toLowerCase().replace(/\s+/g, "-"))}
-              className="w-full rounded-md border border-border bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-accent"
+              className="w-full rounded-xl border border-border bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-accent"
               placeholder="news"
             />
           </div>
@@ -104,7 +104,7 @@ export function CategoryForm({ initial }: { initial: CategoryFormInitial }) {
               type="number"
               value={order}
               onChange={(e) => setOrder(Number(e.target.value))}
-              className="w-full rounded-md border border-border bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-accent"
+              className="w-full rounded-xl border border-border bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-accent"
             />
           </div>
         </div>
@@ -118,7 +118,7 @@ export function CategoryForm({ initial }: { initial: CategoryFormInitial }) {
           type="button"
           disabled={pending}
           onClick={handleSave}
-          className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-strong disabled:opacity-60"
+          className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-strong disabled:opacity-60"
         >
           {pending ? t("common.saving") : t("common.save")}
         </button>
@@ -127,7 +127,7 @@ export function CategoryForm({ initial }: { initial: CategoryFormInitial }) {
             type="button"
             disabled={pending}
             onClick={handleDelete}
-            className="rounded-md border border-border px-4 py-2 text-sm text-danger hover:border-danger"
+            className="rounded-xl border border-border px-4 py-2 text-sm text-danger hover:border-danger"
           >
             {t("common.delete")}
           </button>

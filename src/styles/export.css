@@ -1,0 +1,34 @@
+/*
+ * Точка сборки таблицы стилей для ВЫГРУЖЕННОГО сайта (assets/styles.css в ZIP).
+ *
+ * Отдельная от src/app/globals.css намеренно. В globals.css лежит оформление
+ * интерфейса конструктора: токены HeroUI, компоненты панели, тёмная тема
+ * админки. Выгруженному сайту всё это не нужно ни строчкой — он красится
+ * своими переменными --tpl-* и оформляется скином своей ниши. Пока сборка
+ * шла из globals.css, в каждый архив уезжало ~100 КБ чужого CSS.
+ *
+ * source(none) + явные @source: Tailwind сканирует только те файлы, которые
+ * действительно участвуют в выгрузке, и не тащит классы админки и портала.
+ *
+ * Порядок тот же, что и в globals.css, и по той же причине: база блоков
+ * слабее скина, скин слабее пер-блочных настроек администратора.
+ */
+
+@import "tailwindcss" source(none);
+
+@source "../blocks";
+@source "../components/site";
+@source "../lib/export";
+
+@import "./prose.css";
+@import "./blocks-base.css";
+@import "./skins.css";
+@import "./blocks.css";
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--tpl-font-display, inherit);
+  text-wrap: balance;
+}
