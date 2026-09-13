@@ -7,33 +7,22 @@ import { getSession } from "@/lib/auth";
 import { SITE_TEMPLATES } from "@/lib/site-templates";
 import { demoHref } from "@/lib/site-templates/demo";
 import { TemplateCard } from "@/components/templates/TemplateCard";
-import { HeroSceneLazy } from "@/components/portal/HeroSceneLazy";
-import type { PortalDict } from "@/lib/portal-i18n";
-import {
-  IconPages,
-  IconPosts,
-  IconMedia,
-  IconExport,
-  IconDesign,
-  IconDictionary,
-} from "@/components/admin/icons";
+import { PORTAL_CONTAINER } from "@/components/portal/container";
+import { HeroStage, HERO_STAGE_INTERVAL, HERO_STAGE_KEYS } from "@/components/portal/HeroStage";
+import { HeroStageMotion } from "@/components/portal/HeroStageMotion";
+import { FeaturesSection } from "@/components/portal/features/FeaturesSection";
 
 export const metadata: Metadata = {
   title: "Конструктор многоязычных сайтов",
 };
 
-const FEATURES: {
-  title: keyof PortalDict;
-  body: keyof PortalDict;
-  icon: typeof IconPages;
-}[] = [
-  { title: "features.editorTitle", body: "features.editorBody", icon: IconPages },
-  { title: "features.localesTitle", body: "features.localesBody", icon: IconDictionary },
-  { title: "features.designTitle", body: "features.designBody", icon: IconDesign },
-  { title: "features.newsTitle", body: "features.newsBody", icon: IconPosts },
-  { title: "features.mediaTitle", body: "features.mediaBody", icon: IconMedia },
-  { title: "features.exportTitle", body: "features.exportBody", icon: IconExport },
-];
+function Arrow() {
+  return (
+    <svg viewBox="0 0 16 16" className="sg-arrow h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.8}>
+      <path d="M3 8h9.5M8.5 4l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 export default async function PortalHomePage() {
   const [t, locale, settings, session] = await Promise.all([
@@ -68,152 +57,161 @@ export default async function PortalHomePage() {
   return (
     <>
       {/* ---------------------------------------------------------------
-          Шапка страницы. Трёхмерная сцена лежит подложкой; на узких экранах
-          она уходит под текст с меньшей непрозрачностью, иначе спорила бы
-          с заголовком за внимание.
+          Шапка страницы. Слева — обещание, справа — оно же на глазах:
+          настоящие шаблоны сменяются в окне вместе с языком.
           --------------------------------------------------------------- */}
-      <section className="relative overflow-hidden">
-        <HeroSceneLazy className="pointer-events-none absolute inset-y-0 right-0 h-full w-full opacity-30 [mask-image:linear-gradient(to_right,transparent,black_45%)] md:w-[58%] md:opacity-100" />
+      <HeroStageMotion
+        steps={HERO_STAGE_KEYS.length}
+        interval={HERO_STAGE_INTERVAL}
+        className="relative isolate overflow-hidden"
+      >
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+          <div className="sg-hero-dots absolute inset-0" />
+          <div
+            className="sg-aura top-[-18%] left-[-8%] h-[520px] w-[520px]"
+            style={{ background: "color-mix(in oklab, var(--accent) 65%, transparent)" }}
+          />
+          <div
+            className="sg-aura sg-aura-b top-[18%] right-[-6%] h-[480px] w-[480px]"
+            style={{ background: "color-mix(in oklab, var(--accent) 45%, #22d3ee)" }}
+          />
+          <div className="sg-spotlight absolute inset-0" />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-b from-transparent to-background" />
+        </div>
 
-        {/* Подсветка акцентом за текстом — чтобы столбец не висел в пустоте. */}
         <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-40 -left-40 h-[420px] w-[420px] rounded-full opacity-[0.16] blur-3xl"
-          style={{ background: "var(--accent)" }}
-        />
+          className={`${PORTAL_CONTAINER} grid items-center gap-14 pt-12 pb-20 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:pt-16 lg:pb-24 xl:gap-20`}
+        >
+          <div>
+            <span className="sg-enter sg-d1 inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-3 py-1 text-xs font-medium text-ink-soft shadow-surface backdrop-blur">
+              <span className="sg-pulse h-2 w-2 rounded-full bg-success" />
+              {t("hero.badge")}
+            </span>
 
-        <div className="relative mx-auto max-w-6xl px-5 pt-20 pb-16 sm:pt-28 sm:pb-24">
-          <div className="max-w-2xl">
-            <p className="sg-enter sg-d1 text-xs font-semibold tracking-[0.18em] text-accent uppercase">
-              {t("hero.eyebrow")}
-            </p>
-            <h1 className="sg-enter sg-d2 mt-5 font-display text-4xl leading-[1.06] font-extrabold tracking-tight text-ink sm:text-[3.35rem]">
-              {t("hero.title")}
+            <h1 className="sg-enter sg-d2 mt-6 font-display text-[2.6rem] leading-[1.02] font-extrabold tracking-[-0.035em] text-ink sm:text-6xl xl:text-[4.25rem]">
+              {t("hero.titleBefore")}
+              <span className="sg-gradient-text">{t("hero.titleAccent")}</span>
+              {t("hero.titleAfter")}
             </h1>
-            <p className="sg-enter sg-d3 mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
+
+            <p className="sg-enter sg-d3 mt-6 max-w-xl text-lg leading-relaxed text-ink-soft xl:text-xl">
               {t("hero.lead")}
             </p>
 
             <div className="sg-enter sg-d4 mt-9 flex flex-wrap gap-3">
               <Link
                 href="/templates"
-                className="button button--primary bg-accent text-accent-foreground hover:bg-accent-hover"
+                className="button button--lg button--primary bg-accent text-accent-foreground hover:bg-accent-hover"
               >
                 {t("hero.ctaTemplates")}
-              </Link>
-              <Link
-                href={siteHref}
-                className="button border border-border bg-surface text-ink hover:bg-surface-hover"
-              >
-                {t("hero.ctaSite")}
+                <Arrow />
               </Link>
               <Link
                 href={session ? "/admin" : "/admin/login"}
-                className="button text-ink-soft hover:bg-default hover:text-ink"
+                className="button button--lg border border-border bg-surface/80 text-ink backdrop-blur hover:bg-surface-hover"
               >
                 {t("hero.ctaAdmin")}
               </Link>
             </div>
 
-            <dl className="sg-enter sg-d5 mt-12 flex flex-wrap gap-x-10 gap-y-5">
-              {stats.map((s) => (
-                <div key={s.label}>
-                  <dt className="font-display text-2xl font-bold tabular-nums text-ink">
+            <dl className="sg-enter sg-d5 mt-12 grid max-w-xl grid-cols-2 gap-y-6 border-t border-separator pt-8 sm:grid-cols-4">
+              {stats.map((s, i) => (
+                <div
+                  key={s.label}
+                  className={
+                    i === 1 || i === 3
+                      ? "border-l border-separator pl-5"
+                      : i === 2
+                        ? "sm:border-l sm:border-separator sm:pl-5"
+                        : ""
+                  }
+                >
+                  <dt className="font-display text-3xl font-bold tracking-tight tabular-nums text-ink">
                     {s.value}
                   </dt>
-                  <dd className="mt-0.5 max-w-[9rem] text-xs leading-snug text-muted">{s.label}</dd>
+                  <dd className="mt-1 max-w-[9rem] text-xs leading-snug text-muted">{s.label}</dd>
                 </div>
               ))}
             </dl>
           </div>
+
+          <div className="sg-enter sg-d3">
+            <HeroStage locale={locale} t={t} />
+          </div>
+        </div>
+      </HeroStageMotion>
+
+      {/* --------------------------------------------------------------- */}
+      <section className="border-t border-separator">
+        <div className={`${PORTAL_CONTAINER} py-20 lg:py-24`}>
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <div className="max-w-2xl">
+              <h2 className="font-display text-4xl leading-[1.05] font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
+                {t("templates.title")}
+              </h2>
+              <p className="mt-4 text-lg leading-relaxed text-muted">{t("templates.lead")}</p>
+            </div>
+            <Link href="/templates" className="button border border-border bg-surface text-ink hover:bg-default">
+              {t("templates.all")}
+              <Arrow />
+            </Link>
+          </div>
+
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {featured.map((template) => (
+              <TemplateCard
+                key={template.key}
+                template={template}
+                locale={locale}
+                labels={labels}
+                demoHref={demoHref(template.key, locale)}
+                applyHref={applyHref(template.key)}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
       {/* --------------------------------------------------------------- */}
-      <section className="mx-auto max-w-6xl px-5 py-16">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div className="max-w-2xl">
-            <h2 className="font-display text-3xl font-bold tracking-tight text-ink">
-              {t("templates.title")}
-            </h2>
-            <p className="mt-3 text-base leading-relaxed text-muted">{t("templates.lead")}</p>
-          </div>
-          <Link
-            href="/templates"
-            className="focus-visible:focus-ring rounded-full text-sm font-semibold text-accent transition-colors hover:text-accent-hover"
-          >
-            {t("templates.all")} →
-          </Link>
-        </div>
+      <FeaturesSection t={t} locale={locale} />
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((template) => (
-            <TemplateCard
-              key={template.key}
-              template={template}
-              locale={locale}
-              labels={labels}
-              demoHref={demoHref(template.key, locale)}
-              applyHref={applyHref(template.key)}
+      {/* --------------------------------------------------------------- */}
+      <section className="border-t border-separator">
+        <div className={`${PORTAL_CONTAINER} py-20 lg:py-24`}>
+          <div className="relative overflow-hidden rounded-3xl border border-border bg-surface p-8 shadow-surface sm:p-12 lg:p-16">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-32 -right-24 h-80 w-80 rounded-full opacity-[0.16] blur-3xl"
+              style={{ background: "var(--accent)" }}
             />
-          ))}
-        </div>
-      </section>
+            <div aria-hidden="true" className="sg-hero-dots pointer-events-none absolute inset-0 opacity-60" />
 
-      {/* --------------------------------------------------------------- */}
-      <section id="features" className="border-y border-separator bg-surface">
-        <div className="mx-auto max-w-6xl px-5 py-20">
-          <h2 className="font-display text-3xl font-bold tracking-tight text-ink">
-            {t("features.title")}
-          </h2>
+            <div className="relative grid items-center gap-8 lg:grid-cols-[1.4fr_1fr]">
+              <div>
+                <h2 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-ink sm:text-4xl">
+                  {t("mysite.title")}
+                </h2>
+                <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">{t("mysite.lead")}</p>
+              </div>
 
-          <div className="mt-12 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-            {FEATURES.map((feature) => {
-              const FeatureIcon = feature.icon;
-              return (
-                <div key={feature.title}>
-                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accent-soft text-accent">
-                    <FeatureIcon className="h-5 w-5" />
-                  </span>
-                  <h3 className="mt-5 font-display text-lg font-semibold text-ink">
-                    {t(feature.title)}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">{t(feature.body)}</p>
+              <div className="flex flex-col gap-4 lg:items-end">
+                <p className="font-display text-2xl font-bold text-ink">{siteName}</p>
+                <div className="flex flex-wrap gap-3">
+                  <Link
+                    href={siteHref}
+                    className="button button--lg button--primary bg-accent text-accent-foreground hover:bg-accent-hover"
+                  >
+                    {t("mysite.open")}
+                    <Arrow />
+                  </Link>
+                  <Link
+                    href={session ? "/admin/pages" : "/admin/login"}
+                    className="button button--lg border border-border bg-background text-ink hover:bg-default"
+                  >
+                    {t("mysite.edit")}
+                  </Link>
                 </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* --------------------------------------------------------------- */}
-      <section className="mx-auto max-w-6xl px-5 py-20">
-        <div className="relative overflow-hidden rounded-3xl bg-surface p-8 shadow-surface sm:p-12">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full opacity-[0.14] blur-3xl"
-            style={{ background: "var(--accent)" }}
-          />
-          <div className="relative">
-            <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
-              {t("mysite.title")}
-            </h2>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">{t("mysite.lead")}</p>
-            <p className="mt-6 font-display text-xl font-bold text-ink">{siteName}</p>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                href={siteHref}
-                className="button button--primary bg-accent text-accent-foreground hover:bg-accent-hover"
-              >
-                {t("mysite.open")}
-              </Link>
-              <Link
-                href={session ? "/admin/pages" : "/admin/login"}
-                className="button border border-border bg-background text-ink hover:bg-default"
-              >
-                {t("mysite.edit")}
-              </Link>
+              </div>
             </div>
           </div>
         </div>

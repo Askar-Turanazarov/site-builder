@@ -1,0 +1,618 @@
+/*
+ * Главная страница портала SiteGo: живая сцена в шапке страницы, скользящая
+ * подложка меню, бенто-сетка «Возможностей».
+ *
+ * Только оформление продукта. В выгрузку собранного сайта этот файл не едет:
+ * его подключает src/app/globals.css, а у выгрузки своя точка сборки
+ * (src/styles/export.css).
+ *
+ * Кривые и длительности — из набора HeroUI (--ease-out-fluid и родственные).
+ * Всё движение гасится в конце файла при `prefers-reduced-motion: reduce`, и
+ * в покое каждая часть страницы — законченная картинка.
+ */
+
+/* ===========================================================================
+   Шапка: подложка под активным пунктом меню
+   =========================================================================== */
+.sg-nav-pill {
+  transition:
+    transform 350ms var(--ease-out-fluid),
+    width 350ms var(--ease-out-fluid),
+    opacity 200ms ease;
+}
+
+/* ===========================================================================
+   Шапка страницы: фон
+   =========================================================================== */
+
+/* Точечная сетка — «миллиметровка» конструктора, гаснет к краям. */
+.sg-hero-dots {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--foreground) 15%, transparent) 1px,
+    transparent 1.3px
+  );
+  background-size: 24px 24px;
+  -webkit-mask-image: radial-gradient(ellipse 65% 70% at 68% 42%, #000 15%, transparent 72%);
+  mask-image: radial-gradient(ellipse 65% 70% at 68% 42%, #000 15%, transparent 72%);
+}
+
+/* Размытые пятна акцента, медленно дрейфуют. */
+.sg-aura {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.3;
+  animation: sg-drift 20s ease-in-out infinite alternate;
+}
+.sg-aura-b {
+  opacity: 0.22;
+  animation-duration: 26s;
+  animation-delay: -9s;
+}
+@keyframes sg-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(60px, -40px, 0) scale(1.15);
+  }
+}
+
+/* Пятно света за курсором; координаты ставит HeroStageMotion. */
+.sg-spotlight {
+  background: radial-gradient(
+    560px circle at var(--sg-mx, 70%) var(--sg-my, 40%),
+    color-mix(in oklab, var(--accent) 12%, transparent),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+[data-pointer="in"] .sg-spotlight {
+  opacity: 1;
+}
+
+/* Ключевая фраза заголовка. Градиент остаётся в синем семействе акцента. */
+.sg-gradient-text {
+  background-image: linear-gradient(
+    100deg,
+    var(--accent) 5%,
+    color-mix(in oklab, var(--accent) 45%, #22d3ee) 95%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Пульсирующая точка в бейдже. */
+.sg-pulse {
+  position: relative;
+}
+.sg-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: sg-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes sg-ping {
+  70%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+.sg-arrow {
+  transition: transform 250ms var(--ease-out-fluid);
+}
+a:hover > .sg-arrow {
+  transform: translateX(3px);
+}
+
+/* ===========================================================================
+   Живая сцена
+   =========================================================================== */
+
+/* Наклон за курсором. Переменные ставит HeroStageMotion и сбрасывает в ноль,
+   когда курсор уходит, — окно возвращается ровно. */
+.sg-tilt {
+  transform: perspective(1600px) rotateX(var(--sg-rx, 0deg)) rotateY(var(--sg-ry, 0deg));
+}
+
+.sg-window {
+  box-shadow:
+    var(--overlay-shadow),
+    0 50px 100px -40px color-mix(in oklab, var(--accent) 40%, transparent);
+}
+
+/* Смена шаблона в окне: уходящий размывается, приходящий проявляется. */
+.sg-slide {
+  opacity: 0;
+  transform: scale(1.04);
+  filter: blur(8px);
+  transition:
+    opacity 700ms var(--ease-out-fluid),
+    transform 1000ms var(--ease-out-fluid),
+    filter 700ms var(--ease-out-fluid);
+}
+[data-step="0"] [data-slide="0"],
+[data-step="1"] [data-slide="1"],
+[data-step="2"] [data-slide="2"],
+[data-step="3"] [data-slide="3"] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Надписи, которые меняются по шагам: язык в адресе и на ярлыке. Все варианты
+   лежат в одной ячейке сетки — ширина не прыгает при смене. */
+[data-swap] {
+  display: inline-grid;
+}
+[data-swap] > [data-for] {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(5px);
+  transition:
+    opacity 300ms ease,
+    transform 400ms var(--ease-out-fluid);
+}
+[data-step="0"] [data-for="0"],
+[data-step="1"] [data-for="1"],
+[data-step="2"] [data-for="2"],
+[data-step="3"] [data-for="3"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Спутник «Блоки»: на каждом шаге «добавляется» свой блок. */
+.sg-chip {
+  transition:
+    background-color 300ms ease,
+    color 300ms ease,
+    transform 400ms var(--ease-out-fluid),
+    box-shadow 300ms ease;
+}
+.sg-chip-check {
+  width: 0;
+  opacity: 0;
+  transition:
+    width 300ms var(--ease-out-fluid),
+    opacity 300ms ease;
+}
+[data-step="0"] [data-chip="0"],
+[data-step="1"] [data-chip="1"],
+[data-step="2"] [data-chip="2"],
+[data-step="3"] [data-chip="3"] {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  transform: translateY(-1px) scale(1.05);
+  box-shadow: 0 8px 18px -8px color-mix(in oklab, var(--accent) 70%, transparent);
+}
+[data-step="0"] [data-chip="0"] .sg-chip-check,
+[data-step="1"] [data-chip="1"] .sg-chip-check,
+[data-step="2"] [data-chip="2"] .sg-chip-check,
+[data-step="3"] [data-chip="3"] .sg-chip-check {
+  width: 12px;
+  opacity: 1;
+}
+
+/* Спутник «12 стилей»: обведён цвет того шаблона, что сейчас в окне. */
+.sg-dot {
+  transition:
+    transform 400ms var(--ease-out-fluid),
+    box-shadow 300ms ease;
+}
+[data-step="0"] [data-dot-step="0"],
+[data-step="1"] [data-dot-step="1"],
+[data-step="2"] [data-dot-step="2"],
+[data-step="3"] [data-dot-step="3"] {
+  transform: scale(1.3);
+  box-shadow:
+    0 0 0 2px var(--surface),
+    0 0 0 3.5px var(--accent);
+}
+
+/* Спутник «Выгрузка»: полоса заполняется за один шаг. */
+.sg-progress {
+  transform-origin: left center;
+  animation: sg-fill var(--sg-interval, 3600ms) linear both;
+}
+[data-motion="off"] .sg-progress {
+  animation-play-state: paused;
+}
+@keyframes sg-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Спутники парят с разной фазой, чтобы не двигаться строем. */
+.sg-float {
+  animation: sg-float 7s ease-in-out infinite alternate;
+}
+.sg-float-b {
+  animation: sg-float 8.5s ease-in-out -3s infinite alternate;
+}
+.sg-float-c {
+  animation: sg-float 9.5s ease-in-out -6s infinite alternate;
+}
+@keyframes sg-float {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-12px);
+  }
+}
+
+/* ===========================================================================
+   «Возможности»: бенто
+   =========================================================================== */
+.sg-bento-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--surface-shadow);
+  transition:
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+/* Пятно света за курсором; `--mx/--my` ставит FeatureGrid. */
+.sg-bento-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  background: radial-gradient(
+    380px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--accent) 13%, transparent),
+    transparent 70%
+  );
+}
+.sg-bento-card:hover::after {
+  opacity: 1;
+}
+.sg-bento-card:hover {
+  border-color: color-mix(in oklab, var(--accent) 45%, var(--border));
+  box-shadow: var(--overlay-shadow);
+}
+
+.sg-bento-visual {
+  background: color-mix(in oklab, var(--background) 55%, var(--surface));
+}
+.sg-bento-stage {
+  transition: transform 600ms var(--ease-out-fluid);
+}
+.sg-bento-card:hover .sg-bento-stage {
+  transform: translateY(-4px);
+}
+
+.sg-bento-dots {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--foreground) 12%, transparent) 1px,
+    transparent 1.3px
+  );
+  background-size: 18px 18px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent);
+  mask-image: linear-gradient(to bottom, #000 35%, transparent);
+}
+
+/* ---- Редактор: блок въезжает в слот за курсором ------------------------- */
+/* Покой: блок уже стоит на месте, пунктирный слот и курсор скрыты. */
+.sg-slot,
+.sg-fly-cursor {
+  opacity: 0;
+}
+[data-inview] .sg-fly {
+  animation: sg-fly 6s var(--ease-out-fluid) infinite;
+}
+[data-inview] .sg-slot {
+  animation: sg-slot 6s ease infinite;
+}
+[data-inview] .sg-fly-cursor {
+  animation: sg-cursor 6s var(--ease-out-fluid) infinite;
+}
+@keyframes sg-fly {
+  0%,
+  8% {
+    transform: translate(-150px, -110px) scale(0.86) rotate(-4deg);
+    opacity: 0;
+  }
+  16% {
+    opacity: 1;
+  }
+  50%,
+  88% {
+    transform: none;
+    opacity: 1;
+  }
+  96%,
+  100% {
+    transform: none;
+    opacity: 0;
+  }
+}
+@keyframes sg-slot {
+  0%,
+  46% {
+    opacity: 1;
+  }
+  54%,
+  92% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes sg-cursor {
+  0%,
+  8% {
+    transform: translate(-150px, -110px);
+    opacity: 0;
+  }
+  16% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  62%,
+  100% {
+    transform: translate(24px, 26px);
+    opacity: 0;
+  }
+}
+
+/* ---- Три языка: пилюля переезжает, фраза сменяется ---------------------- */
+.sg-loc-1,
+.sg-loc-2 {
+  opacity: 0;
+}
+.sg-loc-label-0 {
+  color: var(--accent-foreground);
+}
+.sg-loc-label-1,
+.sg-loc-label-2 {
+  color: var(--muted);
+}
+[data-inview] .sg-loc-pill {
+  animation: sg-loc-pill 9s var(--ease-out-fluid) infinite;
+}
+[data-inview] .sg-loc-0 {
+  animation: sg-loc-0 9s ease infinite;
+}
+[data-inview] .sg-loc-1 {
+  animation: sg-loc-1 9s ease infinite;
+}
+[data-inview] .sg-loc-2 {
+  animation: sg-loc-2 9s ease infinite;
+}
+[data-inview] .sg-loc-label-0 {
+  animation: sg-loc-label-0 9s ease infinite;
+}
+[data-inview] .sg-loc-label-1 {
+  animation: sg-loc-label-1 9s ease infinite;
+}
+[data-inview] .sg-loc-label-2 {
+  animation: sg-loc-label-2 9s ease infinite;
+}
+@keyframes sg-loc-pill {
+  0%,
+  30% {
+    transform: translateX(0);
+  }
+  36%,
+  63% {
+    transform: translateX(100%);
+  }
+  69%,
+  96% {
+    transform: translateX(200%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes sg-loc-0 {
+  0%,
+  30% {
+    opacity: 1;
+    transform: none;
+  }
+  36%,
+  96% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sg-loc-1 {
+  0%,
+  30% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  36%,
+  63% {
+    opacity: 1;
+    transform: none;
+  }
+  69%,
+  100% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes sg-loc-2 {
+  0%,
+  63% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  69%,
+  96% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes sg-loc-label-0 {
+  0%,
+  30% {
+    color: var(--accent-foreground);
+  }
+  36%,
+  96% {
+    color: var(--muted);
+  }
+  100% {
+    color: var(--accent-foreground);
+  }
+}
+@keyframes sg-loc-label-1 {
+  0%,
+  30% {
+    color: var(--muted);
+  }
+  36%,
+  63% {
+    color: var(--accent-foreground);
+  }
+  69%,
+  100% {
+    color: var(--muted);
+  }
+}
+@keyframes sg-loc-label-2 {
+  0%,
+  63% {
+    color: var(--muted);
+  }
+  69%,
+  96% {
+    color: var(--accent-foreground);
+  }
+  100% {
+    color: var(--muted);
+  }
+}
+
+/* ---- Появление плиток, строк и кадров со ступенькой --------------------- */
+[data-inview] .sg-pop {
+  animation: sg-pop 600ms var(--ease-out-fluid) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+@keyframes sg-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.94);
+  }
+}
+
+.sg-tile {
+  transition: transform 400ms var(--ease-out-fluid);
+}
+.sg-bento-card:hover .sg-tile:nth-child(odd) {
+  transform: translateY(-3px);
+}
+
+/* ---- Новости: веер карточек --------------------------------------------- */
+.sg-fan {
+  transition: transform 600ms var(--ease-out-fluid);
+}
+.sg-fan-0 {
+  transform: translateX(-58%) rotate(-8deg);
+}
+.sg-fan-1 {
+  z-index: 2;
+  transform: translateY(-4px);
+}
+.sg-fan-2 {
+  transform: translateX(58%) rotate(8deg);
+}
+.sg-bento-card:hover .sg-fan-0 {
+  transform: translateX(-80%) translateY(6px) rotate(-12deg);
+}
+.sg-bento-card:hover .sg-fan-1 {
+  transform: translateY(-10px) scale(1.04);
+}
+.sg-bento-card:hover .sg-fan-2 {
+  transform: translateX(80%) translateY(6px) rotate(12deg);
+}
+
+/* ---- Экспорт: полоса упаковки ------------------------------------------- */
+[data-inview] .sg-pack {
+  animation: sg-pack 3.2s var(--ease-out-fluid) infinite;
+}
+@keyframes sg-pack {
+  0% {
+    transform: scaleX(0.04);
+  }
+  70%,
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+/* ===========================================================================
+   «Меньше движения»: гасим всё, что двигается само, оставляя содержимое
+   на местах. Смена шаблонов в сцене не запускается вовсе (HeroStageMotion).
+   =========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .sg-aura,
+  .sg-float,
+  .sg-float-b,
+  .sg-float-c,
+  .sg-pulse::after,
+  [data-inview] .sg-fly,
+  [data-inview] .sg-slot,
+  [data-inview] .sg-fly-cursor,
+  [data-inview] .sg-loc-pill,
+  [data-inview] .sg-loc-0,
+  [data-inview] .sg-loc-1,
+  [data-inview] .sg-loc-2,
+  [data-inview] .sg-loc-label-0,
+  [data-inview] .sg-loc-label-1,
+  [data-inview] .sg-loc-label-2,
+  [data-inview] .sg-pop,
+  [data-inview] .sg-pack {
+    animation: none !important;
+  }
+
+  .sg-progress {
+    animation: none;
+    transform: none;
+  }
+
+  .sg-nav-pill,
+  .sg-slide,
+  .sg-bento-stage,
+  .sg-fan,
+  .sg-tile {
+    transition: none;
+  }
+}

@@ -17,12 +17,24 @@ export const ru = {
   "nav.menu": "Меню",
 
   "hero.eyebrow": "Конструктор сайтов",
-  "hero.title": "Соберите сайт из блоков — и выгрузите его статикой",
   "hero.lead":
     "Визуальный редактор страниц, новости с рубриками, три языка в одном контенте, 12 готовых сайтов на старте и выгрузка в чистые HTML, CSS и JS без бэкенда.",
+  "hero.badge": "12 шаблонов · RU / UZ / EN",
+  "hero.titleBefore": "Соберите сайт ",
+  "hero.titleAccent": "из блоков",
+  "hero.titleAfter": " — и выгрузите его статикой",
   "hero.ctaTemplates": "Посмотреть шаблоны",
   "hero.ctaAdmin": "Войти в панель",
   "hero.ctaSite": "Открыть мой сайт",
+
+  "stage.blocks": "Блоки",
+  "stage.block.hero": "Обложка",
+  "stage.block.gallery": "Галерея",
+  "stage.block.pricing": "Цены",
+  "stage.block.reviews": "Отзывы",
+  "stage.styles": "12 стилей",
+  "stage.export": "Сайт выгружен",
+  "stage.exportMeta": "HTML · CSS · JS",
 
   "stats.templates": "шаблонов сайтов",
   "stats.locales": "языка в одном контенте",
@@ -39,7 +51,10 @@ export const ru = {
   "templates.all": "Все шаблоны",
   "templates.filterAll": "Все профили",
 
-  "features.title": "Что внутри",
+  "features.title": "Всё для сайта — в одной панели",
+  "features.eyebrow": "Возможности",
+  "features.lead": "Всё, что нужно, чтобы собрать многоязычный сайт и отдать его на любой хостинг — без программиста и без сервера.",
+  "features.dragHint": "Перетащите блок сюда",
   "features.editorTitle": "Редактор на холсте",
   "features.editorBody":
     "Блоки перетаскиваются прямо на превью, вставка между блоками, панель полей и настройки стиля для каждого блока.",

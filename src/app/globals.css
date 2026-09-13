@@ -40,6 +40,7 @@
 @import "@heroui/styles/utilities";
 
 @import "../styles/motion.css";
+@import "../styles/portal.css";
 @import "../styles/prose.css";
 @import "../styles/blocks-base.css";
 @import "../styles/skins.css";

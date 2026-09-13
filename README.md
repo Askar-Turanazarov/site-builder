@@ -41,7 +41,7 @@ the editor, i18n, the export and the templates — is written here.
 | Drag and drop | dnd-kit |
 | Export | a hand-written static generator plus `archiver` for the ZIP |
 | Motion | React `<ViewTransition>` (no dependency) and CSS |
-| 3D | three.js — the hero scene on `/`, loaded lazily on that page only |
+| Hero animation | CSS plus one small client script — no animation library |
 
 ### Design and theme
 
@@ -230,7 +230,7 @@ eksport va shablonlar — shu loyihada yozilgan.
 | Surib olib qo'yish | dnd-kit |
 | Eksport | o'z statik generatori va ZIP uchun `archiver` |
 | Animatsiya | React `<ViewTransition>` (qo'shimcha paketsiz) va CSS |
-| 3D | three.js — faqat `/` sahifasidagi sahna, o'sha yerda kechiktirib yuklanadi |
+| Muqova animatsiyasi | CSS va bitta kichik klient skripti — animatsiya kutubxonasisiz |
 
 ### Dizayn va mavzu
 
@@ -416,7 +416,7 @@ SiteGo — небольшая CMS в духе WordPress и Tilda. Страниц
 | Drag-and-drop | dnd-kit |
 | Экспорт | собственный генератор статики и `archiver` для ZIP |
 | Анимация | React `<ViewTransition>` (без зависимостей) и CSS |
-| 3D | three.js — сцена на `/`, грузится лениво и только там |
+| Анимация шапки страницы | CSS и один маленький клиентский скрипт — без анимационных библиотек |
 
 ### Дизайн и тема
 

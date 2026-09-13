@@ -10,12 +10,24 @@ export const en: PortalDict = {
   "nav.menu": "Menu",
 
   "hero.eyebrow": "Site builder",
-  "hero.title": "Build a site from blocks — then export it as static files",
   "hero.lead":
     "A visual page editor, news with categories, three languages in one piece of content, twelve ready-made sites to start from, and an export to plain HTML, CSS and JS with no backend.",
+  "hero.badge": "12 templates · RU / UZ / EN",
+  "hero.titleBefore": "Build a site ",
+  "hero.titleAccent": "from blocks",
+  "hero.titleAfter": " — then export it as static files",
   "hero.ctaTemplates": "Browse templates",
   "hero.ctaAdmin": "Open the panel",
   "hero.ctaSite": "Open my site",
+
+  "stage.blocks": "Blocks",
+  "stage.block.hero": "Hero",
+  "stage.block.gallery": "Gallery",
+  "stage.block.pricing": "Pricing",
+  "stage.block.reviews": "Reviews",
+  "stage.styles": "12 styles",
+  "stage.export": "Site exported",
+  "stage.exportMeta": "HTML · CSS · JS",
 
   "stats.templates": "site templates",
   "stats.locales": "languages in one content",
@@ -32,7 +44,10 @@ export const en: PortalDict = {
   "templates.all": "All templates",
   "templates.filterAll": "All profiles",
 
-  "features.title": "What's inside",
+  "features.title": "Everything for a site, in one panel",
+  "features.eyebrow": "Features",
+  "features.lead": "Everything you need to assemble a multilingual site and put it on any host — no developer and no server.",
+  "features.dragHint": "Drop a block here",
   "features.editorTitle": "Canvas editor",
   "features.editorBody":
     "Blocks are dragged on the preview itself, inserted between one another, with a field panel and per-block style settings.",

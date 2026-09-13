@@ -10,12 +10,24 @@ export const uz: PortalDict = {
   "nav.menu": "Menyu",
 
   "hero.eyebrow": "Sayt konstruktori",
-  "hero.title": "Saytni bloklardan yig'ing va statik holda yuklab oling",
   "hero.lead":
     "Sahifalarning vizual muharriri, ruknlar bilan yangiliklar, bitta kontentda uch til, boshlash uchun 12 ta tayyor sayt va backendsiz toza HTML, CSS, JS ga eksport.",
+  "hero.badge": "12 ta shablon · RU / UZ / EN",
+  "hero.titleBefore": "Saytni ",
+  "hero.titleAccent": "bloklardan yig'ing",
+  "hero.titleAfter": " va statik holda yuklab oling",
   "hero.ctaTemplates": "Shablonlarni ko'rish",
   "hero.ctaAdmin": "Panelga kirish",
   "hero.ctaSite": "Saytimni ochish",
+
+  "stage.blocks": "Bloklar",
+  "stage.block.hero": "Muqova",
+  "stage.block.gallery": "Galereya",
+  "stage.block.pricing": "Narxlar",
+  "stage.block.reviews": "Fikrlar",
+  "stage.styles": "12 uslub",
+  "stage.export": "Sayt yuklab olindi",
+  "stage.exportMeta": "HTML · CSS · JS",
 
   "stats.templates": "sayt shabloni",
   "stats.locales": "til bitta kontentda",
@@ -32,7 +44,10 @@ export const uz: PortalDict = {
   "templates.all": "Barcha shablonlar",
   "templates.filterAll": "Barcha yo'nalishlar",
 
-  "features.title": "Ichida nima bor",
+  "features.title": "Sayt uchun hammasi — bitta panelda",
+  "features.eyebrow": "Imkoniyatlar",
+  "features.lead": "Ko'p tilli saytni yig'ish va uni istalgan hostingga joylash uchun kerak bo'lgan hamma narsa — dasturchisiz va serversiz.",
+  "features.dragHint": "Blokni shu yerga torting",
   "features.editorTitle": "Kanvasdagi muharrir",
   "features.editorBody":
     "Bloklar to'g'ridan-to'g'ri ko'rinishda suriladi, bloklar orasiga qo'shiladi, maydonlar paneli va har bir blok uchun uslub sozlamalari bor.",

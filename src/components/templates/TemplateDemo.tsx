@@ -1,3 +1,4 @@
+import { PORTAL_CONTAINER } from "@/components/portal/container";
 import Link from "next/link";
 import type { Locale } from "@/blocks/context";
 import { LOCALES } from "@/blocks/context";
@@ -44,7 +45,7 @@ export function TemplateDemo({
   return (
     <div className="flex min-h-screen flex-col bg-paper">
       <div className="sticky top-0 z-50 border-b border-border bg-surface">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-2.5">
+        <div className={`${PORTAL_CONTAINER} flex flex-wrap items-center justify-between gap-3 py-2.5`}>
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/templates"

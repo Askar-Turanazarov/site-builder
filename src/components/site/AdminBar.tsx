@@ -1,3 +1,4 @@
+import { PORTAL_CONTAINER } from "@/components/portal/container";
 import Link from "next/link";
 import { getSession } from "@/lib/auth";
 import { getPortalT } from "@/lib/portal-i18n/server";
@@ -19,7 +20,7 @@ export async function AdminBar() {
 
   return (
     <div className="border-b border-separator bg-background-inverse text-background">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-5 gap-y-2 px-5 py-2 text-xs">
+      <div className={`${PORTAL_CONTAINER} flex flex-wrap items-center gap-x-5 gap-y-2 py-2 text-xs`}>
         <span className="font-medium text-background/70">{t("adminbar.badge")}</span>
         <Link href="/admin" className="focus-visible:focus-ring rounded text-background/90 transition-colors hover:text-background">
           {t("adminbar.dashboard")}
