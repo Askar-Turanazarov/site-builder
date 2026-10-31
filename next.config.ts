@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // The Vercel demo reads a database seeded during the build.
+  outputFileTracingIncludes: { "/**": ["./dev.db"] },
+
   // Скрывает круглый индикатор Next.js Dev Tools поверх страниц в режиме
   // разработки. Ошибки сборки и рантайма по-прежнему показываются оверлеем.
   devIndicators: false,
